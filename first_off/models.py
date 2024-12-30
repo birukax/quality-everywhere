@@ -40,11 +40,19 @@ class FirstOff(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     created_by = models.ForeignKey(
         User,
-        on_delete=models.SET_NULL,
-        null=True,
+        on_delete=models.CASCADE,
+        related_name='created_first_offs',
         blank=True,
+        null=True,
     )
-
+    inspected_by = models.ForeignKey(
+        User,
+        on_delete=models.RESTRICT,
+        related_name='inspected_first_offs',
+        blank=True,
+        null=True,
+        
+    )
     class Meta:
         ordering = ["-created_at"]
 

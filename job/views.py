@@ -1,16 +1,13 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Job
-from first_off.models import FirstOff
-from quality_test.models import FirstOffTest
-from misc.models import Test, Machine
-from .tasks import get_job
+from .tasks import get_job, create_first_offs
 from .forms import EditJobForm, CreateFirstOffForm
 
 
 @login_required
 def list(request):
-    get_job()
+    # get_job()
     jobs = Job.objects.all()
     return render(request, "job/list.html", {"jobs": jobs})
 
@@ -44,23 +41,5 @@ def edit(request, id):
 
 @login_required
 def create_first_off(request, id):
-    job = get_object_or_404(Job, id=id)
-    if request.method == "POST":
-        form = CreateFirstOffForm(request.POST)
-        if form.is_valid():
-            machines = form.cleaned_data["machines"]
-            for machine in machines:
-                first_off = FirstOff(
-                    job=job,
-                    machine=machine,
-                    no=job.tests,
-                )
-                first_off.save()
-                for t in machine.tests.all():
-                    test = FirstOffTest(
-                        first_off=first_off,
-                        test=t,
-                    )
-                    test.save()
-            job.tests = job.tests + 1
+    create_first_offs(request,id)
     return redirect("job:detail", id=id)

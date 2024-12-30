@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="mx-auto ">
+        <div class="w-full p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6">
+            <h5 class="mb-3 text-base font-semibold text-gray-800 md:text-xl dark:text-white">Job Detail</h5>
+            <p class="text-base md:text-xl font-bold text-gray-600 ">{{ job.no }}</p>
+            <ul class="my-4 space-y-3">
+                <li>
+                    <a class="flex items-center p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
+                        <span class="flex-1 ms-3 whitespace-nowrap">Product</span>
+                        <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ job.product.name }}</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="flex items-center p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
+                        <span class="flex-1 ms-3 whitespace-nowrap">Customer</span>
+                        <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ job.customer.name }}</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="flex items-center p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
+                        <span class="flex-1 ms-3 whitespace-nowrap">Machine</span>
+                        <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ job.machine.name }}</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="flex items-center p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
+                        <span class="flex-1 ms-3 whitespace-nowrap">Color Standard</span>
+                        <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ job.color_standard.name }}</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="flex items-center p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
+                        <span class="flex-1 ms-3 whitespace-nowrap">Certificate No.</span>
+                        <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ job.certificate_no }}</span>
+                    </a>
+                </li>
+            </ul>
+            <div class="flex gap-4">
+                {% include 'job/edit.html' %}
+                {% include 'job/first_off/create.html' %}
+            </div>
+        </div>
+    </div>
+{% endblock content %}

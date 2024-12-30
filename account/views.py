@@ -6,8 +6,8 @@ from job.tasks import get_job
 
 @login_required
 def dashboard(request):
-    get_product()
-    get_customer()
-    get_job()
+    # get_product()
+    # get_customer()
+    # get_job()
     # get_machine()
     return render(request, "dashboard.html")

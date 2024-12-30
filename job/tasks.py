@@ -1,4 +1,8 @@
 import requests
+from django.shortcuts import get_object_or_404
+from .forms import CreateFirstOffForm
+from first_off.models import FirstOff
+from quality_test.models import FirstOffTest
 from .models import Job
 from decouple import config
 from requests_ntlm import HttpNtlmAuth
@@ -32,5 +36,24 @@ def get_job():
     #     print(e)
 
 
-def create_first_offs(job_no):
-    pass
+def create_first_offs(request,id):
+    job = get_object_or_404(Job, id=id)
+    if request.method == "POST":
+        form = CreateFirstOffForm(request.POST)
+        if form.is_valid():
+            machines = form.cleaned_data["machines"]
+            for machine in machines:
+                first_off = FirstOff(
+                    job=job,
+                    machine=machine,
+                    no=job.tests,
+                    created_by=request.user,
+                )
+                first_off.save()
+                for t in machine.tests.all():
+                    test = FirstOffTest(
+                        first_off=first_off,
+                        test=t,
+                    )
+                    test.save()
+            job.tests = job.tests + 1

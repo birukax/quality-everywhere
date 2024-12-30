@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "pallet",
     "quality_test",
     "account",
+    'approval',
     "compressor",
 ]
 
