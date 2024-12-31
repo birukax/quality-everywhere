@@ -3,7 +3,6 @@
     <thead class="text-xs text-gray-700 uppercase bg-gray-50">
         <tr>
             <th scope="col" class="px-6 py-3">Job</th>
-            <th scope="col" class="px-6 py-3">Date Time</th>
             <th scope="col" class="px-6 py-3">Machine</th>
             <th scope="col" class="px-6 py-3">Shift</th>
             <th scope="col" class="px-6 py-3">Action</th>
@@ -14,9 +13,8 @@
             <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b">
                 <th scope="row"
                     class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    {{ fo.job }} {{ fo.no }}
+                    {{ fo.job }} - {{ fo.no }}
                 </th>
-                <td class="px-6 py-4">{{ fo.date }} {{ fo.time }}</td>
                 <td class="px-6 py-4">{{ fo.machine.name }}</td>
                 <td class="px-6 py-4">{{ fo.shift.name }}</td>
                 <td class="px-6 py-4">

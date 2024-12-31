@@ -7,10 +7,9 @@ from .forms import EditFirstOffForm, FirstOffTestsFrom
 
 
 @login_required
-def list(request):
-    first_offs = FirstOff.objects.all()
+def list(request, status):
+    first_offs = FirstOff.objects.filter(status=status)        
     context = {"first_offs": first_offs}
-
     return render(request, "first_off/list.html", context)
 
 

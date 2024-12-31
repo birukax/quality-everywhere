@@ -7,6 +7,7 @@ class FirstOff(models.Model):
     STATUS = (
         ("OPEN", "OPEN"),
         ("PENDING", "PENDING"),
+        ("REJECTED", "REJECTED"),
         ("COMPLETED", "COMPLETED"),
     )
     job = models.ForeignKey("job.Job", on_delete=models.CASCADE)

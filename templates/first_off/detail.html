@@ -4,7 +4,9 @@
         <div class="w-full p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6">
             <div class="flex justify-between">
                 <h5 class="mb-3 text-base font-semibold text-gray-800 md:text-xl dark:text-white">First Off Detail</h5>
-                <div class="flex gap-4">{% include 'first_off/tests.html' %}</div>
+                {% if first_off.status == 'OPEN' or first_off.status == 'REJECTED' %}
+                    <div class="flex gap-4">{% include 'first_off/tests.html' %}</div>
+                {% endif %}
             </div>
             <p class="text-base md:text-xl font-bold text-gray-600 ">{{ first_off.job }} - {{ first_off.no }}</p>
             <ul class="my-4 space-y-3">
@@ -88,8 +90,8 @@
                 </li>
             </ul>
             <div class="flex gap-4">
-                {% include 'first_off/edit.html' %}
-                {% if first_off.status != 'PENDING' %}
+                {% if first_off.status == 'OPEN' or first_off.status == 'REJECTED' %}
+                    {% include 'first_off/edit.html' %}
                     <a href="{% url 'approval:create_first_off_approval' first_off.id %}"
                        class="text-white inline-flex items-center bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
                         Submit
