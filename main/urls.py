@@ -27,5 +27,6 @@ urlpatterns = [
     path("approval/", include("approval.urls")),
     path("first-off/", include("first_off.urls")),
     path("job/", include("job.urls")),
+    path("misc/", include("misc.urls")),
     path("pallet/", include("pallet.urls")),
 ]

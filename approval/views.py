@@ -20,7 +20,7 @@ def create_first_off_approval(request,id):
 
 def first_offs(request):
     
-    first_offs = FirstOffApproval.objects.filter( first_off__status='PENDING')
+    first_offs = FirstOffApproval.objects.filter( status='PENDING')
     context = {'first_offs': first_offs}
     return render(request, 'approval/first_off/list.html', context)
 
@@ -29,7 +29,7 @@ def approve_first_off(request, id):
     first_off.status = 'APPROVED'
     first_off.by = request.user
     first_off.save()
-    not_approved = FirstOffApproval.objects.filter(first_off__id=first_off.first_off.id).exclude(status='APPROVED')
+    not_approved = FirstOffApproval.objects.filter(first_off__id=first_off.first_off.id, status='PENDING')
     if not not_approved.exists():
         first_off.first_off.status = 'COMPLETED'
         first_off.first_off.save()

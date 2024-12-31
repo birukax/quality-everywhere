@@ -5,7 +5,9 @@
             <div class="flex justify-between">
                 <h5 class="mb-3 text-base font-semibold text-gray-800 md:text-xl dark:text-white">First Off Detail</h5>
                 {% if first_off.status == 'OPEN' or first_off.status == 'REJECTED' %}
-                    <div class="flex gap-4">{% include 'first_off/tests.html' %}</div>
+                    <div class="flex gap-4">{% include 'first_off/test/edit.html' %}</div>
+                {% else %}
+                    <div class="flex gap-4">{% include 'first_off/test/list.html' %}</div>
                 {% endif %}
             </div>
             <p class="text-base md:text-xl font-bold text-gray-600 ">{{ first_off.job }} - {{ first_off.no }}</p>
