@@ -13,7 +13,7 @@
         <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
             <!-- Modal header -->
             <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Create First Off Tests</h3>
+                <h3 class="text-lg font-semibold text-gray-900 ">First-Off Test Approval</h3>
                 <button type="button"
                         class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
                         data-modal-toggle="first-off-approval-detail-{{ foa.id }}">
@@ -32,11 +32,56 @@
                 <ul class="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
                     <li class="pb-3 sm:pb-4">
                         <div class="flex items-center justify-between">
-                            <div class="inline-flex  items-center text-base font-semibold text-gray-900 ">$320</div>
-                            <div class="flex-row ">
-                                <p class="text-sm font-medium text-gray-900 truncate dark:text-white">Neil Sims</p>
-                                <p class="text-sm text-gray-500 truncate dark:text-gray-400">email@flowbite.com</p>
+                            <div class="inline-flex  items-center text-base font-semibold text-gray-900 ">Job detail</div>
+                            <div class="flex-row text-right">
+                                <p class="text-sm font-medium text-gray-900 truncate ">{{ foa.first_off.job.product.name }}</p>
+                                <p class="text-sm text-gray-700 truncate ">{{ foa.first_off.job.no }} - {{ foa.first_off.no }}</p>
                             </div>
+                        </div>
+                    </li>
+                    <li class="pb-3 sm:pb-4">
+                        <div class="flex items-center justify-between">
+                            <div class="inline-flex  items-center text-base font-semibold text-gray-900 ">Timestamp</div>
+                            <div class="flex-row text-right">
+                                <p class="text-sm font-medium text-gray-900 truncate ">{{ foa.first_off.date }}</p>
+                                <p class="text-sm text-gray-700 truncate ">{{ foa.first_off.time }}</p>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="pb-3 sm:pb-4">
+                        <div class="flex items-center justify-between">
+                            <div class="inline-flex text-left  items-center text-base font-semibold text-gray-900 ">
+                                Paper
+                                <br />
+                                Batch No.
+                            </div>
+                            <div class="flex-row text-right">
+                                <p class="text-sm font-medium text-gray-900 truncate ">{{ foa.first_off.paper.name }}</p>
+                                <p class="text-sm text-gray-700 truncate ">{{ foa.first_off.batch_no }}</p>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="pb-3 sm:pb-4">
+                        <div class="flex items-center justify-between">
+                            <div class="inline-flex  items-center text-base font-semibold text-gray-900 ">Machine</div>
+                            <div class="flex-row text-right">
+                                <p class="text-sm font-medium text-gray-900 truncate ">{{ foa.first_off.machine.name }}</p>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="pb-3 sm:pb-4">
+                        <div class="item-center font-semibold text-base text-gray-900">Tests</div>
+                        <div class="grid items-center grid-cols-2">
+                            {% for test in foa.first_off.first_off_tests.all %}
+                                <div class="inline-flex  items-center text-base font-semibold text-gray-900 ">{{ test.test.name }}</div>
+                                <div class="text-right">
+                                    {% if test.value %}
+                                        <p class="text-sm font-base text-green-800 truncate ">{{ test.value }}</p>
+                                    {% else %}
+                                        <p class="text-sm font-base text-red-800 truncate ">{{ test.value }}</p>
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
                         </div>
                     </li>
                 </ul>
