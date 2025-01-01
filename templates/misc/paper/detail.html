@@ -1,10 +1,10 @@
 <!-- Modal toggle -->
-<button data-modal-target="machine-detail-{{ m.id }}"
-        data-modal-toggle="machine-detail-{{ m.id }}"
+<button data-modal-target="paper-detail-{{ p.id }}"
+        data-modal-toggle="paper-detail-{{ p.id }}"
         class="block text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-3 py-1 text-center "
         type="button">Detail</button>
 <!-- Main modal -->
-<div id="machine-detail-{{ m.id }}"
+<div id="paper-detail-{{ p.id }}"
      tabindex="-1"
      aria-hidden="true"
      class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
@@ -13,10 +13,10 @@
         <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
             <!-- Modal header -->
             <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                <h3 class="text-lg font-semibold text-gray-900 ">Machine Detail</h3>
+                <h3 class="text-lg font-semibold text-gray-900 ">Paper Detail</h3>
                 <button type="button"
                         class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                        data-modal-toggle="machine-detail-{{ m.id }}">
+                        data-modal-toggle="paper-detail-{{ p.id }}">
                     <svg class="w-3 h-3"
                          aria-hidden="true"
                          xmlns="http://www.w3.org/2000/svg"
@@ -32,25 +32,23 @@
                 <ul class="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
                     <li class="pb-3 sm:pb-4">
                         <div class="flex items-center justify-between">
-                            <div class="inline-flex  items-center text-base font-semibold text-gray-900 ">Name</div>
+                            <div class="inline-flex  items-center text-base font-semibold text-gray-900 ">No.</div>
                             <div class="flex-row text-right">
-                                <p class="text-sm font-medium text-gray-900 truncate ">{{ m.name }}</p>
+                                <p class="text-sm font-medium text-gray-900 truncate ">{{ p.no }}</p>
                             </div>
                         </div>
                     </li>
                     <li class="pb-3 sm:pb-4">
-                        <div class="text-left font-semibold text-lg text-gray-700 mb-2">Tests</div>
-                        <div class="grid justify-items-stretch grid-cols-2">
-                            {% for test in m.tests.all %}
-                                <div class="flex-row text-right">
-                                    <p class="text-sm font-medium text-gray-900 truncate ">- {{ test.name }}</p>
-                                </div>
-                            {% endfor %}
+                        <div class="flex items-center justify-between">
+                            <div class="inline-flex  items-center text-base font-semibold text-gray-900 ">Name</div>
+                            <div class="flex-row text-right">
+                                <p class="text-sm font-medium text-gray-900 truncate ">{{ p.name }}</p>
+                            </div>
                         </div>
                     </li>
                 </ul>
                 <div class="text-right">
-                    <a href="{% url 'misc:edit_machine' m.id %}"
+                    <a href="{% url 'misc:edit_paper' p.id %}"
                        class="text-white inline-flex items-center bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-3 py-1 text-center">
                         Edit
                     </a>

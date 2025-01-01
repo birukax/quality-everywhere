@@ -1,12 +1,20 @@
 import pyodbc
 import requests
-from .models import Product, Customer, Machine
+from .models import Product, Customer, Machine, Paper, Shift
 from decouple import config
 from requests_ntlm import HttpNtlmAuth
 from django.shortcuts import get_object_or_404
-from .forms import CreateMachineForm, EditMachineForm
+from .forms import (
+    CreateMachineForm,
+    EditMachineForm,
+    CreatePaperForm,
+    EditPaperForm,
+    CreateShiftForm,
+    EditShiftForm,
+)
 
-def get_product():
+
+def product_get():
     url = config("NAV_FINISHED_ITEMS")
     user = config("NAV_INSTANCE_USER")
     password = config("NAV_INSTANCE_PASSWORD")
@@ -28,7 +36,7 @@ def get_product():
         print(e)
 
 
-def get_customer():
+def customer_get():
     url = config("NAV_CUSTOMERS")
     user = config("NAV_INSTANCE_USER")
     password = config("NAV_INSTANCE_PASSWORD")
@@ -49,20 +57,56 @@ def get_customer():
     except Exception as e:
         print(e)
 
-def create_machine(request):
-    if request.method == 'POST':
+
+def machine_create(request):
+    if request.method == "POST":
         form = CreateMachineForm(request.POST)
         if form.is_valid():
             form.save()
 
-def edit_machine(request, id):
+
+def machine_edit(request, id):
     machine = get_object_or_404(Machine, id=id)
     if request.method == "POST":
         form = EditMachineForm(request.POST, instance=machine)
         if form.is_valid():
-            machine.tests = form.cleaned_data["tests"]
+            tests = form.cleaned_data["tests"]
+            machine.tests.set(tests)
             machine.save()
 
+
+def paper_create(request):
+    if request.method == "POST":
+        form = CreatePaperForm(request.POST)
+        if form.is_valid():
+            form.save()
+
+
+def paper_edit(request, id):
+    paper = get_object_or_404(Paper, id=id)
+    if request.method == "POST":
+        form = EditPaperForm(request.POST, instance=paper)
+        if form.is_valid():
+            paper.name = form.cleaned_data["name"]
+            paper.no = form.cleaned_data["no"]
+            paper.save()
+
+
+def shift_create(request):
+    if request.method == "POST":
+        form = CreateShiftForm(request.POST)
+        if form.is_valid():
+            form.save()
+
+
+def shift_edit(request, id):
+    shift = get_object_or_404(Shift, id=id)
+    if request.method == "POST":
+        form = EditShiftForm(request.POST, instance=shift)
+        if form.is_valid():
+            shift.name = form.cleaned_data["name"]
+            shift.code = form.cleaned_data["code"]
+            shift.save()
 
 
 # def get_machine():

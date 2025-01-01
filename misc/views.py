@@ -1,55 +1,143 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Color, ColorStandard, Machine, Customer, Product, Paper, Shift, Test
-from .tasks import get_customer, get_product, create_machine
+from .tasks import (
+    product_get,
+    customer_get,
+    machine_create,
+    machine_edit,
+    paper_create,
+    paper_edit,
+    shift_create,
+    shift_edit,
+)
+from .forms import (
+    EditMachineForm,
+    CreateMachineForm,
+    CreatePaperForm,
+    EditPaperForm,
+    CreateShiftForm,
+    EditShiftForm,
+)
+
 
 def machine_list(request):
     machines = Machine.objects.all()
-    context = {'machines': machines}
-    return render(request, 'misc/machine/list.html', context)
+    context = {"machines": machines}
+    return render(request, "misc/machine/list.html", context)
+
 
 def create_machine(request):
-    create_machine(request)
-    return redirect('misc:machine_list')
+    if request.method == "GET":
+        form = CreateMachineForm()
+        context = {"form": form}
+        return render(request, "misc/machine/create.html", context)
+
+    machine_create(request)
+    return redirect("misc:machine_list")
+
+
+def edit_machine(request, id):
+    if request.method == "GET":
+        machine = get_object_or_404(Machine, id=id)
+        form = EditMachineForm(instance=machine)
+        context = {"form": form, "machine": machine}
+        return render(request, "misc/machine/edit.html", context)
+
+    machine_edit(request, id)
+    return redirect("misc:machine_list")
+
 
 def customer_list(request):
-    get_customer()
+    customer_get()
     customers = Customer.objects.all()
-    context = {'customers': customers}
-    return render(request, 'misc/customer/list.html', context)
+    context = {"customers": customers}
+    return render(request, "misc/customer/list.html", context)
+
+
+def get_customers(request):
+    customer_get()
+    return redirect("misc:customer_list")
 
 
 def product_list(request):
-    get_product
+    product_get()
     products = Product.objects.all()
-    context = {'products': products}
-    return render(request, 'misc/product/list.html', context)
+    context = {"products": products}
+    return render(request, "misc/product/list.html", context)
+
+
+def get_products(request):
+    product_get()
+    return redirect("misc:product_list")
 
 
 def paper_list(request):
     papers = Paper.objects.all()
-    context = {'papers': papers}
-    return render(request, 'misc/paper/list.html', context)
+    context = {"papers": papers}
+    return render(request, "misc/paper/list.html", context)
+
+
+def create_paper(request):
+    if request.method == "GET":
+        form = CreatePaperForm()
+        context = {"form": form}
+        return render(request, "misc/paper/create.html", context)
+
+    paper_create(request)
+    return redirect("misc:paper_list")
+
+
+def edit_paper(request, id):
+    if request.method == "GET":
+        paper = get_object_or_404(Paper, id=id)
+        form = EditPaperForm(instance=paper)
+        context = {"form": form, "paper": paper}
+        return render(request, "misc/paper/edit.html", context)
+
+    paper_edit(request, id)
+    return redirect("misc:paper_list")
 
 
 def shift_list(request):
     shifts = Shift.objects.all()
-    context = {'shifts': shifts}
-    return render(request, 'misc/shift/list.html', context)
+    context = {"shifts": shifts}
+    return render(request, "misc/shift/list.html", context)
+
+
+def create_shift(request):
+    if request.method == "GET":
+        form = CreateShiftForm()
+        context = {"form": form}
+        return render(request, "misc/shift/create.html", context)
+
+    shift_create(request)
+    return redirect("misc:shift_list")
+
+
+def edit_shift(request, id):
+    if request.method == "GET":
+        shift = get_object_or_404(Shift, id=id)
+        form = EditShiftForm(instance=shift)
+        context = {"form": form, "shift": shift}
+        return render(request, "misc/shift/edit.html", context)
+
+    shift_edit(request, id)
+    return redirect("misc:shift_list")
 
 
 def test_list(request):
     tests = Test.objects.all()
-    context = {'tests': tests}
-    return render(request, 'misc/test/list.html', context)
+    context = {"tests": tests}
+    return render(request, "misc/test/list.html", context)
 
 
 def color_list(request):
     colors = Color.objects.all()
-    context = {'colors': colors}
-    return render(request, 'misc/color/list.html', context)
+    context = {"colors": colors}
+    return render(request, "misc/color/list.html", context)
 
 
 def color_standard_list(request):
     color_standards = ColorStandard.objects.all()
-    context = {'color_standards': color_standards}
-    return render(request, 'misc/color_standard/list.html', context)
+    context = {"color_standards": color_standards}
+    return render(request, "misc/color_standard/list.html", context)

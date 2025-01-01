@@ -1,9 +1,14 @@
-{% extends "base.html" %} {% block content %} {% load static %}
-<div class="mt-6 w-full">
-  <div class="relative shadow-md sm:rounded-lg overflow-x-auto">
-    <table class="w-full text-sm text-left text-gray-500 table-auto">
-      {% block table %}{% endblock %}
-    </table>
+{% extends "base.html" %}
+{% block content %}
+  {% load static %}
+  <div class="mt-6 w-full">
+    <div class="gap-4 ml-2 mb-2">
+      {% block buttons %}{% endblock %}
+    </div>
+    <div class="relative shadow-md sm:rounded-lg overflow-x-auto">
+      <table class="w-full text-sm text-left text-gray-500 table-auto">
+        {% block table %}{% endblock %}
+      </table>
+    </div>
   </div>
-</div>
 {% endblock content %}

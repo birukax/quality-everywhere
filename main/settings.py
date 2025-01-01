@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     "pallet",
     "quality_test",
     "account",
-    'approval',
+    "approval",
     "compressor",
 ]
 
@@ -146,3 +146,7 @@ STATICFILES_FINDERS = (
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
     "compressor.finders.CompressorFinder",
 )
+
+SESSION_SECURITY_WARN_AFTER = 59 * 60
+SESSION_SECURITY_EXPIRE_AFTER = 60 * 60
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
