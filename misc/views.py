@@ -9,6 +9,12 @@ from .tasks import (
     paper_edit,
     shift_create,
     shift_edit,
+    test_create,
+    test_edit,
+    color_create,
+    color_edit,
+    color_standard_create,
+    color_standard_edit,
 )
 from .forms import (
     EditMachineForm,
@@ -17,6 +23,12 @@ from .forms import (
     EditPaperForm,
     CreateShiftForm,
     EditShiftForm,
+    CreateTestForm,
+    EditTestForm,
+    CreateColorForm,
+    EditColorForm,
+    CreateColorStandardForm,
+    EditColorStandardForm,
 )
 
 
@@ -131,13 +143,76 @@ def test_list(request):
     return render(request, "misc/test/list.html", context)
 
 
+def create_test(request):
+    if request.method == "GET":
+        form = CreateTestForm()
+        context = {"form": form}
+        return render(request, "misc/test/create.html", context)
+
+    test_create(request)
+    return redirect("misc:test_list")
+
+
+def edit_test(request, id):
+    if request.method == "GET":
+        test = get_object_or_404(Test, id=id)
+        form = EditTestForm(instance=test)
+        context = {"form": form, "test": test}
+        return render(request, "misc/test/edit.html", context)
+
+    test_edit(request, id)
+    return redirect("misc:test_list")
+
+
 def color_list(request):
     colors = Color.objects.all()
     context = {"colors": colors}
     return render(request, "misc/color/list.html", context)
 
 
+def create_color(request):
+    if request.method == "GET":
+        form = CreateColorForm()
+        context = {"form": form}
+        return render(request, "misc/color/create.html", context)
+
+    color_create(request)
+    return redirect("misc:color_list")
+
+
+def edit_color(request, id):
+    if request.method == "GET":
+        color = get_object_or_404(Color, id=id)
+        form = EditColorForm(instance=color)
+        context = {"form": form, "color": color}
+        return render(request, "misc/color/edit.html", context)
+
+    color_edit(request, id)
+    return redirect("misc:color_list")
+
+
 def color_standard_list(request):
     color_standards = ColorStandard.objects.all()
     context = {"color_standards": color_standards}
     return render(request, "misc/color_standard/list.html", context)
+
+
+def create_color_standard(request):
+    if request.method == "GET":
+        form = CreateColorStandardForm()
+        context = {"form": form}
+        return render(request, "misc/color_standard/create.html", context)
+
+    color_standard_create(request)
+    return redirect("misc:color_standard_list")
+
+
+def edit_color_standard(request, id):
+    if request.method == "GET":
+        color_standard = get_object_or_404(ColorStandard, id=id)
+        form = EditColorStandardForm(instance=color_standard)
+        context = {"form": form, "color_standard": color_standard}
+        return render(request, "misc/color_standard/edit.html", context)
+
+    color_standard_edit(request, id)
+    return redirect("misc:color_standard_list")

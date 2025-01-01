@@ -1,6 +1,6 @@
 import pyodbc
 import requests
-from .models import Product, Customer, Machine, Paper, Shift
+from .models import Product, Customer, Machine, Paper, Shift, Test, Color, ColorStandard
 from decouple import config
 from requests_ntlm import HttpNtlmAuth
 from django.shortcuts import get_object_or_404
@@ -11,6 +11,12 @@ from .forms import (
     EditPaperForm,
     CreateShiftForm,
     EditShiftForm,
+    CreateTestForm,
+    EditTestForm,
+    CreateColorForm,
+    EditColorForm,
+    CreateColorStandardForm,
+    EditColorStandardForm,
 )
 
 
@@ -107,6 +113,56 @@ def shift_edit(request, id):
             shift.name = form.cleaned_data["name"]
             shift.code = form.cleaned_data["code"]
             shift.save()
+
+
+def test_create(request):
+    if request.method == "POST":
+        form = CreateTestForm(request.POST)
+        if form.is_valid():
+            form.save()
+
+
+def test_edit(request, id):
+    test = get_object_or_404(Test, id=id)
+    if request.method == "POST":
+        form = EditTestForm(request.POST, instance=test)
+        if form.is_valid():
+            test.name = form.cleaned_data["name"]
+            test.save()
+
+
+def color_create(request):
+    if request.method == "POST":
+        form = CreateColorForm(request.POST)
+        if form.is_valid():
+            form.save()
+
+
+def color_edit(request, id):
+    color = get_object_or_404(Color, id=id)
+    if request.method == "POST":
+        form = EditColorForm(request.POST, instance=color)
+        if form.is_valid():
+            color.name = form.cleaned_data["name"]
+            color.code = form.cleaned_data["code"]
+            color.color_standard = form.cleaned_data["color_standard"]
+            color.save()
+
+
+def color_standard_create(request):
+    if request.method == "POST":
+        form = CreateColorStandardForm(request.POST)
+        if form.is_valid():
+            form.save()
+
+
+def color_standard_edit(request, id):
+    color_standard = get_object_or_404(ColorStandard, id=id)
+    if request.method == "POST":
+        form = EditColorStandardForm(request.POST, instance=color_standard)
+        if form.is_valid():
+            color_standard.name = form.cleaned_data["name"]
+            color_standard.save()
 
 
 # def get_machine():
