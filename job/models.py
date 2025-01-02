@@ -2,6 +2,17 @@ from django.db import models
 from django.urls import reverse
 from .validators import validate_artwork
 
+STATUS = (
+    ("CREATED", "CREATED"),
+    ("FIRST-OFF CREATED", "FIRST-OFF CREATED"),
+    ("FIRST-OFF PENDING", "FIRST-OFF PENDING"),
+    ("FIRST-OFF COMPLETED", "FIRST-OFF COMPLETED"),
+    ("ON-PROCESS CREATED", "ON-PROCESS CREATED"),
+    # ("ON-PROCESS PENDING", "ON-PROCESS PENDING"),
+    ("ON-PROCESS COMPLETED", "ON-PROCESS COMPLETED"),
+    ("COMPLETED", "COMPLETED"),
+)
+
 
 class Job(models.Model):
     no = models.CharField(max_length=100)
@@ -17,6 +28,7 @@ class Job(models.Model):
         "misc.ColorStandard", on_delete=models.CASCADE, null=True, blank=True
     )
     certificate_no = models.CharField(max_length=100, null=True, blank=True)
+    status = models.CharField(max_length=100, choices=STATUS, default="CREATED")
     artwork = models.FileField(
         upload_to="artworks/",
         null=True,
