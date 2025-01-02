@@ -22,7 +22,9 @@ class FirstOff(models.Model):
         null=True,
         blank=True,
     )
-    machine = models.ForeignKey("misc.Machine", on_delete=models.CASCADE)
+    machine = models.ForeignKey(
+        "machine.Machine", on_delete=models.CASCADE, null=True, blank=True
+    )
     paper = models.ForeignKey(
         "misc.Paper",
         on_delete=models.CASCADE,

@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "session_security",
     "rest_framework",
     "misc",
+    "machine",
     "job",
     "first_off",
     "pallet",

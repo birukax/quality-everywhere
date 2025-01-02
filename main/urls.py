@@ -30,6 +30,7 @@ urlpatterns = [
     path("first-off/", include("first_off.urls")),
     path("job/", include("job.urls")),
     path("misc/", include("misc.urls")),
+    path("machine/", include("machine.urls")),
     path("pallet/", include("pallet.urls")),
     re_path(r"^session_security/", include("session_security.urls")),
 ]

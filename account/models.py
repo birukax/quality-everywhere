@@ -11,12 +11,13 @@ ROLES = (
     ("SUPERVISOR", "SUPERVISOR"),
 )
 
+
 class Profile(models.Model):
 
     user = models.OneToOneField(auth_user, on_delete=models.CASCADE)
     role = models.CharField(choices=ROLES, max_length=20, default="USER")
     machine = models.ForeignKey(
-        "misc.Machine", on_delete=models.CASCADE, null=True, blank=True
+        "machine.Machine", on_delete=models.CASCADE, null=True, blank=True
     )
 
     def __str__(self):

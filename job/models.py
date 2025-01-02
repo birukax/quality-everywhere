@@ -22,7 +22,7 @@ class Job(models.Model):
         "misc.Customer", on_delete=models.CASCADE, null=True, blank=True
     )
     machine = models.ForeignKey(
-        "misc.Machine", on_delete=models.CASCADE, null=True, blank=True
+        "machine.Machine", on_delete=models.CASCADE, null=True, blank=True
     )
     color_standard = models.ForeignKey(
         "misc.ColorStandard", on_delete=models.CASCADE, null=True, blank=True

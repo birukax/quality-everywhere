@@ -31,16 +31,6 @@ class Color(models.Model):
         return self.name
 
 
-class Machine(models.Model):
-    # code = models.CharField(max_length=100)
-    name = models.CharField(max_length=100)
-    # type = models.CharField(max_length=100)
-    tests = models.ManyToManyField("misc.Test", related_name="machines", blank=True)
-
-    def __str__(self):
-        return self.name
-
-
 class Product(models.Model):
     no = models.CharField(max_length=100)
     name = models.CharField(max_length=100)

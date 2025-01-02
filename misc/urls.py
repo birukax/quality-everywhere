@@ -4,9 +4,6 @@ from . import views
 app_name = "misc"
 
 urlpatterns = [
-    path("machine/list", views.machine_list, name="machine_list"),
-    path("machine/create", views.create_machine, name="create_machine"),
-    path("machine/<int:id>/edit", views.edit_machine, name="edit_machine"),
     path("customer/list", views.customer_list, name="customer_list"),
     path("customer/get", views.get_customers, name="get_customers"),
     path("product/list", views.product_list, name="product_list"),

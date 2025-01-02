@@ -1,6 +1,6 @@
 from django import forms
 from .models import Job
-from misc.models import Machine
+from machine.models import Machine
 
 
 class EditJobForm(forms.ModelForm):

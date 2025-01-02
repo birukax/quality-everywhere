@@ -21,7 +21,7 @@ class PalletCard(models.Model):
 
 
 class PalletMachine(models.Model):
-    machine = models.ForeignKey("misc.Machine", on_delete=models.CASCADE)
+    machine = models.ForeignKey("machine.Machine", on_delete=models.CASCADE)
     date = models.DateField()
     pallet = models.ForeignKey("pallet.PalletCard", on_delete=models.CASCADE)
     shift = models.ForeignKey(

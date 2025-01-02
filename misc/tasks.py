@@ -1,12 +1,10 @@
 import pyodbc
 import requests
-from .models import Product, Customer, Machine, Paper, Shift, Test, Color, ColorStandard
+from .models import Product, Customer, Paper, Shift, Test, Color, ColorStandard
 from decouple import config
 from requests_ntlm import HttpNtlmAuth
 from django.shortcuts import get_object_or_404
 from .forms import (
-    CreateMachineForm,
-    EditMachineForm,
     CreatePaperForm,
     EditPaperForm,
     CreateShiftForm,
@@ -62,23 +60,6 @@ def customer_get():
                     customer.save()
     except Exception as e:
         print(e)
-
-
-def machine_create(request):
-    if request.method == "POST":
-        form = CreateMachineForm(request.POST)
-        if form.is_valid():
-            form.save()
-
-
-def machine_edit(request, id):
-    machine = get_object_or_404(Machine, id=id)
-    if request.method == "POST":
-        form = EditMachineForm(request.POST, instance=machine)
-        if form.is_valid():
-            tests = form.cleaned_data["tests"]
-            machine.tests.set(tests)
-            machine.save()
 
 
 def paper_create(request):

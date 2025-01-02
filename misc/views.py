@@ -1,10 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Color, ColorStandard, Machine, Customer, Product, Paper, Shift, Test
+from .models import Color, ColorStandard, Customer, Product, Paper, Shift, Test
 from .tasks import (
     product_get,
     customer_get,
-    machine_create,
-    machine_edit,
     paper_create,
     paper_edit,
     shift_create,
@@ -17,8 +15,6 @@ from .tasks import (
     color_standard_edit,
 )
 from .forms import (
-    EditMachineForm,
-    CreateMachineForm,
     CreatePaperForm,
     EditPaperForm,
     CreateShiftForm,
@@ -30,33 +26,6 @@ from .forms import (
     CreateColorStandardForm,
     EditColorStandardForm,
 )
-
-
-def machine_list(request):
-    machines = Machine.objects.all()
-    context = {"machines": machines}
-    return render(request, "misc/machine/list.html", context)
-
-
-def create_machine(request):
-    if request.method == "GET":
-        form = CreateMachineForm()
-        context = {"form": form}
-        return render(request, "misc/machine/create.html", context)
-
-    machine_create(request)
-    return redirect("misc:machine_list")
-
-
-def edit_machine(request, id):
-    if request.method == "GET":
-        machine = get_object_or_404(Machine, id=id)
-        form = EditMachineForm(instance=machine)
-        context = {"form": form, "machine": machine}
-        return render(request, "misc/machine/edit.html", context)
-
-    machine_edit(request, id)
-    return redirect("misc:machine_list")
 
 
 def customer_list(request):

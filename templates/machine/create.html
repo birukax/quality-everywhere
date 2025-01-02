@@ -1,9 +1,7 @@
 {% extends 'form.html' %}
 {% block form %}
     <div class=" bg-gray-50">
-        <form class="p-4 md:p-5 "
-              method="post"
-              action="{% url 'misc:edit_machine' machine.id %}">
+        <form class="p-4 md:p-5 " method="post" action="{% url 'machine:create' %}">
             {% csrf_token %}
             <div class="flex-col gap-2 mb-4 mx-auto">
                 {% for field in form %}
@@ -14,9 +12,9 @@
             <div class="flex gap-4">
                 <button type="submit"
                         class="text-white inline-flex items-center bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-3 py-1 text-center">
-                    Save
+                    Create
                 </button>
-                <a href="{% url 'misc:machine_list' %}"
+                <a href="{% url 'machine:list' %}"
                    class=" inline-flex items-center bg-gray-200 hover:bg-gray-300 focus:ring-4 focus:outline-none focus:ring-gray-400 font-medium rounded-lg text-sm px-3 py-1 text-center">
                     Cancel
                 </a>
