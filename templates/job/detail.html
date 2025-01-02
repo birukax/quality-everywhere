@@ -36,10 +36,23 @@
                     </a>
                 </li>
             </ul>
-            <div class="flex gap-4">
+            <div class="flex gap-4 items-center">
                 {% include 'job/edit.html' %}
-                {% include 'job/first_off/create.html' %}
+                {% if unfinished_first_offs %}
+                    <p class="text-red-800">This Job have unfinished First-Off inspections!</p>
+                {% else %}
+                    {% include 'job/first_off/create.html' %}
+                {% endif %}
             </div>
+            {% if job.artwork %}
+                <div class="mt-4 w-full h-96">
+                    <img src="{{ job.artwork.url }}"
+                         alt="Job Artwork"
+                         height=""
+                         width=""
+                         class=" object-cover rounded-lg">
+                </div>
+            {% endif %}
         </div>
     </div>
 {% endblock content %}

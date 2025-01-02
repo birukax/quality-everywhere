@@ -12,6 +12,7 @@ class EditJobForm(forms.ModelForm):
             "machine",
             "color_standard",
             "certificate_no",
+            "artwork",
         )
 
 

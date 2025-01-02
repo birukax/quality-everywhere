@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "session_security",
     "rest_framework",
     "misc",
     "job",
@@ -60,6 +61,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "session_security.middleware.SessionSecurityMiddleware",
 ]
 
 ROOT_URLCONF = "main.urls"
@@ -146,6 +148,9 @@ STATICFILES_FINDERS = (
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
     "compressor.finders.CompressorFinder",
 )
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
 
 SESSION_SECURITY_WARN_AFTER = 59 * 60
 SESSION_SECURITY_EXPIRE_AFTER = 60 * 60

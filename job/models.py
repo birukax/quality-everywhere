@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from .validators import validate_artwork
 
 
 class Job(models.Model):
@@ -16,6 +17,13 @@ class Job(models.Model):
         "misc.ColorStandard", on_delete=models.CASCADE, null=True, blank=True
     )
     certificate_no = models.CharField(max_length=100, null=True, blank=True)
+    artwork = models.FileField(
+        upload_to="artworks/",
+        null=True,
+        blank=True,
+        validators=[validate_artwork],
+        help_text="Upload artwork file",
+    )
 
     class Meta:
         ordering = ["-no"]

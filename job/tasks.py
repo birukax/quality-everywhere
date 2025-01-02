@@ -57,3 +57,4 @@ def create_first_offs(request, id):
                     )
                     test.save()
             job.tests = job.tests + 1
+            job.save()

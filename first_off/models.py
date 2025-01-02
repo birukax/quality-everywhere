@@ -10,7 +10,9 @@ class FirstOff(models.Model):
         ("REJECTED", "REJECTED"),
         ("COMPLETED", "COMPLETED"),
     )
-    job = models.ForeignKey("job.Job", on_delete=models.CASCADE)
+    job = models.ForeignKey(
+        "job.Job", on_delete=models.CASCADE, related_name="first_offs"
+    )
     no = models.IntegerField(default=1)
     date = models.DateField(null=True, blank=True)
     time = models.TimeField(null=True, blank=True)
@@ -42,20 +44,23 @@ class FirstOff(models.Model):
     created_by = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='created_first_offs',
+        related_name="created_first_offs",
         blank=True,
         null=True,
     )
     inspected_by = models.ForeignKey(
         User,
         on_delete=models.RESTRICT,
-        related_name='inspected_first_offs',
+        related_name="inspected_first_offs",
         blank=True,
         null=True,
-        
     )
+
     class Meta:
         ordering = ["-created_at"]
 
     def get_absolute_url(self):
         return reverse("first_off:detail", args={self.id})
+
+    def __str__(self):
+        return f"{self.job} - {self.no} - {self.machine}"

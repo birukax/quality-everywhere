@@ -100,6 +100,15 @@
                     </a>
                 {% endif %}
             </div>
+            {% if first_off.job.artwork %}
+                <div class="mt-4 w-full h-96">
+                    <img src="{{ first_off.job.artwork.url }}"
+                         alt="Job Artwork"
+                         height=""
+                         width=""
+                         class=" object-cover rounded-lg">
+                </div>
+            {% endif %}
         </div>
     </div>
 {% endblock content %}
