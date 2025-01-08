@@ -23,6 +23,7 @@ class Conformity(models.Model):
 
     class Meta:
         ordering = ["-id"]
+        verbose_name_plural = "conformities"
 
     def __str__(self):
         return self.name
