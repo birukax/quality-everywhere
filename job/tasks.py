@@ -2,14 +2,14 @@ import requests
 from django.shortcuts import get_object_or_404
 from .forms import CreateFirstOffForm
 from first_off.models import FirstOff
-from quality_test.models import FirstOffTest
+from assesment.models import FirstOffTest
 from .models import Job
 from decouple import config
 from requests_ntlm import HttpNtlmAuth
 from misc.models import Product
 
 
-def get_job():
+def job_get():
     url = config("NAV_ORDERS")
     user = config("NAV_INSTANCE_USER")
     password = config("NAV_INSTANCE_PASSWORD")

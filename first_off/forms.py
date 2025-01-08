@@ -1,6 +1,6 @@
 from django import forms
 from .models import FirstOff
-from quality_test.models import FirstOffTest
+from assesment.models import FirstOffTest
 
 
 class EditFirstOffForm(forms.ModelForm):

@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Color, ColorStandard, Customer, Product, Paper, Shift, Test
+from .models import Color, ColorStandard, Customer, Product, Paper, Shift
 from .tasks import (
     product_get,
     customer_get,
@@ -7,8 +7,6 @@ from .tasks import (
     paper_edit,
     shift_create,
     shift_edit,
-    test_create,
-    test_edit,
     color_create,
     color_edit,
     color_standard_create,
@@ -19,8 +17,6 @@ from .forms import (
     EditPaperForm,
     CreateShiftForm,
     EditShiftForm,
-    CreateTestForm,
-    EditTestForm,
     CreateColorForm,
     EditColorForm,
     CreateColorStandardForm,
@@ -29,7 +25,6 @@ from .forms import (
 
 
 def customer_list(request):
-    customer_get()
     customers = Customer.objects.all()
     context = {"customers": customers}
     return render(request, "misc/customer/list.html", context)
@@ -41,7 +36,6 @@ def get_customers(request):
 
 
 def product_list(request):
-    product_get()
     products = Product.objects.all()
     context = {"products": products}
     return render(request, "misc/product/list.html", context)
@@ -104,33 +98,6 @@ def edit_shift(request, id):
 
     shift_edit(request, id)
     return redirect("misc:shift_list")
-
-
-def test_list(request):
-    tests = Test.objects.all()
-    context = {"tests": tests}
-    return render(request, "misc/test/list.html", context)
-
-
-def create_test(request):
-    if request.method == "GET":
-        form = CreateTestForm()
-        context = {"form": form}
-        return render(request, "misc/test/create.html", context)
-
-    test_create(request)
-    return redirect("misc:test_list")
-
-
-def edit_test(request, id):
-    if request.method == "GET":
-        test = get_object_or_404(Test, id=id)
-        form = EditTestForm(instance=test)
-        context = {"form": form, "test": test}
-        return render(request, "misc/test/edit.html", context)
-
-    test_edit(request, id)
-    return redirect("misc:test_list")
 
 
 def color_list(request):

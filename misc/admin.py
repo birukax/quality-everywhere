@@ -6,8 +6,6 @@ from .models import (
     Product,
     Paper,
     Shift,
-    Test,
-    Unit,
 )
 
 admin.site.register(Customer)
@@ -16,5 +14,3 @@ admin.site.register(Color)
 admin.site.register(Product)
 admin.site.register(Paper)
 admin.site.register(Shift)
-admin.site.register(Test)
-admin.site.register(Unit)

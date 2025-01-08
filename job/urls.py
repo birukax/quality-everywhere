@@ -5,6 +5,7 @@ app_name = "job"
 
 urlpatterns = [
     path("list", views.list, name="list"),
+    path("jobs/get", views.get_jobs, name="get_jobs"),
     path("detail/<int:id>", views.detail, name="detail"),
     path("edit/<int:id>", views.edit, name="edit"),
     path("create-first-off/<int:id>", views.create_first_off, name="create_first_off"),

@@ -10,37 +10,94 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('misc', '0001_initial'),
+        ("misc", "0001_initial"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='PalletCard',
+            name="PalletCard",
             fields=[
-                ('no', models.AutoField(primary_key=True, serialize=False)),
-                ('job_description', models.CharField(max_length=50)),
-                ('reel_no', models.CharField(max_length=50)),
-                ('passed', models.BooleanField(default=False)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('created_by', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='pallets_created', to=settings.AUTH_USER_MODEL)),
-                ('customer', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='pallets', to='misc.customer')),
-                ('inspected_by', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='pallets', to=settings.AUTH_USER_MODEL)),
+                ("no", models.AutoField(primary_key=True, serialize=False)),
+                ("job_description", models.CharField(max_length=50)),
+                ("reel_no", models.CharField(max_length=50)),
+                ("passed", models.BooleanField(default=False)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                (
+                    "created_by",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="pallets_created",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "customer",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="pallets",
+                        to="misc.customer",
+                    ),
+                ),
+                (
+                    "inspected_by",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="pallets",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='PalletMachine',
+            name="PalletMachine",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('date', models.DateField()),
-                ('quantity', models.FloatField(blank=True, null=True)),
-                ('trim_size', models.CharField(blank=True, max_length=50, null=True)),
-                ('comment', models.TextField()),
-                ('machine', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='misc.machine')),
-                ('operator', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
-                ('pallet', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='pallet.palletcard')),
-                ('shift', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='misc.shift')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("date", models.DateField()),
+                ("quantity", models.FloatField(blank=True, null=True)),
+                ("trim_size", models.CharField(blank=True, max_length=50, null=True)),
+                ("comment", models.TextField()),
+                (
+                    "machine",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="machine.machine",
+                    ),
+                ),
+                (
+                    "operator",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "pallet",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="pallet.palletcard",
+                    ),
+                ),
+                (
+                    "shift",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="misc.shift",
+                    ),
+                ),
             ],
         ),
     ]

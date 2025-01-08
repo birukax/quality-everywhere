@@ -1,5 +1,5 @@
 from django import forms
-from .models import Paper, Shift, Test, Color, ColorStandard
+from .models import Paper, Shift, Color, ColorStandard
 
 
 class CreatePaperForm(forms.ModelForm):
@@ -24,18 +24,6 @@ class EditShiftForm(forms.ModelForm):
     class Meta:
         model = Shift
         fields = ["code", "name"]
-
-
-class CreateTestForm(forms.ModelForm):
-    class Meta:
-        model = Test
-        fields = ["name"]
-
-
-class EditTestForm(forms.ModelForm):
-    class Meta:
-        model = Test
-        fields = ["name"]
 
 
 class CreateColorStandardForm(forms.ModelForm):

@@ -1,15 +1,21 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Job
-from .tasks import get_job, create_first_offs
+from .tasks import job_get, create_first_offs
 from .forms import EditJobForm, CreateFirstOffForm
 
 
 @login_required
 def list(request):
-    # get_job()
+    job_get()
     jobs = Job.objects.all()
     return render(request, "job/list.html", {"jobs": jobs})
+
+
+@login_required
+def get_jobs(request):
+    job_get()
+    return redirect("job:list")
 
 
 @login_required

@@ -1,6 +1,6 @@
 import pyodbc
 import requests
-from .models import Product, Customer, Paper, Shift, Test, Color, ColorStandard
+from .models import Product, Customer, Paper, Shift, Color, ColorStandard
 from decouple import config
 from requests_ntlm import HttpNtlmAuth
 from django.shortcuts import get_object_or_404
@@ -9,8 +9,6 @@ from .forms import (
     EditPaperForm,
     CreateShiftForm,
     EditShiftForm,
-    CreateTestForm,
-    EditTestForm,
     CreateColorForm,
     EditColorForm,
     CreateColorStandardForm,
@@ -94,22 +92,6 @@ def shift_edit(request, id):
             shift.name = form.cleaned_data["name"]
             shift.code = form.cleaned_data["code"]
             shift.save()
-
-
-def test_create(request):
-    if request.method == "POST":
-        form = CreateTestForm(request.POST)
-        if form.is_valid():
-            form.save()
-
-
-def test_edit(request, id):
-    test = get_object_or_404(Test, id=id)
-    if request.method == "POST":
-        form = EditTestForm(request.POST, instance=test)
-        if form.is_valid():
-            test.name = form.cleaned_data["name"]
-            test.save()
 
 
 def color_create(request):

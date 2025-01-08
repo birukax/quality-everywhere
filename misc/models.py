@@ -58,20 +58,9 @@ class Shift(models.Model):
         return self.name
 
 
-class Test(models.Model):
-    name = models.CharField(max_length=100, unique=True)
-    # type = models.CharField(max_length=100)
+# class Unit(models.Model):
+#     name = models.CharField(max_length=100)
+#     description = models.TextField()
 
-    class Meta:
-        ordering = ["-id"]
-
-    def __str__(self):
-        return self.name
-
-
-class Unit(models.Model):
-    name = models.CharField(max_length=100)
-    description = models.TextField()
-
-    def __str__(self):
-        return self.name
+#     def __str__(self):
+#         return self.name

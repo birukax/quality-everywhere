@@ -1,4 +1,10 @@
 {% extends "partials/table.html" %}
+{% block buttons %}
+    <a href="{% url 'job:get_jobs' %}"
+       class="text-white inline-flex items-center bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-3 py-1.5 text-center">
+        Update List
+    </a>
+{% endblock buttons %}
 {% block table %}
     <thead class="text-xs text-gray-700 uppercase bg-gray-50">
         <tr>
