@@ -2,12 +2,12 @@ from django.db import models
 
 
 class Machine(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
     tests = models.ManyToManyField(
         "assesment.Test", related_name="machines", blank=True
     )
     conformities = models.ManyToManyField(
-        "assesment.Test", related_name="conformities", blank=True
+        "assesment.Conformity", related_name="conformities", blank=True
     )
 
     def __str__(self):

@@ -7,7 +7,6 @@ from .forms import EditJobForm, CreateFirstOffForm
 
 @login_required
 def list(request):
-    job_get()
     jobs = Job.objects.all()
     return render(request, "job/list.html", {"jobs": jobs})
 

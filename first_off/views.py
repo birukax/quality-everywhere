@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import FirstOff
-from assesment.models import FirstOffTest
+from assesment.models import FirstOff as FirstOffTest
 from misc.models import ColorStandard
 from .forms import EditFirstOffForm, FirstOffTestsFrom
 

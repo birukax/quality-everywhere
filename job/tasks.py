@@ -2,7 +2,7 @@ import requests
 from django.shortcuts import get_object_or_404
 from .forms import CreateFirstOffForm
 from first_off.models import FirstOff
-from assesment.models import FirstOffTest
+from assesment.models import FirstOff as FirstOffTest
 from .models import Job
 from decouple import config
 from requests_ntlm import HttpNtlmAuth

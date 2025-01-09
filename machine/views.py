@@ -17,7 +17,7 @@ def create(request):
         return render(request, "machine/create.html", context)
 
     machine_create(request)
-    return redirect("machine:machine_list")
+    return redirect("machine:list")
 
 
 def edit(request, id):
@@ -28,4 +28,4 @@ def edit(request, id):
         return render(request, "machine/edit.html", context)
 
     machine_edit(request, id)
-    return redirect("machine:machine_list")
+    return redirect("machine:list")

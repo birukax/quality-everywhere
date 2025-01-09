@@ -29,7 +29,7 @@ class Conformity(models.Model):
         return self.name
 
 
-class FirstOffTest(models.Model):
+class FirstOff(models.Model):
     first_off = models.ForeignKey(
         "first_off.FirstOff",
         on_delete=models.CASCADE,
@@ -52,7 +52,7 @@ class FirstOffTest(models.Model):
         return f"{self.first_off.machine} - {self.test}"
 
 
-class OnProcessConformity(models.Model):
+class OnProcess(models.Model):
     first_off = models.ForeignKey(
         "first_off.FirstOff",
         on_delete=models.CASCADE,
