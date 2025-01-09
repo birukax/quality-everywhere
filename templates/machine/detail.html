@@ -29,8 +29,8 @@
             </div>
             <!-- Modal body -->
             <div class="p-4 md:p-5">
-                <ul class="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
-                    <li class="pb-3 sm:pb-4">
+                <ul class="max-w-md divide-y divide-gray-200 ">
+                    <li class="py-3 sm:py-4">
                         <div class="flex items-center justify-between">
                             <div class="inline-flex  items-center text-base font-semibold text-gray-900 ">Name</div>
                             <div class="flex-row text-right">
@@ -38,7 +38,15 @@
                             </div>
                         </div>
                     </li>
-                    <li class="pb-3 sm:pb-4">
+                    <li class="py-3 sm:py-4">
+                        <div class="flex items-center justify-between">
+                            <div class="inline-flex  items-center text-base font-semibold text-gray-900 ">Type</div>
+                            <div class="flex-row text-right">
+                                <p class="text-sm font-medium text-gray-900 truncate ">{{ m.type }}</p>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="py-3 sm:py-4">
                         <div class="text-left font-semibold text-lg text-gray-700 mb-2">Tests</div>
                         <div class="grid justify-items-stretch grid-cols-2">
                             {% for test in m.tests.all %}
@@ -48,7 +56,7 @@
                             {% endfor %}
                         </div>
                     </li>
-                    <li class="pb-3 sm:pb-4">
+                    <li class="py-3 sm:py-4">
                         <div class="text-left font-semibold text-lg text-gray-700 mb-2">Conformities</div>
                         <div class="grid justify-items-stretch grid-cols-2">
                             {% for test in m.conformities.all %}

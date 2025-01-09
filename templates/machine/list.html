@@ -9,7 +9,9 @@
     <thead class="text-xs text-gray-700 uppercase bg-gray-50">
         <tr>
             <th scope="col" class="px-6 py-3">Machine Name</th>
+            <th scope="col" class="px-6 py-3">Type</th>
             <th scope="col" class="px-6 py-3">Tests</th>
+            <th scope="col" class="px-6 py-3">Conformities</th>
             <th scope="col" class="px-6 py-3 text-right">Action</th>
         </tr>
     </thead>
@@ -19,7 +21,9 @@
                 <th scope="row" class="px-5 py-3 font-medium text-gray-900 ">
                     <p>{{ m.name }}</p>
                 </th>
+                <td class="px-5 py-3 capitalize">{{ m.type }}</td>
                 <td class="px-5 py-3 capitalize">{{ m.tests.all.count }}</td>
+                <td class="px-5 py-3 capitalize">{{ m.conformities.all.count }}</td>
                 <td class="px-5 py-3 flex justify-end">{% include 'machine/detail.html' %}</td>
             </tr>
         {% endfor %}

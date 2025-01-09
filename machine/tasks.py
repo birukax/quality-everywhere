@@ -17,6 +17,7 @@ def machine_edit(request, id):
         if form.is_valid():
             tests = form.cleaned_data["tests"]
             conformities = form.cleaned_data["conformities"]
+            machine.type = form.cleaned_data["type"]
             machine.tests.set(tests)
             machine.conformities.set(conformities)
             machine.save()

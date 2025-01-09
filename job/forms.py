@@ -15,6 +15,11 @@ class EditJobForm(forms.ModelForm):
             "artwork",
         )
 
+    machine = forms.ModelChoiceField(
+        queryset=Machine.objects.filter(type="PRESS"),
+        required=False,
+    )
+
 
 class CreateFirstOffForm(forms.Form):
     machines = forms.ModelMultipleChoiceField(
