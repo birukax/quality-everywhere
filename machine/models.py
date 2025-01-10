@@ -25,7 +25,7 @@ class Machine(models.Model):
 
 
 class Route(models.Model):
-    order = models.IntegerField(null=True)
+    order = models.IntegerField()
     name = models.CharField(max_length=100, unique=True)
     machine = models.ForeignKey(
         Machine, on_delete=models.CASCADE, related_name="machine_routes"
