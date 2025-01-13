@@ -28,7 +28,20 @@ class CreateRouteForm(forms.ModelForm):
         model = Route
         fields = ("name",)
 
-    machines = forms.IntegerField(min_value=1, max_value=Machine.objects.all().count())
+    machines = forms.IntegerField()
+
+    def clean(self):
+        cleaned_data = super().clean()
+        machines = cleaned_data.get("machines")
+        total_machines = Machine.objects.all().count()
+        if machines < 1:
+            raise forms.ValidationError("At least one machine is required.")
+        if machines > total_machines:
+            self.add_error(
+                "machines",
+                f"The number exceeds the total machines ({total_machines}).",
+            )
+        return cleaned_data
 
 
 class EditRouteForm(forms.Form):

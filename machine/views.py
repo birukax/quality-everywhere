@@ -1,7 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.forms import modelformset_factory
 from .models import Machine, Route, MachineRoute
-from .tasks import machine_create, machine_edit
 from .forms import (
     CreateMachineForm,
     EditMachineForm,
@@ -18,24 +17,34 @@ def list(request):
 
 
 def create(request):
-    if request.method == "GET":
+    context = {}
+    if request.method == "POST":
+        form = CreateMachineForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("machine:list")
+    else:
         form = CreateMachineForm()
-        context = {"form": form}
-        return render(request, "machine/create.html", context)
-
-    machine_create(request)
-    return redirect("machine:list")
+    context = {"form": form}
+    return render(request, "machine/create.html", context)
 
 
 def edit(request, id):
-    if request.method == "GET":
-        machine = get_object_or_404(Machine, id=id)
+    machine = get_object_or_404(Machine, id=id)
+    if request.method == "POST":
+        form = EditMachineForm(request.POST, instance=machine)
+        if form.is_valid():
+            tests = form.cleaned_data["tests"]
+            conformities = form.cleaned_data["conformities"]
+            machine.type = form.cleaned_data["type"]
+            machine.tests.set(tests)
+            machine.conformities.set(conformities)
+            machine.save()
+            return redirect("machine:list")
+    else:
         form = EditMachineForm(instance=machine)
-        context = {"form": form, "machine": machine}
-        return render(request, "machine/edit.html", context)
-
-    machine_edit(request, id)
-    return redirect("machine:list")
+    context = {"form": form, "machine": machine}
+    return render(request, "machine/edit.html", context)
 
 
 def route_list(request):
@@ -46,6 +55,7 @@ def route_list(request):
 
 
 def create_route(request):
+    context = {}
     if request.method == "POST":
         form = CreateRouteForm(request.POST)
         if form.is_valid():
@@ -55,15 +65,16 @@ def create_route(request):
             route.save()
             machines = form.cleaned_data["machines"]
             for m in range(1, machines + 1):
-                print(m)
                 machine_route = MachineRoute(
                     route=route,
                     order=m,
                 )
                 machine_route.save()
             return redirect("machine:update_machine_route", id=route.id)
-        else:
-            return redirect("machine:route_list")
+    else:
+        form = CreateRouteForm()
+    context["create_route_form"] = form
+    return render(request, "machine/route/list.html", context)
 
 
 def edit_route(request):

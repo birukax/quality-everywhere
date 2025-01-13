@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models.functions import Lower
 
 MACHINE_TYPE = (
     ("PRE-PRESS", "PRE-PRESS"),
@@ -19,6 +20,11 @@ class Machine(models.Model):
     conformities = models.ManyToManyField(
         "assesment.Conformity", related_name="conformities", blank=True
     )
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(Lower("name"), name="unique_case_insensitive_name")
+        ]
 
     def __str__(self):
         return self.name

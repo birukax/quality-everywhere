@@ -9,13 +9,15 @@ class EditJobForm(forms.ModelForm):
 
         fields = (
             "customer",
-            "machine",
+            "press_machine",
             "color_standard",
+            "route",
+            "artwork_approved",
             "certificate_no",
             "artwork",
         )
 
-    machine = forms.ModelChoiceField(
+    press_machine = forms.ModelChoiceField(
         queryset=Machine.objects.filter(type="PRESS"),
         required=False,
     )
