@@ -34,45 +34,35 @@
                         <div class="flex items-center justify-between">
                             <div class="inline-flex  items-center text-base font-semibold text-gray-900 ">Name</div>
                             <div class="flex-row text-right">
-                                <p class="text-sm font-medium text-gray-900 truncate ">{{ m.name }}</p>
+                                <p class="text-sm font-medium text-gray-900 truncate ">{{ r.name }}</p>
                             </div>
                         </div>
                     </li>
                     <li class="py-3 sm:py-4">
                         <div class="flex items-center justify-between">
-                            <div class="inline-flex  items-center text-base font-semibold text-gray-900 ">Type</div>
+                            <div class="inline-flex  items-center text-base font-semibold text-gray-900 ">Active</div>
                             <div class="flex-row text-right">
-                                <p class="text-sm font-medium text-gray-900 truncate ">{{ m.type }}</p>
+                                <p class="text-sm font-medium text-gray-900 truncate ">{{ r.active }}</p>
                             </div>
                         </div>
                     </li>
                     <li class="py-3 sm:py-4">
-                        <div class="text-left font-semibold text-lg text-gray-700 mb-2">Tests</div>
+                        <div class="text-left font-semibold text-lg text-gray-700 mb-2">Route Machines</div>
                         <div class="grid justify-items-stretch grid-cols-2">
-                            {% for test in m.tests.all %}
+                            {% for rm in r.route_machines.all %}
+                                <div class="inline-flex  items-center text-base font-semibold text-gray-900 ">{{ rm.order }}</div>
                                 <div class="flex-row text-right">
-                                    <p class="text-sm font-medium text-gray-900 truncate ">> {{ test.name }}</p>
-                                </div>
-                            {% endfor %}
-                        </div>
-                    </li>
-                    <li class="py-3 sm:py-4">
-                        <div class="text-left font-semibold text-lg text-gray-700 mb-2">Conformities</div>
-                        <div class="grid justify-items-stretch grid-cols-2">
-                            {% for test in m.conformities.all %}
-                                <div class="flex-row text-right">
-                                    <p class="text-sm font-medium text-gray-900 truncate ">> {{ test.name }}</p>
+                                    <p class="text-sm font-medium text-gray-900 truncate ">{{ rm.machine.name }}</p>
                                 </div>
                             {% endfor %}
                         </div>
                     </li>
                 </ul>
-                <div class="text-right">
-                    <a href="{% url 'machine:edit' m.id %}"
-                       class="text-white inline-flex items-center bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-3 py-1 text-center">
+                <!-- <div class="text-right">
+                    <a href="{% url 'machine:edit_route' r.id %}" class="text-white inline-flex items-center bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-3 py-1 text-center">
                         Edit
                     </a>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>

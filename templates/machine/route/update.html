@@ -1,0 +1,41 @@
+{% extends 'form.html' %}
+{% block form %}
+    <div class=" bg-gray-50">
+        <form class="p-4 md:p-5 "
+              method="post"
+              action="{% url 'machine:update_machine_route' route.id %}">
+            {% csrf_token %}
+            {{ route.name }}
+            {{ formset.management_form }}
+            <p class="text-red-600 text-sm">
+                {% if formset.non_form_errors %}{{ formset.non_form_errors|join:", " }}{% endif %}
+            </p>
+            {% for form in formset %}
+                <p class="text-red-600 text-sm">
+                    {% if form.non_field_errors %}{{ form.non_field_errors|join:", " }}{% endif %}
+                </p>
+                <div class="flex gap-2 mb-4 mx-auto">
+                    {{ form.id }}
+                    {{ form.instance.order }}
+                    {% for field in form %}
+                        <div class="flex-col ">{{ field }}</div>
+                        <p class="text-red-600 text-sm">
+                            {% if field.errors %}{{ field.errors|join:", " }}{% endif %}
+                        </p>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+            <div class="flex gap-4">
+                <button type="submit"
+                        class="text-white inline-flex items-center bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-3 py-1 text-center">
+                    Save
+                </button>
+                <a href="{% url 'machine:cancel_create_route' route.id %}"
+                   class=" inline-flex items-center bg-gray-200 hover:bg-gray-300 focus:ring-4 focus:outline-none focus:ring-gray-400 font-medium rounded-lg text-sm px-3 py-1 text-center">
+                    Cancel
+                </a>
+            </div>
+        </form>
+        {{ form.media }}
+    </div>
+{% endblock form %}

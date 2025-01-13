@@ -25,14 +25,28 @@ class Machine(models.Model):
 
 
 class Route(models.Model):
-    order = models.IntegerField()
     name = models.CharField(max_length=100, unique=True)
-    machine = models.ForeignKey(
-        Machine, on_delete=models.CASCADE, related_name="machine_routes"
-    )
-
-    class Meta:
-        unique_together = ("name", "order")
+    active = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name
+
+
+class MachineRoute(models.Model):
+    machine = models.ForeignKey(
+        Machine,
+        on_delete=models.CASCADE,
+        null=True,
+        related_name="machine_routes",
+    )
+    route = models.ForeignKey(
+        Route, on_delete=models.CASCADE, related_name="route_machines"
+    )
+    order = models.IntegerField()
+
+    # class Meta:
+    #     unique_together = ("machine", "route")
+
+    def __str__(self):
+        return f"{self.route.name} - {self.order}"
+        # return f"{self.route.name} - {self.machine.name}"
