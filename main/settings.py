@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     "misc",
     "machine",
     "job",
-    "first_off",
+    "quality_test",
     # "pallet",
     "assesment",
     "account",

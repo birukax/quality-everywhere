@@ -19,14 +19,38 @@
                 </li>
                 <li>
                     <a class="flex items-center p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
-                        <span class="flex-1 ms-3 whitespace-nowrap">Machine</span>
-                        <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ job.machine.name }}</span>
+                        <span class="flex-1 ms-3 whitespace-nowrap">Status</span>
+                        <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ job.status }}</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="flex items-center p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
+                        <span class="flex-1 ms-3 whitespace-nowrap">Route</span>
+                        <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ job.route.name }}</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="flex items-center p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
+                        <span class="flex-1 ms-3 whitespace-nowrap">Press Machine</span>
+                        <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ job.press_machine.name }}</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="flex items-center p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
+                        <span class="flex-1 ms-3 whitespace-nowrap">Current Machine</span>
+                        <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ job.current_machine.name }}</span>
                     </a>
                 </li>
                 <li>
                     <a class="flex items-center p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
                         <span class="flex-1 ms-3 whitespace-nowrap">Color Standard</span>
                         <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ job.color_standard.name }}</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="flex items-center p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
+                        <span class="flex-1 ms-3 whitespace-nowrap">Artwork Approved</span>
+                        <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ job.artwork_approved }}</span>
                     </a>
                 </li>
                 <li>
@@ -38,9 +62,9 @@
             </ul>
             <div class="flex gap-4 items-center">
                 {% include 'job/edit.html' %}
-                {% if unfinished_first_offs %}
+                {% if unfinished_tests %}
                     <p class="text-red-800">This Job have unfinished First-Off inspections!</p>
-                {% else %}
+                {% elif ready %}
                     {% include 'job/first_off/create.html' %}
                 {% endif %}
             </div>
@@ -48,9 +72,9 @@
                 <div class="mt-4 w-full h-96">
                     <img src="{{ job.artwork.url }}"
                          alt="Job Artwork"
-                         height=""
-                         width=""
-                         class=" object-cover rounded-lg">
+                         height="400"
+                         width="400"
+                         class=" rounded-lg">
                 </div>
             {% endif %}
         </div>

@@ -1,24 +1,24 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .models import FirstOff
-from assesment.models import FirstOff as FirstOffTest
+from .models import QualityTest
+from assesment.models import FirstOff
 from misc.models import ColorStandard
-from .forms import EditFirstOffForm, FirstOffTestsFrom
+from .forms import EditQualityTestForm, FirstOffTestsFrom
 
 
 @login_required
 def list(request, status):
-    first_offs = FirstOff.objects.filter(status=status)
-    context = {"first_offs": first_offs}
+    quality_tests = QualityTest.objects.filter(status=status)
+    context = {"quality_tests": quality_tests}
     return render(request, "first_off/list.html", context)
 
 
 @login_required
 def detail(request, id):
-    first_off = get_object_or_404(FirstOff, id=id)
-    edit_first_off_form = EditFirstOffForm(instance=first_off)
-    color_standard = ColorStandard.objects.get(id=first_off.job.color_standard.id)
-    tests = FirstOffTest.objects.filter(first_off=first_off)
+    quality_test = get_object_or_404(QualityTest, id=id)
+    edit_quality_test_form = EditQualityTestForm(instance=quality_test)
+    color_standard = ColorStandard.objects.get(id=quality_test.job.color_standard.id)
+    tests = FirstOff.objects.filter(quality_test=quality_test)
     passed = tests.filter(value=True)
     failed = tests.filter(value=False)
     test_forms = [
@@ -26,8 +26,8 @@ def detail(request, id):
         for instance in tests
     ]
     context = {
-        "first_off": first_off,
-        "edit_first_off_form": edit_first_off_form,
+        "quality_test": quality_test,
+        "edit_quality_test_form": edit_quality_test_form,
         "color_standard": color_standard,
         "test_forms": test_forms,
         "tests": tests,
@@ -39,13 +39,13 @@ def detail(request, id):
 
 @login_required
 def edit(request, id):
-    first_off = get_object_or_404(FirstOff, id=id)
-    form = EditFirstOffForm(instance=first_off)
+    quality_test = get_object_or_404(QualityTest, id=id)
+    form = EditQualityTestForm(instance=quality_test)
     if request.method == "POST":
-        form = EditFirstOffForm(request.POST, instance=first_off)
+        form = EditQualityTestForm(request.POST, instance=quality_test)
         if form.is_valid():
             form.save()
-            return redirect("first_off:detail", id=first_off.id)
+            return redirect("quality_test:detail", id=quality_test.id)
     context = {"form": form}
     return render(request, "first_off/edit.html", context)
 
@@ -53,8 +53,8 @@ def edit(request, id):
 @login_required
 def save_tests(request, id):
     if request.method == "POST":
-        first_off = get_object_or_404(FirstOff, id=id)
-        tests = FirstOffTest.objects.filter(first_off=first_off)
+        quality_test = get_object_or_404(QualityTest, id=id)
+        tests = FirstOff.objects.filter(quality_test=quality_test)
         test_forms = [
             FirstOffTestsFrom(request.POST, instance=instance, prefix=str(instance.id))
             for instance in tests
@@ -62,4 +62,4 @@ def save_tests(request, id):
         if all([form.is_valid() for form in test_forms]):
             for form in test_forms:
                 form.save()
-    return redirect("first_off:detail", id=first_off.id)
+    return redirect("quality_test:detail", id=quality_test.id)

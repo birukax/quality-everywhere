@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 
 
-class FirstOff(models.Model):
+class QualityTest(models.Model):
     STATUS = (
         ("OPEN", "OPEN"),
         ("PENDING", "PENDING"),
@@ -11,7 +11,7 @@ class FirstOff(models.Model):
         ("COMPLETED", "COMPLETED"),
     )
     job = models.ForeignKey(
-        "job.Job", on_delete=models.CASCADE, related_name="first_offs"
+        "job.Job", on_delete=models.CASCADE, related_name="quality_tests"
     )
     no = models.IntegerField(default=1)
     date = models.DateField(null=True, blank=True)
@@ -46,14 +46,14 @@ class FirstOff(models.Model):
     created_by = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name="created_first_offs",
+        related_name="created_quality_tests",
         blank=True,
         null=True,
     )
     inspected_by = models.ForeignKey(
         User,
         on_delete=models.RESTRICT,
-        related_name="inspected_first_offs",
+        related_name="inspected_quality_tests",
         blank=True,
         null=True,
     )
@@ -62,7 +62,7 @@ class FirstOff(models.Model):
         ordering = ["-created_at"]
 
     def get_absolute_url(self):
-        return reverse("first_off:detail", args={self.id})
+        return reverse("quality_test:detail", args={self.id})
 
     def __str__(self):
         return f"{self.job} - {self.no} - {self.machine}"

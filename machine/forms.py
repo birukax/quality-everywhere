@@ -8,8 +8,8 @@ class CreateMachineForm(forms.ModelForm):
         model = Machine
         fields = ("name", "type", "tests", "conformities")
         widgets = {
-            "tests": forms.CheckboxSelectMultiple(),
-            "conformities": forms.CheckboxSelectMultiple(),
+            "tests": forms.CheckboxSelectMultiple(attrs={"class": "space-y-2"}),
+            "conformities": forms.CheckboxSelectMultiple(attrs={"class": "space-y-2"}),
         }
 
 
@@ -18,8 +18,8 @@ class EditMachineForm(forms.ModelForm):
         model = Machine
         fields = ("name", "type", "tests", "conformities")
         widgets = {
-            "tests": forms.CheckboxSelectMultiple(),
-            "conformities": forms.CheckboxSelectMultiple(),
+            "tests": forms.CheckboxSelectMultiple(attrs={"class": "space-y-2"}),
+            "conformities": forms.CheckboxSelectMultiple(attrs={"class": "space-y-2"}),
         }
 
 

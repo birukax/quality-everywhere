@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Job
-from .tasks import job_get, create_first_offs
+from .tasks import job_get, create_quality_tests
 from .forms import EditJobForm, CreateFirstOffForm
 
 
@@ -19,15 +19,19 @@ def get_jobs(request):
 
 @login_required
 def detail(request, id):
+    ready = False
     job = get_object_or_404(Job, id=id)
     edit_job_form = EditJobForm(instance=job)
     create_first_off_form = CreateFirstOffForm()
-    unfinished_first_offs = job.first_offs.all().exclude(status="COMPLETED")
+    unfinished_quality_tests = job.quality_tests.all().exclude(status="COMPLETED")
+    if job.artwork and job.route and job.press_machine and job.product:
+        ready = True
     context = {
         "job": job,
+        "ready": ready,
         "edit_job_form": edit_job_form,
         "create_first_off_form": create_first_off_form,
-        "unfinished_first_offs": unfinished_first_offs,
+        "unfinished_quality_tests": unfinished_quality_tests,
     }
     return render(request, "job/detail.html", context)
 
@@ -53,5 +57,5 @@ def edit(request, id):
 
 @login_required
 def create_first_off(request, id):
-    create_first_offs(request, id)
+    create_quality_tests(request, id)
     return redirect("job:detail", id=id)

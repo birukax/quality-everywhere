@@ -1,11 +1,11 @@
 from django import forms
-from .models import FirstOff
-from assesment.models import FirstOff as FirstOffTest
+from .models import QualityTest
+from assesment.models import FirstOff
 
 
-class EditFirstOffForm(forms.ModelForm):
+class EditQualityTestForm(forms.ModelForm):
     class Meta:
-        model = FirstOff
+        model = QualityTest
         fields = (
             "date",
             "time",
@@ -21,7 +21,7 @@ class EditFirstOffForm(forms.ModelForm):
 
 class FirstOffTestsFrom(forms.ModelForm):
     class Meta:
-        model = FirstOffTest
+        model = FirstOff
         fields = (
             "value",
             "remark",

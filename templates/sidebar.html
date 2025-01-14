@@ -230,8 +230,8 @@
       <li>
         <button type="button"
                 class="flex items-center p-2 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-                aria-controls="dropdown-first-offs"
-                data-collapse-toggle="dropdown-first-offs">
+                aria-controls="dropdown-quality-tests"
+                data-collapse-toggle="dropdown-quality-tests">
           <svg aria-hidden="true"
                class="flex-shrink-0 w-6 h-6 text-gray-400 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
                fill="currentColor"
@@ -250,21 +250,21 @@
             </path>
           </svg>
         </button>
-        <ul id="dropdown-first-offs" class="hidden py-2 space-y-2">
+        <ul id="dropdown-quality-tests" class="hidden py-2 space-y-2">
           <li>
-            <a href="{% url 'first_off:list' status='OPEN' %}"
+            <a href="{% url 'quality_test:list' status='OPEN' %}"
                class="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Open First-Off</a>
           </li>
           <li>
-            <a href="{% url 'first_off:list' status='PENDING' %}"
+            <a href="{% url 'quality_test:list' status='PENDING' %}"
                class="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Pending First-Off</a>
           </li>
           <li>
-            <a href="{% url 'first_off:list' status='REJECTED' %}"
+            <a href="{% url 'quality_test:list' status='REJECTED' %}"
                class="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Rejected First-Off</a>
           </li>
           <li>
-            <a href="{% url 'first_off:list' status='COMPLETED' %}"
+            <a href="{% url 'quality_test:list' status='COMPLETED' %}"
                class="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Completed First-Off</a>
           </li>
         </ul>

@@ -1,0 +1,57 @@
+I can help you resolve this issue. Since you've deleted the migrations folder and made model changes, you'll need to reset the migrations and create them again. Here's how to fix it: [1]
+
+First, clear the database migration history through the Django shell: [2]
+
+python manage.py shell
+
+from django.db.migrations.recorder import MigrationRecorder
+MigrationRecorder.Migration.objects.all().delete()
+
+Copy
+
+Insert at cursor
+python
+For each Django app that had migrations deleted:
+
+Create a new migrations folder
+
+Create an empty __init__.py file inside the migrations folder
+
+your_app/
+    └── migrations/
+        └── __init__.py
+
+Copy
+
+Insert at cursor
+text
+Now run makemigrations:
+
+python manage.py makemigrations
+
+Copy
+
+Insert at cursor
+python
+Finally, apply a fake migration to sync your database schema with the migration history:
+
+python manage.py migrate --fake
+
+Copy
+
+Insert at cursor
+python
+This process will:
+
+Clear the migration history from your database
+
+Set up fresh migration files based on your current models
+
+Sync the migration state with your existing database schema
+
+Your database content will remain safe during this process. After completing these steps, future model changes should be detected normally when running makemigrations.
+
+If you make additional model changes after this, you can use the regular migration commands as usual:
+
+python manage.py makemigrations
+python manage.py migrate

@@ -30,8 +30,8 @@ class Conformity(models.Model):
 
 
 class FirstOff(models.Model):
-    first_off = models.ForeignKey(
-        "first_off.FirstOff",
+    quality_test = models.ForeignKey(
+        "quality_test.QualityTest",
         on_delete=models.CASCADE,
         related_name="first_off_tests",
     )
@@ -49,12 +49,12 @@ class FirstOff(models.Model):
     )
 
     def __str__(self):
-        return f"{self.first_off.machine} - {self.test}"
+        return f"{self.quality_test.machine} - {self.test}"
 
 
 class OnProcess(models.Model):
-    first_off = models.ForeignKey(
-        "first_off.FirstOff",
+    quality_test = models.ForeignKey(
+        "quality_test.QualityTest",
         on_delete=models.CASCADE,
         related_name="on_process_conformities",
     )
@@ -73,4 +73,4 @@ class OnProcess(models.Model):
     )
 
     def __str__(self):
-        return f"{self.first_off.machine} - {self.conformity}"
+        return f"{self.quality_test.machine} - {self.conformity}"
