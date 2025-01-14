@@ -10,10 +10,7 @@ class QualityTest(models.Model):
         ("REJECTED", "REJECTED"),
         ("COMPLETED", "COMPLETED"),
     )
-    job = models.ForeignKey(
-        "job.Job", on_delete=models.CASCADE, related_name="quality_tests"
-    )
-    no = models.IntegerField(default=1)
+    job_test = models.ForeignKey("job.JobTest", on_delete=models.CASCADE)
     date = models.DateField(null=True, blank=True)
     time = models.TimeField(null=True, blank=True)
     shift = models.ForeignKey(
@@ -25,17 +22,6 @@ class QualityTest(models.Model):
     machine = models.ForeignKey(
         "machine.Machine", on_delete=models.CASCADE, null=True, blank=True
     )
-    paper = models.ForeignKey(
-        "misc.Paper",
-        on_delete=models.CASCADE,
-        null=True,
-        blank=True,
-    )
-    batch_no = models.CharField(
-        max_length=50,
-        null=True,
-        blank=True,
-    )
     status = models.CharField(
         max_length=20,
         choices=STATUS,
@@ -43,13 +29,6 @@ class QualityTest(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    created_by = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        related_name="created_quality_tests",
-        blank=True,
-        null=True,
-    )
     inspected_by = models.ForeignKey(
         User,
         on_delete=models.RESTRICT,

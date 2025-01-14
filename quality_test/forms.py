@@ -10,8 +10,6 @@ class EditQualityTestForm(forms.ModelForm):
             "date",
             "time",
             "shift",
-            "paper",
-            "batch_no",
         )
         widgets = {
             "date": forms.DateInput(attrs={"type": "date"}),

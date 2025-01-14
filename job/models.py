@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from django.contrib.auth.models import User
 from .validators import validate_artwork
 
 STATUS = (
@@ -8,7 +9,7 @@ STATUS = (
     ("FIRST-OFF PENDING", "FIRST-OFF PENDING"),
     ("FIRST-OFF COMPLETED", "FIRST-OFF COMPLETED"),
     ("ON-PROCESS", "ON-PROCESS"),
-    # ("ON-PROCESS PENDING", "ON-PROCESS PENDING"),
+    ("ON-PROCESS PENDING", "ON-PROCESS PENDING"),
     # ("ON-PROCESS COMPLETED", "ON-PROCESS COMPLETED"),
     ("COMPLETED", "COMPLETED"),
 )
@@ -16,7 +17,6 @@ STATUS = (
 
 class Job(models.Model):
     no = models.CharField(max_length=100)
-    tests = models.IntegerField(default=1)
     product = models.ForeignKey("misc.Product", on_delete=models.CASCADE)
     customer = models.ForeignKey(
         "misc.Customer", on_delete=models.CASCADE, null=True, blank=True
@@ -31,19 +31,11 @@ class Job(models.Model):
     route = models.ForeignKey(
         "machine.Route", on_delete=models.CASCADE, null=True, blank=True
     )
-    current_machine = models.ForeignKey(
-        "machine.Machine",
-        on_delete=models.CASCADE,
-        null=True,
-        blank=True,
-        related_name="current_jobs",
-    )
     color_standard = models.ForeignKey(
         "misc.ColorStandard", on_delete=models.CASCADE, null=True, blank=True
     )
     certificate_no = models.CharField(max_length=100, null=True, blank=True)
     artwork_approved = models.BooleanField(default=False)
-    status = models.CharField(max_length=100, choices=STATUS, default="CREATED")
     artwork = models.FileField(
         upload_to="artworks/",
         null=True,
@@ -60,3 +52,32 @@ class Job(models.Model):
 
     def get_absolute_url(self):
         return reverse("job:detail", args={self.id})
+
+
+class JobTest(models.Model):
+
+    status = models.CharField(max_length=100, choices=STATUS, default="CREATED")
+    job = models.ForeignKey(
+        "job.Job", on_delete=models.CASCADE, related_name="job_tests"
+    )
+
+    current_machine = models.ForeignKey(
+        "machine.Machine",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="current_job_tests",
+    )
+    paper = models.ForeignKey("misc.Paper", on_delete=models.CASCADE)
+
+    batch_no = models.CharField(
+        max_length=50,
+        null=True,
+        blank=True,
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    created_by = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="created_job_tests",
+    )
