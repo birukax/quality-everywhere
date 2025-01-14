@@ -19,26 +19,20 @@
                 </li>
                 <li>
                     <a class="flex items-center p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
-                        <span class="flex-1 ms-3 whitespace-nowrap">Status</span>
-                        <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ job.status }}</span>
-                    </a>
-                </li>
-                <li>
-                    <a class="flex items-center p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
                         <span class="flex-1 ms-3 whitespace-nowrap">Route</span>
                         <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ job.route.name }}</span>
                     </a>
                 </li>
                 <li>
                     <a class="flex items-center p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
-                        <span class="flex-1 ms-3 whitespace-nowrap">Press Machine</span>
-                        <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ job.press_machine.name }}</span>
+                        <span class="flex-1 ms-3 whitespace-nowrap">Tests</span>
+                        <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ job.job_tests.all.count }}</span>
                     </a>
                 </li>
                 <li>
                     <a class="flex items-center p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
-                        <span class="flex-1 ms-3 whitespace-nowrap">Current Machine</span>
-                        <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ job.current_machine.name }}</span>
+                        <span class="flex-1 ms-3 whitespace-nowrap">Press Machine</span>
+                        <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ job.press_machine.name }}</span>
                     </a>
                 </li>
                 <li>
@@ -63,9 +57,12 @@
             <div class="flex gap-4 items-center">
                 {% include 'job/edit.html' %}
                 {% if unfinished_tests %}
-                    <p class="text-red-800">This Job have unfinished First-Off inspections!</p>
+                    <p class="text-red-700">This Job has unfinished test!</p>
                 {% elif ready %}
-                    {% include 'job/first_off/create.html' %}
+                    <a href="{% url 'job:create_test' job.id %}"
+                       class="text-white inline-flex items-center bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-3 py-1.5 text-center">
+                        Start Testing
+                    </a>
                 {% endif %}
             </div>
             {% if job.artwork %}

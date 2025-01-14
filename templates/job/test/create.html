@@ -1,0 +1,56 @@
+{% extends 'form.html' %}
+{% block form %}
+    <div class=" bg-gray-50 w-full">
+        <p class="ml-2 text-xl font-semibold">Create Job Test</p>
+        <form class="p-2 md:p-5 "
+              method="post"
+              action="{% url 'job:create_test' job.id %}">
+            {% csrf_token %}
+            <div class="flex-col mb-4 gap-4">
+                <div>
+                    <a class="flex items-center p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
+                        <span class="flex-1 ms-3 whitespace-nowrap">Job</span>
+                        <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ job.no }}</span>
+                    </a>
+                </div>
+                <div>
+                    <a class="flex items-center p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
+                        <span class="flex-1 ms-3 whitespace-nowrap">Route</span>
+                        <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ job.route.name }}</span>
+                    </a>
+                </div>
+                <div>
+                    <a class="flex items-center p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
+                        <span class="flex-1 ms-3 whitespace-nowrap">Product</span>
+                        <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ job.product.name }}</span>
+                    </a>
+                </div>
+                <p class="text-red-700 text-sm">
+                    {% if form.non_field_errors %}{{ form.non_field_errors|join:", " }}{% endif %}
+                </p>
+                <div class="flex-col sm:flex gap-2 my-4 items-center ">
+                    {% for field in form %}
+                        <div class="grid grid-cols-2  gap-2 mb-3 items-center ">
+                            <div class="font-bold ">{{ field.label_tag }}</div>
+                            <div class="items-start">{{ field }}</div>
+                            <p class="text-red-700 text-sm">
+                                {% if field.errors %}{{ field.errors|join:", " }}{% endif %}
+                            </p>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="flex gap-4">
+                <button type="submit"
+                        class="text-white inline-flex items-center bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-3 py-1 text-center">
+                    Create
+                </button>
+                <a href="{% url 'job:detail' job.id %}"
+                   class=" inline-flex items-center bg-gray-200 hover:bg-gray-300 focus:ring-4 focus:outline-none focus:ring-gray-400 font-medium rounded-lg text-sm px-3 py-1 text-center">
+                    Cancel
+                </a>
+            </div>
+        </form>
+        {{ form.media }}
+    </div>
+{% endblock form %}

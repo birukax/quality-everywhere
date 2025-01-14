@@ -1,6 +1,5 @@
 import requests
 from django.shortcuts import get_object_or_404
-from .forms import CreateFirstOffForm
 from quality_test.models import QualityTest
 from assesment.models import FirstOff
 from .models import Job
@@ -36,25 +35,25 @@ def job_get():
         print(e)
 
 
-def create_quality_tests(request, id):
-    job = get_object_or_404(Job, id=id)
-    if request.method == "POST":
-        form = CreateFirstOffForm(request.POST)
-        if form.is_valid():
-            machines = form.cleaned_data["machines"]
-            for machine in machines:
-                quality_test = QualityTest(
-                    job=job,
-                    machine=machine,
-                    no=job.tests,
-                    created_by=request.user,
-                )
-                quality_test.save()
-                for t in machine.tests.all():
-                    test = FirstOff(
-                        quality_test=quality_test,
-                        test=t,
-                    )
-                    test.save()
-            job.tests = job.tests + 1
-            job.save()
+# def create_quality_tests(request, id):
+#     job = get_object_or_404(Job, id=id)
+#     if request.method == "POST":
+#         form = CreateFirstOffForm(request.POST)
+#         if form.is_valid():
+#             machines = form.cleaned_data["machines"]
+#             for machine in machines:
+#                 quality_test = QualityTest(
+#                     job=job,
+#                     machine=machine,
+#                     no=job.tests,
+#                     created_by=request.user,
+#                 )
+#                 quality_test.save()
+#                 for t in machine.tests.all():
+#                     test = FirstOff(
+#                         quality_test=quality_test,
+#                         test=t,
+#                     )
+#                     test.save()
+#             job.tests = job.tests + 1
+#             job.save()

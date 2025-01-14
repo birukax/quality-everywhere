@@ -69,7 +69,12 @@ class JobTest(models.Model):
         related_name="current_job_tests",
     )
     paper = models.ForeignKey("misc.Paper", on_delete=models.CASCADE)
-
+    route = models.ForeignKey(
+        "machine.Route", on_delete=models.CASCADE, null=True, blank=True
+    )
+    color_standard = models.ForeignKey(
+        "misc.ColorStandard", on_delete=models.CASCADE, null=True, blank=True
+    )
     batch_no = models.CharField(
         max_length=50,
         null=True,
@@ -81,3 +86,12 @@ class JobTest(models.Model):
         on_delete=models.CASCADE,
         related_name="created_job_tests",
     )
+
+    class Meta:
+        ordering = ["-id"]
+
+    def __str__(self):
+        return f"{self.job.no } - {self.job.product.name}"
+
+    def get_absolute_url(self):
+        return reverse("job:test_detail", args={self.id})

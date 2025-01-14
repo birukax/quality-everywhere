@@ -1,5 +1,5 @@
 from django import forms
-from .models import Job
+from .models import Job, JobTest
 from machine.models import Machine
 
 
@@ -23,9 +23,11 @@ class EditJobForm(forms.ModelForm):
     )
 
 
-class CreateFirstOffForm(forms.Form):
-    machines = forms.ModelMultipleChoiceField(
-        queryset=Machine.objects.all(),
-        widget=forms.CheckboxSelectMultiple,
-        required=False,
-    )
+class CreateJobTestForm(forms.ModelForm):
+    class Meta:
+        model = JobTest
+        fields = ("paper", "batch_no")
+        widgets = {
+            "paper": forms.Select(),
+            "batch_no": forms.TextInput(attrs={"class": ""}),
+        }
