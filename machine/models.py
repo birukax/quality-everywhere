@@ -18,7 +18,7 @@ class Machine(models.Model):
         "assessment.Test", related_name="machines", blank=True
     )
     conformities = models.ManyToManyField(
-        "assessment.Conformity", related_name="conformities", blank=True
+        "assessment.Conformity", related_name="machines", blank=True
     )
 
     class Meta:

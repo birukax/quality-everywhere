@@ -2,7 +2,7 @@ from django import forms
 from .models import Test, Conformity, Assessment, FirstOff, OnProcess
 
 
-class EditAssessmentForm(forms.ModelForm):
+class CreateAssessmentForm(forms.ModelForm):
     class Meta:
         model = Assessment
         fields = (

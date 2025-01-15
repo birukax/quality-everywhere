@@ -14,9 +14,13 @@ class Assessment(models.Model):
         ("REJECTED", "REJECTED"),
         ("COMPLETED", "COMPLETED"),
     )
+    TYPE = (
+        ("FIRST OFF", "FIRST OFF"),
+        ("ON PROCESS", "ON PROCESS"),
+    )
     job_test = models.ForeignKey("job.JobTest", on_delete=models.CASCADE)
-    date = models.DateField(null=True, blank=True)
-    time = models.TimeField(null=True, blank=True)
+    date = models.DateField(default=django.utils.timezone.now)
+    time = models.TimeField(default=django.utils.timezone.now)
     shift = models.ForeignKey(
         "misc.Shift",
         on_delete=models.CASCADE,
@@ -83,8 +87,6 @@ class FirstOff(models.Model):
     test = models.ForeignKey(
         Test,
         on_delete=models.CASCADE,
-        null=True,
-        blank=True,
     )
     value = models.BooleanField(null=True, blank=True)
     remark = models.CharField(
@@ -106,8 +108,6 @@ class OnProcess(models.Model):
     conformity = models.ForeignKey(
         Conformity,
         on_delete=models.CASCADE,
-        null=True,
-        blank=True,
     )
     date = models.DateField(default=django.utils.timezone.now)
     time = models.TimeField(default=django.utils.timezone.now)

@@ -2,12 +2,14 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Test, Conformity, Assessment, FirstOff, OnProcess
 from misc.models import ColorStandard, Color
+from job.models import JobTest
 from .tasks import test_create, test_edit, conformity_create, conformity_edit
 from .forms import (
     CreateTestForm,
     EditTestForm,
     CreateConformityForm,
     EditConformityForm,
+    CreateAssessmentForm,
 )
 
 
@@ -35,6 +37,37 @@ def detail(request, id):
         "failed": failed,
     }
     return render(request, "first_off/detail.html", context)
+
+
+@login_required
+def create_first_off(request, id):
+    context = {}
+    job_test = JobTest.objects.get(id=id)
+    if request.method == "POST":
+        form = CreateAssessmentForm(request.POST)
+        if form.is_valid():
+            machine = job_test.current_machine
+            assessment = Assessment(
+                job_test=job_test,
+                date=form.cleaned_data["date"],
+                time=form.cleaned_data["time"],
+                shift=form.cleaned_data["shift"],
+                machine=machine,
+            )
+            if machine.tests:
+                assessment.save()
+                for test in machine.tests.all():
+                    first_off = FirstOff(
+                        assessment=assessment,
+                        test=test,
+                    )
+                    first_off.save()
+                return redirect("assessment:detail", id=assessment.id)
+    else:
+        form = CreateAssessmentForm()
+    context["form"] = form
+    context["job_test"] = job_test
+    return render(request, "first_off/create.html", context)
 
 
 # @login_required

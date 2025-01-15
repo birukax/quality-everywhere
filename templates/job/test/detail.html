@@ -48,7 +48,12 @@
                     </a>
                 </li>
             </ul>
-            <div class="flex gap-4 items-center"></div>
+            <div class="flex gap-4 items-center">
+                <a href="{% url 'assessment:create_first_off' job_test.id %}"
+                   class="text-white inline-flex items-center bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-3 py-1.5 text-center">
+                    Create First-Off
+                </a>
+            </div>
         </div>
     </div>
 {% endblock content %}

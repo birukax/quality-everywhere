@@ -9,40 +9,109 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-        ('assessment', '0001_initial'),
-    ]
+    # dependencies = [
+    #     ('assessment', '0001_initial'),
+    # ]
 
     operations = [
         migrations.CreateModel(
-            name='Route',
+            name="Route",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=100, unique=True)),
-                ('active', models.BooleanField(default=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=100, unique=True)),
+                ("active", models.BooleanField(default=True)),
             ],
         ),
         migrations.CreateModel(
-            name='Machine',
+            name="Machine",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=100, unique=True)),
-                ('type', models.CharField(blank=True, choices=[('PRE-PRESS', 'PRE-PRESS'), ('POST-PRESS', 'POST-PRESS'), ('PRESS', 'PRESS'), ('LAMINATION', 'LAMINATION'), ('BINDER', 'BINDER'), ('PACKAGING', 'PACKAGING')], max_length=100, null=True)),
-                ('conformities', models.ManyToManyField(blank=True, related_name='conformities', to='assessment.conformity')),
-                ('tests', models.ManyToManyField(blank=True, related_name='machines', to='assessment.test')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=100, unique=True)),
+                (
+                    "type",
+                    models.CharField(
+                        blank=True,
+                        choices=[
+                            ("PRE-PRESS", "PRE-PRESS"),
+                            ("POST-PRESS", "POST-PRESS"),
+                            ("PRESS", "PRESS"),
+                            ("LAMINATION", "LAMINATION"),
+                            ("BINDER", "BINDER"),
+                            ("PACKAGING", "PACKAGING"),
+                        ],
+                        max_length=100,
+                        null=True,
+                    ),
+                ),
+                # (
+                #     "conformities",
+                #     models.ManyToManyField(
+                #         blank=True,
+                #         related_name="conformities",
+                #         to="assessment.conformity",
+                #     ),
+                # ),
+                # (
+                #     "tests",
+                #     models.ManyToManyField(
+                #         blank=True, related_name="machines", to="assessment.test"
+                #     ),
+                # ),
             ],
         ),
         migrations.CreateModel(
-            name='MachineRoute',
+            name="MachineRoute",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('order', models.IntegerField()),
-                ('machine', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='machine_routes', to='machine.machine')),
-                ('route', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='route_machines', to='machine.route')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("order", models.IntegerField()),
+                (
+                    "machine",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="machine_routes",
+                        to="machine.machine",
+                    ),
+                ),
+                (
+                    "route",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="route_machines",
+                        to="machine.route",
+                    ),
+                ),
             ],
         ),
         migrations.AddConstraint(
-            model_name='machine',
-            constraint=models.UniqueConstraint(django.db.models.functions.text.Lower('name'), name='unique_case_insensitive_name'),
+            model_name="machine",
+            constraint=models.UniqueConstraint(
+                django.db.models.functions.text.Lower("name"),
+                name="unique_case_insensitive_name",
+            ),
         ),
     ]
