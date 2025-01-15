@@ -1,6 +1,6 @@
 import django
 from django.db import models
-from datetime import date, time, datetime
+import datetime
 from django.contrib.auth.models import User
 from django.urls import reverse
 import django.utils
@@ -19,8 +19,8 @@ class Assessment(models.Model):
         ("ON PROCESS", "ON PROCESS"),
     )
     job_test = models.ForeignKey("job.JobTest", on_delete=models.CASCADE)
-    date = models.DateField(default=django.utils.timezone.now)
-    time = models.TimeField(default=django.utils.timezone.now)
+    date = models.DateField(default=datetime.datetime.today)
+    time = models.TimeField()
     shift = models.ForeignKey(
         "misc.Shift",
         on_delete=models.CASCADE,
@@ -109,8 +109,6 @@ class OnProcess(models.Model):
         Conformity,
         on_delete=models.CASCADE,
     )
-    date = models.DateField(default=django.utils.timezone.now)
-    time = models.TimeField(default=django.utils.timezone.now)
     action = models.CharField(
         max_length=100,
         null=True,

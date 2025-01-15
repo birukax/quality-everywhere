@@ -16,6 +16,21 @@ class CreateAssessmentForm(forms.ModelForm):
         }
 
 
+class EditAssessmentForm(forms.ModelForm):
+    class Meta:
+        model = Assessment
+        fields = (
+            "date",
+            "time",
+            "shift",
+        )
+
+        widgets = {
+            "date": forms.DateInput(attrs={"type": "date"}),
+            "time": forms.TimeInput(attrs={"type": "time"}),
+        }
+
+
 class FirstOffTestsFrom(forms.ModelForm):
     class Meta:
         model = FirstOff

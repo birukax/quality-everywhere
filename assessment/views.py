@@ -1,15 +1,19 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.forms import modelformset_factory
 from .models import Test, Conformity, Assessment, FirstOff, OnProcess
 from misc.models import ColorStandard, Color
 from job.models import JobTest
 from .tasks import test_create, test_edit, conformity_create, conformity_edit
+from django import forms
 from .forms import (
     CreateTestForm,
     EditTestForm,
     CreateConformityForm,
     EditConformityForm,
     CreateAssessmentForm,
+    EditAssessmentForm,
+    FirstOffTestsFrom,
 )
 
 
@@ -23,13 +27,15 @@ def list(request, status):
 @login_required
 def detail(request, id):
     assessment = get_object_or_404(Assessment, id=id)
-    color_standard = ColorStandard.objects.get(id=assessment.job.color_standard.id)
+    color_standard = ColorStandard.objects.get(id=assessment.job_test.color_standard.id)
     tests = FirstOff.objects.filter(assessment=assessment)
+    test_formset = modelformset_factory(FirstOff, form=FirstOffTestsFrom, extra=0)
+    formset = test_formset(queryset=tests)
     passed = tests.filter(value=True)
     failed = tests.filter(value=False)
     context = {
         "assessment": assessment,
-        # "form": assessment_form,
+        "formset": formset,
         "color_standard": color_standard,
         # "test_forms": test_forms,
         "tests": tests,
@@ -70,32 +76,22 @@ def create_first_off(request, id):
     return render(request, "first_off/create.html", context)
 
 
-# @login_required
-# def edit(request, id):
-#     assessment = get_object_or_404(QualityTest, id=id)
-#     form = EditQualityTestForm(instance=assessment)
-#     if request.method == "POST":
-#         form = EditQualityTestForm(request.POST, instance=assessment)
-#         if form.is_valid():
-#             form.save()
-#             return redirect("assessment:detail", id=assessment.id)
-#     context = {"form": form}
-#     return render(request, "first_off/edit.html", context)
+@login_required
+def edit(request, id):
+    assessment = get_object_or_404(Assessment, id=id)
+    form = EditAssessmentForm(instance=assessment)
+    if request.method == "POST":
+        form = EditAssessmentForm(request.POST, instance=assessment)
+        if form.is_valid():
+            form.save()
+            return redirect("assessment:detail", id=assessment.id)
+    context = {"form": form}
+    return render(request, "first_off/edit.html", context)
 
 
-# @login_required
-# def save_tests(request, id):
-#     if request.method == "POST":
-#         assessment = get_object_or_404(QualityTest, id=id)
-#         tests = FirstOff.objects.filter(assessment=assessment)
-#         test_forms = [
-#             FirstOffTestsFrom(request.POST, instance=instance, prefix=str(instance.id))
-#             for instance in tests
-#         ]
-#         if all([form.is_valid() for form in test_forms]):
-#             for form in test_forms:
-#                 form.save()
-#     return redirect("assessment:detail", id=assessment.id)
+@login_required
+def save_tests(request, id):
+    pass
 
 
 @login_required
