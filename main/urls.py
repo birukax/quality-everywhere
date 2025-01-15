@@ -27,11 +27,10 @@ urlpatterns = [
     path("logout/", auth_views.LogoutView.as_view(), name="logout"),
     path("", include("account.urls")),
     path("approval/", include("approval.urls")),
-    path("quality-test/", include("quality_test.urls")),
     path("job/", include("job.urls")),
     path("misc/", include("misc.urls")),
     path("machine/", include("machine.urls")),
-    path("assesment/", include("assesment.urls")),
+    path("assessment/", include("assessment.urls")),
     re_path(r"^session_security/", include("session_security.urls")),
 ]
 

@@ -1,11 +1,10 @@
 from django import forms
-from .models import QualityTest
-from assesment.models import FirstOff
+from .models import Test, Conformity, Assessment, FirstOff, OnProcess
 
 
-class EditQualityTestForm(forms.ModelForm):
+class EditAssessmentForm(forms.ModelForm):
     class Meta:
-        model = QualityTest
+        model = Assessment
         fields = (
             "date",
             "time",
@@ -30,3 +29,27 @@ class FirstOffTestsFrom(forms.ModelForm):
                 choices=[(True, "Yes"), (False, "No")],
             ),
         }
+
+
+class CreateTestForm(forms.ModelForm):
+    class Meta:
+        model = Test
+        fields = ["name"]
+
+
+class EditTestForm(forms.ModelForm):
+    class Meta:
+        model = Test
+        fields = ["name"]
+
+
+class CreateConformityForm(forms.ModelForm):
+    class Meta:
+        model = Conformity
+        fields = ["name"]
+
+
+class EditConformityForm(forms.ModelForm):
+    class Meta:
+        model = Conformity
+        fields = ["name"]

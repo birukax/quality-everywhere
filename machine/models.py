@@ -15,10 +15,10 @@ class Machine(models.Model):
     name = models.CharField(max_length=100, unique=True)
     type = models.CharField(max_length=100, choices=MACHINE_TYPE, blank=True, null=True)
     tests = models.ManyToManyField(
-        "assesment.Test", related_name="machines", blank=True
+        "assessment.Test", related_name="machines", blank=True
     )
     conformities = models.ManyToManyField(
-        "assesment.Conformity", related_name="conformities", blank=True
+        "assessment.Conformity", related_name="conformities", blank=True
     )
 
     class Meta:

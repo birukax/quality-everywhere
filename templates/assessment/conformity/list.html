@@ -1,6 +1,6 @@
 {% extends "partials/table.html" %}
 {% block buttons %}
-    <a href="{% url 'assesment:create_test' %}"
+    <a href="{% url 'assessment:create_conformity' %}"
        class="text-white inline-flex items-center bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-3 py-1.5 text-center">
         Create
     </a>
@@ -8,19 +8,19 @@
 {% block table %}
     <thead class="text-xs text-gray-700 uppercase bg-gray-50">
         <tr>
-            <th scope="col" class="px-6 py-3">Test Name</th>
+            <th scope="col" class="px-6 py-3">Conformity Name</th>
             <th scope="col" class="px-6 py-3">Machines</th>
             <th scope="col" class="px-6 py-3 text-right">Action</th>
         </tr>
     </thead>
     <tbody>
-        {% for t in tests %}
+        {% for t in conformities %}
             <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b">
                 <th scope="row" class="px-5 py-3 font-medium text-gray-900 ">
                     <p>{{ t.name }}</p>
                 </th>
                 <td class="px-5 py-3 capitalize">{{ t.machines.all.count }}</td>
-                <td class="px-5 py-3 flex justify-end">{% include 'assesment/test/detail.html' %}</td>
+                <td class="px-5 py-3 flex justify-end">{% include 'assessment/conformity/detail.html' %}</td>
             </tr>
         {% endfor %}
     </tbody>

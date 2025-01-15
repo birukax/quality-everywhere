@@ -1,6 +1,6 @@
 from django import forms
 from .models import Machine, Route, MachineRoute
-from assesment.models import Test, Conformity
+from assessment.models import Test, Conformity
 
 
 class CreateMachineForm(forms.ModelForm):

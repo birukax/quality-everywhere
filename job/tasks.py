@@ -1,7 +1,7 @@
 import requests
 from django.shortcuts import get_object_or_404
-from quality_test.models import QualityTest
-from assesment.models import FirstOff
+from assessment.models import Assessment
+from assessment.models import FirstOff
 from .models import Job
 from decouple import config
 from requests_ntlm import HttpNtlmAuth
@@ -35,23 +35,23 @@ def job_get():
         print(e)
 
 
-# def create_quality_tests(request, id):
+# def create_assessments(request, id):
 #     job = get_object_or_404(Job, id=id)
 #     if request.method == "POST":
 #         form = CreateFirstOffForm(request.POST)
 #         if form.is_valid():
 #             machines = form.cleaned_data["machines"]
 #             for machine in machines:
-#                 quality_test = QualityTest(
+#                 assessment = QualityTest(
 #                     job=job,
 #                     machine=machine,
 #                     no=job.tests,
 #                     created_by=request.user,
 #                 )
-#                 quality_test.save()
+#                 assessment.save()
 #                 for t in machine.tests.all():
 #                     test = FirstOff(
-#                         quality_test=quality_test,
+#                         assessment=assessment,
 #                         test=t,
 #                     )
 #                     test.save()

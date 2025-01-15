@@ -9,7 +9,7 @@
                 </p>
                 <div class="grid sm:grid-cols-2 gap-2 mb-4">
                     {% for field in form %}
-                        <div class="grid justify-between gap-2 mb-4">
+                        <div class="flex-col justify-between gap-2 mb-4">
                             <div class="font-bold ">{{ field.label_tag }}</div>
                             <div class="flex gap-12">{{ field }}</div>
                             <p class="text-red-700 text-sm">
