@@ -30,7 +30,7 @@
             <!-- Modal body -->
             <form class="p-4 md:p-5"
                   method="post"
-                  action="{% url 'assessment:edit' assessment.id %}">
+                  action="{% url 'assessment:edit_first_off' assessment.id %}">
                 {% csrf_token %}
                 {{ edit_assessment_form.media }}
                 <div class="grid gap-4 mb-4 ">

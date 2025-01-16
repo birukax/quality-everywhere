@@ -57,9 +57,13 @@ class OnProcessConformitiesForm(forms.ModelForm):
             "action",
         )
 
+        widgets = {
+            "time": forms.TimeInput(attrs={"type": "time"}),
+        }
+
     def __init__(self, machine=None, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["comformity"].queryset = Machine.objects.get(
+        self.fields["conformity"].queryset = Machine.objects.get(
             id=machine.id
         ).conformities.all()
 

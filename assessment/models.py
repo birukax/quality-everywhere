@@ -117,6 +117,8 @@ class OnProcess(models.Model):
     conformity = models.ForeignKey(
         Conformity,
         on_delete=models.CASCADE,
+        null=True,
+        blank=True,
     )
     time = models.TimeField(default=datetime.datetime.now)
     sample_no = models.CharField(

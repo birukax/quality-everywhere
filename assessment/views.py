@@ -107,7 +107,7 @@ def create_first_off(request, id):
                     first_off.save()
                 assessment.job_test.status = "FIRST-OFF CREATED"
                 assessment.job_test.save()
-                return redirect("assessment:detail", id=assessment.id)
+                return redirect("assessment:first_off_detail", id=assessment.id)
     else:
         form = CreateAssessmentForm()
     context["form"] = form
@@ -135,7 +135,7 @@ def create_on_process(request, id):
                 assessment.save()
                 assessment.job_test.status = "ON PROCESS CREATED"
                 assessment.job_test.save()
-                return redirect("assessment:detail", id=assessment.id)
+                return redirect("assessment:on_process_detail", id=assessment.id)
     else:
         form = CreateAssessmentForm()
     context["form"] = form
@@ -144,29 +144,29 @@ def create_on_process(request, id):
 
 
 @login_required
-def first_off_edit(request, id):
+def edit_first_off(request, id):
     assessment = get_object_or_404(Assessment, id=id)
     form = EditAssessmentForm(instance=assessment)
     if request.method == "POST":
         form = EditAssessmentForm(request.POST, instance=assessment)
         if form.is_valid():
             form.save()
-            return redirect("assessment:detail", id=assessment.id)
+            return redirect("assessment:first_off_detail", id=assessment.id)
     context = {"form": form}
     return render(request, "first_off/edit.html", context)
 
 
 @login_required
-def on_process_edit(request, id):
+def edit_on_process(request, id):
     assessment = get_object_or_404(Assessment, id=id)
     form = EditAssessmentForm(instance=assessment)
     if request.method == "POST":
         form = EditAssessmentForm(request.POST, instance=assessment)
         if form.is_valid():
             form.save()
-            return redirect("assessment:detail", id=assessment.id)
+            return redirect("assessment:on_process_detail", id=assessment.id)
     context = {"form": form}
-    return render(request, "first_off/edit.html", context)
+    return render(request, "on_process/edit.html", context)
 
 
 @login_required
@@ -176,7 +176,18 @@ def save_tests(request, id):
     formset = test_formset(request.POST)
     if formset.is_valid():
         formset.save()
-    return redirect("assessment:detail", id=assessment.id)
+    return redirect("assessment:first_off_detail", id=assessment.id)
+
+
+@login_required
+def save_conformities(request, id):
+    assessment = get_object_or_404(Assessment, id=id)
+    conformity_form = OnProcessConformitiesForm(
+        request.POST, machine=assessment.machine
+    )
+    if conformity_form.is_valid():
+        conformity_form.save()
+    return redirect("assessment:on_process_detail", id=assessment.id)
 
 
 @login_required
