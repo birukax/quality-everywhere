@@ -4,14 +4,19 @@ from . import views
 app_name = "assessment"
 
 urlpatterns = [
-    path("list/<str:status>", views.list, name="list"),
-    path("detail/<int:id>", views.detail, name="detail"),
-    path("edit/<int:id>", views.edit, name="edit"),
-    path("tests/save/<int:id>", views.save_tests, name="save_tests"),
     path("first-off/create/<int:id>", views.create_first_off, name="create_first_off"),
+    path("first-off/list/<str:status>", views.first_off_list, name="first_off_list"),
+    path("first-off/detail/<int:id>", views.first_off_detail, name="first_off_detail"),
+    path("first-off/edit/<int:id>", views.first_off_edit, name="first_off_edit"),
+    path("first-off/tests/save/<int:id>", views.save_tests, name="save_tests"),
     path(
         "on-proces/create/<int:id>", views.create_on_process, name="create_on_process"
     ),
+    path("on-process/list/<str:status>", views.on_process_list, name="on_process_list"),
+    path(
+        "on-process/detail/<int:id>", views.on_process_detail, name="on_process_detail"
+    ),
+    path("on-process/edit/<int:id>", views.on_process_edit, name="on_process_edit"),
     path("test/list", views.test_list, name="test_list"),
     path("test/create", views.create_test, name="create_test"),
     path("test/<int:id>/edit", views.edit_test, name="edit_test"),

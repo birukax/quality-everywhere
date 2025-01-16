@@ -10,14 +10,14 @@ from .forms import EditJobForm, CreateJobTestForm
 def list(request):
     jobs = Job.objects.all()
     context = {"jobs": jobs}
-    return render(request, "job/list.html")
+    return render(request, "job/list.html", context)
 
 
 @login_required
 def test_list(request):
     job_tests = JobTest.objects.all()
     context = {"job_tests": job_tests}
-    return render(request, "job/test/list.html")
+    return render(request, "job/test/list.html", context)
 
 
 @login_required

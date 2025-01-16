@@ -14,21 +14,36 @@ from .forms import (
     CreateAssessmentForm,
     EditAssessmentForm,
     FirstOffTestsFrom,
+    OnProcessConformitiesForm,
 )
 
 
 @login_required
-def list(request, status):
+def first_off_list(request, status):
     if status == "OPEN":
-        assessments = Assessment.objects.all().exclude(status="COMPLETED")
+        assessments = Assessment.objects.filter(type="FIRST-OFF").exclude(
+            status="COMPLETED"
+        )
     else:
-        assessments = Assessment.objects.filter(status=status)
+        assessments = Assessment.objects.filter(type="FIRST-OFF", status=status)
     context = {"assessments": assessments}
     return render(request, "first_off/list.html", context)
 
 
 @login_required
-def detail(request, id):
+def on_process_list(request, status):
+    if status == "OPEN":
+        assessments = Assessment.objects.filter(type="ON-PROCESS").exclude(
+            status="COMPLETED"
+        )
+    else:
+        assessments = Assessment.objects.filter(type="ON-PROCESS", status=status)
+    context = {"assessments": assessments}
+    return render(request, "on_process/list.html", context)
+
+
+@login_required
+def first_off_detail(request, id):
     assessment = get_object_or_404(Assessment, id=id)
     color_standard = ColorStandard.objects.get(id=assessment.job_test.color_standard.id)
     tests = FirstOff.objects.filter(assessment=assessment)
@@ -47,6 +62,23 @@ def detail(request, id):
         "failed": failed,
     }
     return render(request, "first_off/detail.html", context)
+
+
+@login_required
+def on_process_detail(request, id):
+    assessment = get_object_or_404(Assessment, id=id)
+    color_standard = ColorStandard.objects.get(id=assessment.job_test.color_standard.id)
+    conformities = OnProcess.objects.filter(assessment=assessment)
+    edit_assessment_form = EditAssessmentForm(instance=assessment)
+    conformity_form = OnProcessConformitiesForm(machine=assessment.machine)
+    context = {
+        "assessment": assessment,
+        "color_standard": color_standard,
+        "edit_assessment_form": edit_assessment_form,
+        "conformities": conformities,
+        "form": conformity_form,
+    }
+    return render(request, "on_process/detail.html", context)
 
 
 @login_required
@@ -112,7 +144,20 @@ def create_on_process(request, id):
 
 
 @login_required
-def edit(request, id):
+def first_off_edit(request, id):
+    assessment = get_object_or_404(Assessment, id=id)
+    form = EditAssessmentForm(instance=assessment)
+    if request.method == "POST":
+        form = EditAssessmentForm(request.POST, instance=assessment)
+        if form.is_valid():
+            form.save()
+            return redirect("assessment:detail", id=assessment.id)
+    context = {"form": form}
+    return render(request, "first_off/edit.html", context)
+
+
+@login_required
+def on_process_edit(request, id):
     assessment = get_object_or_404(Assessment, id=id)
     form = EditAssessmentForm(instance=assessment)
     if request.method == "POST":

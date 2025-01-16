@@ -55,7 +55,10 @@ class Assessment(models.Model):
         ordering = ["-created_at"]
 
     def get_absolute_url(self):
-        return reverse("assessment:detail", args={self.id})
+        if self.type == "FIRST-OFF":
+            return reverse("assessment:first_off_detail", args={self.id})
+        elif self.type == "ON-PROCESS":
+            return reverse("assessment:on_process_detail", args={self.id})
 
     def __str__(self):
         return f"{self.job_test.job} - {self.machine}"

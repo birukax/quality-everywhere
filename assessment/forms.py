@@ -1,5 +1,6 @@
 from django import forms
 from .models import Test, Conformity, Assessment, FirstOff, OnProcess
+from machine.models import Machine
 
 
 class CreateAssessmentForm(forms.ModelForm):
@@ -44,6 +45,23 @@ class FirstOffTestsFrom(forms.ModelForm):
                 choices=[(True, "Pass"), (False, "Fail")],
             ),
         }
+
+
+class OnProcessConformitiesForm(forms.ModelForm):
+    class Meta:
+        model = OnProcess
+        fields = (
+            "conformity",
+            "sample_no",
+            "time",
+            "action",
+        )
+
+    def __init__(self, machine=None, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["comformity"].queryset = Machine.objects.get(
+            id=machine.id
+        ).conformities.all()
 
 
 class CreateTestForm(forms.ModelForm):
