@@ -15,10 +15,16 @@ class Assessment(models.Model):
         ("COMPLETED", "COMPLETED"),
     )
     TYPE = (
-        ("FIRST OFF", "FIRST OFF"),
-        ("ON PROCESS", "ON PROCESS"),
+        ("FIRST-OFF", "FIRST-OFF"),
+        ("ON-PROCESS", "ON-PROCESS"),
     )
     job_test = models.ForeignKey("job.JobTest", on_delete=models.CASCADE)
+    type = models.CharField(
+        max_length=20,
+        choices=TYPE,
+        null=True,
+        blank=True,
+    )
     date = models.DateField(default=datetime.datetime.today)
     time = models.TimeField()
     shift = models.ForeignKey(
@@ -52,7 +58,7 @@ class Assessment(models.Model):
         return reverse("assessment:detail", args={self.id})
 
     def __str__(self):
-        return f"{self.job} - {self.no} - {self.machine}"
+        return f"{self.job_test.job} - {self.machine}"
 
 
 class Test(models.Model):

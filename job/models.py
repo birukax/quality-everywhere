@@ -4,13 +4,13 @@ from django.contrib.auth.models import User
 from .validators import validate_artwork
 
 STATUS = (
-    ("CREATED", "CREATED"),
+    ("READY", "READY"),
     ("FIRST-OFF CREATED", "FIRST-OFF CREATED"),
-    ("FIRST-OFF PENDING", "FIRST-OFF PENDING"),
+    # ("FIRST-OFF PENDING", "FIRST-OFF PENDING"),
     ("FIRST-OFF COMPLETED", "FIRST-OFF COMPLETED"),
-    ("ON-PROCESS", "ON-PROCESS"),
-    ("ON-PROCESS PENDING", "ON-PROCESS PENDING"),
-    # ("ON-PROCESS COMPLETED", "ON-PROCESS COMPLETED"),
+    ("ON-PROCESS CREATED", "ON-PROCESS CREATED"),
+    # ("ON-PROCESS PENDING", "ON-PROCESS PENDING"),
+    ("ON-PROCESS COMPLETED", "ON-PROCESS COMPLETED"),
     ("COMPLETED", "COMPLETED"),
 )
 
@@ -56,7 +56,7 @@ class Job(models.Model):
 
 class JobTest(models.Model):
 
-    status = models.CharField(max_length=100, choices=STATUS, default="CREATED")
+    status = models.CharField(max_length=100, choices=STATUS, default="READY")
     job = models.ForeignKey(
         "job.Job", on_delete=models.CASCADE, related_name="job_tests"
     )

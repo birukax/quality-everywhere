@@ -1,4 +1,4 @@
 from django.contrib import admin
-from .models import FirstOffApproval
+from .models import AssessmentApproval
 
-admin.site.register(FirstOffApproval)
+admin.site.register(AssessmentApproval)

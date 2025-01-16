@@ -41,7 +41,7 @@ class FirstOffTestsFrom(forms.ModelForm):
         widgets = {
             "value": forms.RadioSelect(
                 attrs={"class": "flex gap-2"},
-                choices=[(True, "Yes"), (False, "No")],
+                choices=[(True, "Pass"), (False, "Fail")],
             ),
         }
 

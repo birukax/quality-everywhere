@@ -9,19 +9,35 @@ from .forms import EditJobForm, CreateJobTestForm
 @login_required
 def list(request):
     jobs = Job.objects.all()
-    return render(request, "job/list.html", {"jobs": jobs})
+    context = {"jobs": jobs}
+    return render(request, "job/list.html")
 
 
 @login_required
 def test_list(request):
     job_tests = JobTest.objects.all()
-    return render(request, "job/test/list.html", {"job_tests": job_tests})
+    context = {"job_tests": job_tests}
+    return render(request, "job/test/list.html")
 
 
 @login_required
 def test_detail(request, id):
+    context = {}
+    first_off_ready = False
+    on_process_ready = False
+    next_machine = False
     job_test = get_object_or_404(JobTest, id=id)
-    return render(request, "job/test/detail.html", {"job_test": job_test})
+    if job_test.status in ("READY"):
+        first_off_ready = True
+    if job_test.status in ("FIRST-OFF COMPLETED", "ON-PROCESS COMPLETED"):
+        on_process_ready = True
+    if job_test.status in ("ON-PROCESS COMPLETED"):
+        next_machine = True
+    context["job_test"] = job_test
+    context["next_machine"] = next_machine
+    context["first_off_ready"] = first_off_ready
+    context["on_process_ready"] = on_process_ready
+    return render(request, "job/test/detail.html", context)
 
 
 @login_required
