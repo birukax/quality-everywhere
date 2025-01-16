@@ -3,7 +3,7 @@
     <div class=" bg-gray-50 w-full">
         <form class="p-2 md:p-5 "
               method="post"
-              action="{% url 'assessment:create_first_off' job_test.id %}">
+              action="{% url 'assessment:create_on_process' job_test.id %}">
             {% csrf_token %}
             <div class="flex-col gap-2 mb-4 mx-auto">
                 <p class="text-red-700 text-sm">
