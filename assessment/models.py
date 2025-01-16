@@ -26,7 +26,7 @@ class Assessment(models.Model):
         blank=True,
     )
     date = models.DateField(default=datetime.datetime.today)
-    time = models.TimeField()
+    time = models.TimeField(default=datetime.datetime.now)
     shift = models.ForeignKey(
         "misc.Shift",
         on_delete=models.CASCADE,
@@ -114,6 +114,12 @@ class OnProcess(models.Model):
     conformity = models.ForeignKey(
         Conformity,
         on_delete=models.CASCADE,
+    )
+    time = models.TimeField(default=datetime.datetime.now)
+    sample_no = models.CharField(
+        max_length=30,
+        null=True,
+        blank=True,
     )
     action = models.CharField(
         max_length=100,

@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="mx-auto ">
+        <div class="w-full p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6">
+            <div class="flex justify-between">
+                <h5 class="mb-3 text-base font-semibold text-gray-800 md:text-xl dark:text-white">First Off Detail</h5>
+                {% if assessment.status == 'OPEN' or assessment.status == 'REJECTED' %}
+                    <div class="flex gap-4">{% include 'first_off/test/edit.html' %}</div>
+                {% else %}
+                    <div class="flex gap-4">{% include 'first_off/test/list.html' %}</div>
+                {% endif %}
+            </div>
+            <p class="text-base md:text-xl font-bold text-gray-600 ">{{ assessment.job_test.job }}</p>
+            <ul class="my-4 space-y-3">
+                <li class="grid grid-cols-1 sm:grid-cols-2">
+                    <a class="flex items-center p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
+                        <span class="flex-1 ms-3 whitespace-nowrap">Date</span>
+                        <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ assessment.date }}</span>
+                    </a>
+                    <a class="flex items-center p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
+                        <span class="flex-1 ms-3 whitespace-nowrap">Time</span>
+                        <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ assessment.time }}</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="flex items-center p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
+                        <span class="flex-1 ms-3 whitespace-nowrap">Customer</span>
+                        <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ assessment.job_test.job.customer.name }}</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="flex items-center p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
+                        <span class="flex-1 ms-3 whitespace-nowrap">Machine</span>
+                        <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ assessment.machine.name }}</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="flex items-center p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
+                        <span class="flex-1 ms-3 whitespace-nowrap">Status</span>
+                        <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ assessment.status }}</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="flex items-center p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
+                        <span class="flex-1 ms-3 whitespace-nowrap">Shift</span>
+                        <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ assessment.shift.name }}</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="flex items-center p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
+                        <span class="flex-1 ms-3 whitespace-nowrap">Paper</span>
+                        <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ assessment.job_test.paper.name }}</span>
+                    </a>
+                    <a class="flex items-center p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
+                        <span class="flex-1 ms-3 whitespace-nowrap">Batch No.</span>
+                        <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ assessment.job_test.batch_no }}</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="flex items-center p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
+                        <span class="flex-1 ms-3 whitespace-nowrap">Certificate No.</span>
+                        <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ assessment.job_test.job.certificate_no }}</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="flex items-center p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
+                        <span class="flex-1 ms-3 whitespace-nowrap">Color Standard</span>
+                        <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ assessment.job_test.job.color_standard.name }}</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="flex items-center p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
+                        <span class="flex-1 ms-3 whitespace-nowrap">Tests</span>
+                        <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ tests.count }}</span>
+                    </a>
+                    <a class="flex items-center p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
+                        <span class="flex-1 ms-3 whitespace-nowrap">Passed</span>
+                        <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-green-300 rounded">{{ passed.count }}</span>
+                    </a>
+                    <a class="flex items-center p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
+                        <span class="flex-1 ms-3 whitespace-nowrap">Failed</span>
+                        <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-red-300 rounded">{{ failed.count }}</span>
+                    </a>
+                </li>
+                <li class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 ">
+                    {% for c in color_standard.colors.all %}
+                        <a class="flex items-stretch p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
+                            <span class="flex-1 ms-3 whitespace-nowrap">{{ c.name }}</span>
+                            <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ c.code }}</span>
+                        </a>
+                    {% endfor %}
+                </li>
+            </ul>
+            <div class="flex gap-4">
+                {% if assessment.status == 'OPEN' or assessment.status == 'REJECTED' %}
+                    {% include 'first_off/edit.html' %}
+                    <a href="{% url 'approval:create_assessment_approval' assessment.id %}"
+                       class="text-white inline-flex items-center bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                        Submit
+                    </a>
+                {% endif %}
+            </div>
+            {% if assessment.job.artwork %}
+                <div class="mt-4 w-full h-96">
+                    <img src="{{ assessment.job.artwork.url }}"
+                         alt="Job Artwork"
+                         height=""
+                         width=""
+                         class=" object-cover rounded-lg">
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock content %}

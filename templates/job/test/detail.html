@@ -54,18 +54,20 @@
                        class="text-white inline-flex items-center bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-3 py-1.5 text-center">
                         Create First-Off
                     </a>
-                    {% if on_process_ready %}
-                        <a href="{% url 'assessment:create_on_process' job_test.id %}"
-                           class="text-white inline-flex items-center bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-3 py-1.5 text-center">
-                            Create On-Process
-                        </a>
-                        {% if next_machine %}
-                            <a href="{% url 'assessment:next_machine' job_test.id %}"
-                               class="text-white inline-flex items-center bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-3 py-1.5 text-center">
-                                Next Machine
-                            </a>
-                        {% endif %}
-                    </div>
-                </div>
+                {% endif %}
+                {% if on_process_ready %}
+                    <a href="{% url 'assessment:create_on_process' job_test.id %}"
+                       class="text-white inline-flex items-center bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-3 py-1.5 text-center">
+                        Create On-Process
+                    </a>
+                {% endif %}
+                {% if next_machine %}
+                    <a href="{% url 'assessment:next_machine' job_test.id %}"
+                       class="text-white inline-flex items-center bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-3 py-1.5 text-center">
+                        Next Machine
+                    </a>
+                {% endif %}
             </div>
-        {% endblock content %}
+        </div>
+    </div>
+{% endblock content %}

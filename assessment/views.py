@@ -63,6 +63,7 @@ def create_first_off(request, id):
                 time=form.cleaned_data["time"],
                 shift=form.cleaned_data["shift"],
                 machine=machine,
+                type="FIRST-OFF",
             )
             if machine.tests:
                 assessment.save()
@@ -96,6 +97,7 @@ def create_on_process(request, id):
                 time=form.cleaned_data["time"],
                 shift=form.cleaned_data["shift"],
                 machine=machine,
+                type="ON-PROCESS",
             )
             if machine.tests:
                 assessment.save()
