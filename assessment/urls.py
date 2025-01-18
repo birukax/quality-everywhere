@@ -17,6 +17,11 @@ urlpatterns = [
         "on-process/detail/<int:id>", views.on_process_detail, name="on_process_detail"
     ),
     path("on-process/edit/<int:id>", views.edit_on_process, name="edit_on_process"),
+    path(
+        "on-process/conformities/save/<int:id>",
+        views.save_conformities,
+        name="save_conformities",
+    ),
     path("test/list", views.test_list, name="test_list"),
     path("test/create", views.create_test, name="create_test"),
     path("test/<int:id>/edit", views.edit_test, name="edit_test"),

@@ -70,7 +70,8 @@ def on_process_detail(request, id):
     color_standard = ColorStandard.objects.get(id=assessment.job_test.color_standard.id)
     conformities = OnProcess.objects.filter(assessment=assessment)
     edit_assessment_form = EditAssessmentForm(instance=assessment)
-    conformity_form = OnProcessConformitiesForm(machine=assessment.machine)
+    conformity_form = OnProcessConformitiesForm()
+    conformity_form.fields["conformity"].queryset = assessment.machine.conformities
     context = {
         "assessment": assessment,
         "color_standard": color_standard,
@@ -182,11 +183,11 @@ def save_tests(request, id):
 @login_required
 def save_conformities(request, id):
     assessment = get_object_or_404(Assessment, id=id)
-    conformity_form = OnProcessConformitiesForm(
-        request.POST, machine=assessment.machine
-    )
+    conformity_form = OnProcessConformitiesForm(request.POST)
     if conformity_form.is_valid():
-        conformity_form.save()
+        conformity = conformity_form.save(commit=False)
+        conformity.assessment = assessment
+        conformity.save()
     return redirect("assessment:on_process_detail", id=assessment.id)
 
 

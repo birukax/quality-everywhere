@@ -47,26 +47,20 @@
                     </a>
                 </li>
                 <li>
-                    <a class="flex items-center p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
-                        <span class="flex-1 ms-3 whitespace-nowrap">Paper</span>
-                        <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ assessment.job_test.paper.name }}</span>
+                    <a class="flex items-center p-3 text-sm md:text-base text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
+                        <span class="flex-1 ms-3 ">Time</span>
+                        <span class="flex-1 ms-3 ">NC</span>
+                        <span class="flex-1 ms-3 ">Sample No.</span>
+                        <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">Action Taken</span>
                     </a>
-                    <a class="flex items-center p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
-                        <span class="flex-1 ms-3 whitespace-nowrap">Batch No.</span>
-                        <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ assessment.job_test.batch_no }}</span>
-                    </a>
-                </li>
-                <li>
-                    <a class="flex items-center p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
-                        <span class="flex-1 ms-3 whitespace-nowrap">Certificate No.</span>
-                        <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ assessment.job_test.job.certificate_no }}</span>
-                    </a>
-                </li>
-                <li>
-                    <a class="flex items-center p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
-                        <span class="flex-1 ms-3 whitespace-nowrap">Color Standard</span>
-                        <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ assessment.job_test.job.color_standard.name }}</span>
-                    </a>
+                    {% for c in conformities %}
+                        <a class="flex items-center p-3 text-sm md:text-base text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
+                            <span class="flex-1 ms-3 ">{{ c.time }}</span>
+                            <span class="flex-1 ms-3 ">{{ c.conformity }}</span>
+                            <span class="flex-1 ms-3 ">{{ c.sample_no }}</span>
+                            <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ c.action }}</span>
+                        </a>
+                    {% endfor %}
                 </li>
                 <li class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 ">
                     {% for c in color_standard.colors.all %}

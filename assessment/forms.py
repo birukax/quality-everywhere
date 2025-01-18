@@ -51,21 +51,16 @@ class OnProcessConformitiesForm(forms.ModelForm):
     class Meta:
         model = OnProcess
         fields = (
+            "time",
             "conformity",
             "sample_no",
-            "time",
             "action",
         )
 
         widgets = {
             "time": forms.TimeInput(attrs={"type": "time"}),
+            "sample_no": forms.TextInput(),
         }
-
-    def __init__(self, machine=None, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields["conformity"].queryset = Machine.objects.get(
-            id=machine.id
-        ).conformities.all()
 
 
 class CreateTestForm(forms.ModelForm):
