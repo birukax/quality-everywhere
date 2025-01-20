@@ -1,13 +1,8 @@
 {% extends "auth.html" %}
 {% block content %}
     {% load static %}
-    <section class="sm:p-4 mx-auto mt-4 rounded-2xl shadow-lg bg-gray-800 w-fit">
-        <div class="flex flex-col items-center justify-center px-8 pb-8 pt-4 mx-auto ">
-            <img src="{% static '' %}"
-                 class="  mx-auto  w-3/4  mb-2"
-                 height=""
-                 width=""
-                 alt="logo">
+    <section class="sm:p-4 mx-auto mt-4 rounded-2xl shadow-lg bg-gray-600 w-fit">
+        <div class="flex flex-col items-center justify-center px-8 py-8 mx-auto ">
             <div class="w-full sm:p-4 bg-white  shadow gray:border md:mt-0 sm:max-w-md ">
                 <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
                     {% if user.is_authenticated %}
@@ -73,7 +68,7 @@
                             </div>
                             <button type="submit"
                                     value="login"
-                                    class="w-full text-white bg-gray-800 hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-1.5 text-center gray:bg-gray-600 gray:hover:bg-gray-700 gray:focus:ring-gray-800">
+                                    class="w-full text-white bg-gray-600 hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-1.5 text-center ">
                                 Sign in
                             </button>
                             <input type="hidden" name="next" value="{{ next }}">
