@@ -41,6 +41,27 @@ def test_detail(request, id):
 
 
 @login_required
+def next_machine(request, id):
+    job_test = JobTest.objects.get(id=id)
+    route = MachineRoute.objects.get(
+        route=job_test.route, machine=job_test.current_machine
+    )
+    print(job_test.route, route.order)
+    next_machine = MachineRoute.objects.filter(
+        route=job_test.route, order=route.order + 1
+    )
+    if next_machine:
+        job_test.current_machine = next_machine[0].machine
+        job_test.save()
+        job_test.status = "READY"
+        job_test.save()
+    else:
+        job_test.current_machine = None
+        job_test.status = "COMPLETED"
+    return redirect("job:test_detail", id=job_test.id)
+
+
+@login_required
 def get_jobs(request):
     job_get()
     return redirect("job:list")

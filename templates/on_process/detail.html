@@ -3,12 +3,13 @@
     <div class="mx-auto ">
         <div class="w-full p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6">
             <div class="flex justify-between">
-                <h5 class="mb-3 text-base font-semibold text-gray-800 md:text-xl dark:text-white">On Process Detail</h5>
-                {% if assessment.status == 'OPEN' or assessment.status == 'REJECTED' %}
-                    <div class="flex gap-4">{% include 'on_process/conformity/create.html' %}</div>
-                {% else %}
-                    <div class="flex gap-4">{% include 'on_process/conformity/list.html' %}</div>
-                {% endif %}
+                <h5 class="mb-3 text-base font-semibold text-gray-800 md:text-xl ">On Process Detail</h5>
+                <div class="flex gap-4">
+                    {% if assessment.status == 'OPEN' or assessment.status == 'REJECTED' %}
+                        <div>{% include 'on_process/conformity/create.html' %}</div>
+                    {% endif %}
+                    <div>{% include 'on_process/conformity/list.html' %}</div>
+                </div>
             </div>
             <p class="text-base md:text-xl font-bold text-gray-600 ">{{ assessment.job_test.job }}</p>
             <ul class="my-4 space-y-3">
@@ -42,27 +43,17 @@
                 </li>
                 <li>
                     <a class="flex items-center p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
+                        <span class="flex-1 ms-3 whitespace-nowrap">Assessments</span>
+                        <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ assessment.on_processes.all.count }}</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="flex items-center p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
                         <span class="flex-1 ms-3 whitespace-nowrap">Shift</span>
                         <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ assessment.shift.name }}</span>
                     </a>
                 </li>
-                <li>
-                    <a class="flex items-center p-3 text-sm md:text-base text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
-                        <span class="flex-1 ms-3 ">Time</span>
-                        <span class="flex-1 ms-3 ">NC</span>
-                        <span class="flex-1 ms-3 ">Sample No.</span>
-                        <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">Action Taken</span>
-                    </a>
-                    {% for c in conformities %}
-                        <a class="flex items-center p-3 text-sm md:text-base text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
-                            <span class="flex-1 ms-3 ">{{ c.time }}</span>
-                            <span class="flex-1 ms-3 ">{{ c.conformity }}</span>
-                            <span class="flex-1 ms-3 ">{{ c.sample_no }}</span>
-                            <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ c.action }}</span>
-                        </a>
-                    {% endfor %}
-                </li>
-                <li class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 ">
+                <li class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 ">
                     {% for c in color_standard.colors.all %}
                         <a class="flex items-stretch p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
                             <span class="flex-1 ms-3 whitespace-nowrap">{{ c.name }}</span>
@@ -75,7 +66,7 @@
                 {% if assessment.status == 'OPEN' or assessment.status == 'REJECTED' %}
                     {% include 'on_process/edit.html' %}
                     <a href="{% url 'approval:create_assessment_approval' assessment.id %}"
-                       class="text-white inline-flex items-center bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                       class="text-white inline-flex items-center bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-3 py-1.5 text-center">
                         Submit
                     </a>
                 {% endif %}

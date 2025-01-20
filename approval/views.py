@@ -20,7 +20,7 @@ def create_assessment_approval(request, id):
         assessment.status = "PENDING"
         assessment.inspected_by = request.user
         assessment.save()
-    return redirect("assessment:list", status="OPEN")
+    return redirect("approval:assessment_list", type=assessment.type)
 
 
 def assessment_list(request, type):
@@ -43,7 +43,13 @@ def approve_assessment(request, id):
     if not not_approved.exists():
         assessment.assessment.status = "COMPLETED"
         assessment.assessment.save()
-        assessment.assessment.job_test.status = "FIRST-OFF COMPLETED"
+        type = assessment.assessment.type
+        if type == "FIRST-OFF":
+            assessment.assessment.job_test.status = "FIRST-OFF COMPLETED"
+            assessment.assessment.job_test.save()
+        elif type == "ON-PROCESS":
+            assessment.assessment.job_test.status = "ON-PROCESS COMPLETED"
+            assessment.assessment.job_test.save()
         assessment.assessment.job_test.save()
     return redirect("approval:assessment_list", type=assessment.assessment.type)
 

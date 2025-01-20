@@ -4,8 +4,6 @@
         <tr>
             <th scope="col" class="px-4 py-3">Product Name</th>
             <th scope="col" class="px-4 py-3">Shift</th>
-            <th scope="col" class="px-4 py-3">Machine</th>
-            <th scope="col" class="px-4 py-3">Approver</th>
             <th scope="col" class="px-4 py-3">Inspected by</th>
             <th scope="col" class="px-4 py-3 ">Action</th>
         </tr>
@@ -17,10 +15,12 @@
                     <p>{{ ass.assessment }}</p>
                 </th>
                 <td class="px-4 py-3">{{ ass.assessment.shift.name }}</td>
-                <td class="px-4 py-3">{{ ass.assessment.machine.name }}</td>
-                <td class="px-4 py-3 capitalize">{{ ass.approver }}</td>
                 <td class="px-4 py-3">{{ ass.assessment.inspected_by.username }}</td>
-                <td class="px-4 py-3 ">{% include 'approval/assessment/detail.html' %}</td>
+                {% if ass.assessment.type == 'FIRST-OFF' %}
+                    <td class="px-4 py-3 ">{% include 'approval/assessment/first_off/detail.html' %}</td>
+                {% elif ass.assessment.type == 'ON-PROCESS' %}
+                    <td class="px-4 py-3 ">{% include 'approval/assessment/on_process/detail.html' %}</td>
+                {% endif %}
             </tr>
         {% endfor %}
     </tbody>

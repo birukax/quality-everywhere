@@ -10,6 +10,7 @@ urlpatterns = [
     path("edit/<int:id>", views.edit, name="edit"),
     path("test/list", views.test_list, name="test_list"),
     path("test/detail/<int:id>", views.test_detail, name="test_detail"),
+    path("test/next-machine/<int:id>", views.next_machine, name="next_machine"),
     # path("test/edit/<int:id>", views.test_edit, name="test_edit"),
     path("test/create/<int:id>", views.create_test, name="create_test"),
 ]

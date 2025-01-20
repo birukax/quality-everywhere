@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.forms import modelformset_factory
 from .models import Test, Conformity, Assessment, FirstOff, OnProcess
-from misc.models import ColorStandard, Color
+from misc.models import ColorStandard
 from job.models import JobTest
 from .tasks import test_create, test_edit, conformity_create, conformity_edit
 from django import forms
