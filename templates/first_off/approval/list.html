@@ -1,10 +1,10 @@
 <!-- Modal toggle -->
-<button data-modal-target="edit-first-off"
-        data-modal-toggle="edit-first-off"
+<button data-modal-target="first-off-apps"
+        data-modal-toggle="first-off-apps"
         class="block text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-3 py-1.5 text-center "
-        type="button">Edit First Off</button>
+        type="button">Approval</button>
 <!-- Main modal -->
-<div id="edit-first-off"
+<div id="first-off-apps"
      tabindex="-1"
      aria-hidden="true"
      class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
@@ -12,11 +12,11 @@
         <!-- Modal content -->
         <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
             <!-- Modal header -->
-            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t ">
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Edit First Off</h3>
+            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">On Process Approvals</h3>
                 <button type="button"
                         class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                        data-modal-toggle="edit-first-off">
+                        data-modal-toggle="first-off-apps">
                     <svg class="w-3 h-3"
                          aria-hidden="true"
                          xmlns="http://www.w3.org/2000/svg"
@@ -28,24 +28,22 @@
                 </button>
             </div>
             <!-- Modal body -->
-            <form class="p-4 md:p-5"
-                  method="post"
-                  action="{% url 'assessment:edit_first_off' assessment.id %}">
-                {% csrf_token %}
-                {{ edit_assessment_form.media }}
-                <div class="grid gap-4 mb-4 ">
-                    {% for field in edit_assessment_form %}
-                        <div class="grid items-stretch grid-cols-1 gap-2">
-                            {{ field.label_tag }}
-                            {{ field }}
-                        </div>
+            <div class="p-2 md:p-3">
+                <table class="w-full table table-auto items-center">
+                    <tr class="text-left divide-x divide-gray-600">
+                        <th class="py-1 px-2">Approver</th>
+                        <th class="py-1 px-2">Status</th>
+                        <th class="py-1 px-2">User</th>
+                    </tr>
+                    {% for app in approvals %}
+                        <tr class="text-left divide-y divide-gray-600">
+                            <td class="px-2 py-1">{{ app.approver }}</td>
+                            <td class="px-2 py-1">{{ app.status }}</td>
+                            <td class="px-2 py-1">{{ app.by.username }}</td>
+                        </tr>
                     {% endfor %}
-                </div>
-                <button type="submit"
-                        class="text-white inline-flex items-center bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-3 py-1.5 text-center">
-                    Edit
-                </button>
-            </form>
+                </table>
+            </div>
         </div>
     </div>
 </div>

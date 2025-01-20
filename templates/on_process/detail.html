@@ -8,6 +8,9 @@
                     {% if assessment.status == 'OPEN' or assessment.status == 'REJECTED' %}
                         <div>{% include 'on_process/conformity/create.html' %}</div>
                     {% endif %}
+                    {% if assessment.status == 'COMPLETED' or assessment.status == 'REJECTED' or assessment.status == 'PENDING' %}
+                        <div>{% include 'on_process/approval/list.html' %}</div>
+                    {% endif %}
                     <div>{% include 'on_process/conformity/list.html' %}</div>
                 </div>
             </div>
