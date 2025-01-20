@@ -56,8 +56,12 @@
             </ul>
             <div class="flex gap-4 items-center">
                 {% include 'job/edit.html' %}
-                {% if unfinished_tests %}
-                    <p class="text-red-700">This Job has unfinished test!</p>
+                {% if unfinished_test %}
+                    <p class="text-red-700">
+                        This Job has unfinished test!
+                        <a href="{% url 'job:test_detail' unfinished_test.id %}"
+                           class="underline text-gray-800">click here</a> to open the test.
+                    </p>
                 {% elif ready %}
                     <a href="{% url 'job:create_test' job.id %}"
                        class="text-white inline-flex items-center bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-3 py-1.5 text-center">

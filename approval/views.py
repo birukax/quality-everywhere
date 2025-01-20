@@ -20,7 +20,10 @@ def create_assessment_approval(request, id):
         assessment.status = "PENDING"
         assessment.inspected_by = request.user
         assessment.save()
-    return redirect("approval:assessment_list", type=assessment.type)
+    if assessment.type == "FIRST-OFF":
+        return redirect("assessment:first_off_detail", id=assessment.id)
+    elif assessment.type == "ON-PROCESS":
+        return redirect("assessment:on_process_detail", id=assessment.id)
 
 
 def assessment_list(request, type):

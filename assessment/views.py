@@ -152,9 +152,8 @@ def edit_first_off(request, id):
         form = EditAssessmentForm(request.POST, instance=assessment)
         if form.is_valid():
             form.save()
-            return redirect("assessment:first_off_detail", id=assessment.id)
     context = {"form": form}
-    return render(request, "first_off/edit.html", context)
+    return redirect("assessment:first_off_detail", id=assessment.id)
 
 
 @login_required
@@ -165,9 +164,8 @@ def edit_on_process(request, id):
         form = EditAssessmentForm(request.POST, instance=assessment)
         if form.is_valid():
             form.save()
-            return redirect("assessment:on_process_detail", id=assessment.id)
     context = {"form": form}
-    return render(request, "on_process/edit.html", context)
+    return redirect("assessment:on_process_detail", id=assessment.id)
 
 
 @login_required

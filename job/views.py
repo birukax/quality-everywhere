@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from .models import Job, JobTest
 from machine.models import Route, MachineRoute
 from .tasks import job_get
@@ -27,11 +28,11 @@ def test_detail(request, id):
     on_process_ready = False
     next_machine = False
     job_test = get_object_or_404(JobTest, id=id)
-    if job_test.status in ("READY"):
+    if job_test.status == "READY":
         first_off_ready = True
     if job_test.status in ("FIRST-OFF COMPLETED", "ON-PROCESS COMPLETED"):
         on_process_ready = True
-    if job_test.status in ("ON-PROCESS COMPLETED"):
+    if job_test.status == "ON-PROCESS COMPLETED":
         next_machine = True
     context["job_test"] = job_test
     context["next_machine"] = next_machine
@@ -52,12 +53,12 @@ def next_machine(request, id):
     )
     if next_machine:
         job_test.current_machine = next_machine[0].machine
-        job_test.save()
         job_test.status = "READY"
         job_test.save()
     else:
         job_test.current_machine = None
         job_test.status = "COMPLETED"
+        job_test.save()
     return redirect("job:test_detail", id=job_test.id)
 
 
@@ -72,14 +73,14 @@ def detail(request, id):
     ready = False
     job = get_object_or_404(Job, id=id)
     edit_job_form = EditJobForm(instance=job)
-    unfinished_tests = job.job_tests.all().exclude(status="COMPLETED")
+    unfinished_test = job.job_tests.get(~Q(status="COMPLETED"))
     if job.artwork and job.route and job.press_machine and job.product:
         ready = True
     context = {
         "job": job,
         "ready": ready,
         "edit_job_form": edit_job_form,
-        "unfinished_tests": unfinished_tests,
+        "unfinished_test": unfinished_test,
     }
     return render(request, "job/detail.html", context)
 
