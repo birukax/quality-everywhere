@@ -13,7 +13,7 @@
         <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
             <!-- Modal header -->
             <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">On Process Approvals</h3>
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">First Off Approvals</h3>
                 <button type="button"
                         class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
                         data-modal-toggle="first-off-apps">
@@ -30,13 +30,13 @@
             <!-- Modal body -->
             <div class="p-2 md:p-3">
                 <table class="w-full table table-auto items-center">
-                    <tr class="text-left divide-x divide-gray-600">
+                    <tr class="text-left uppercase">
                         <th class="py-1 px-2">Approver</th>
                         <th class="py-1 px-2">Status</th>
                         <th class="py-1 px-2">User</th>
                     </tr>
                     {% for app in approvals %}
-                        <tr class="text-left divide-y divide-gray-600">
+                        <tr class="text-left text-sm">
                             <td class="px-2 py-1">{{ app.approver }}</td>
                             <td class="px-2 py-1">{{ app.status }}</td>
                             <td class="px-2 py-1">{{ app.by.username }}</td>

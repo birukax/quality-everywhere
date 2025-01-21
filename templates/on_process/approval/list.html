@@ -30,13 +30,13 @@
             <!-- Modal body -->
             <div class="p-2 md:p-3">
                 <table class="w-full table table-auto items-center">
-                    <tr class="text-left divide-x divide-gray-600">
+                    <tr class="text-left uppercase">
                         <th class="py-1 px-2">Approver</th>
                         <th class="py-1 px-2">Status</th>
                         <th class="py-1 px-2">User</th>
                     </tr>
                     {% for app in approvals %}
-                        <tr class="text-left divide-y divide-gray-600">
+                        <tr class="text-left text-sm">
                             <td class="px-2 py-1">{{ app.approver }}</td>
                             <td class="px-2 py-1">{{ app.status }}</td>
                             <td class="px-2 py-1">{{ app.by.username }}</td>

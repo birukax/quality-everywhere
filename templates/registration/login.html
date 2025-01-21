@@ -1,19 +1,17 @@
 {% extends "auth.html" %}
 {% block content %}
     {% load static %}
-    <section class="sm:p-4 mx-auto mt-4 rounded-2xl shadow-lg bg-gray-600 w-fit">
-        <div class="flex flex-col items-center justify-center px-8 py-8 mx-auto ">
-            <div class="w-full sm:p-4 bg-white  shadow gray:border md:mt-0 sm:max-w-md ">
+    <section class="p-8 mx-auto mt-24 rounded-br-none  shadow-lg bg-gray-500 w-fit rounded-2xl">
+        <div class="items-center mx-auto bg-white rounded-xl">
+            <div class="w-full p-4 sm:p-6 sm:max-w-md ">
                 <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
                     {% if user.is_authenticated %}
-                        <p class="text-4xl font-semibold text-gray-800">404</p>
+                        <p class="text-4xl font-base  text-gray-800">404</p>
                         <p>
                             <a href="/" class="hover:underline">Go to home</a>
                         </p>
                     {% else %}
-                        <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl gray:text-white">
-                            Sign in to your account
-                        </h1>
+                        <h1 class="text-2xl font-semibold leading-tight tracking-tight text-gray-500 ">Sign in to your account</h1>
                         <form class="space-y-4 md:space-y-6"
                               method="post"
                               action="{% url 'login' %}">
@@ -21,22 +19,22 @@
                             {% if form.errors %}<p class="text-red-700">Your username and password didn't match. Please try again.</p>{% endif %}
                             <div>
                                 <label for="username"
-                                       class="block mb-2 font-semibold text-gray-900 gray:text-white">Username</label>
+                                       class="block mb-2 font-base  text-gray-900 gray:text-white">Username</label>
                                 <input type="username"
                                        name="username"
                                        id="username"
-                                       class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-gray-600 focus:border-gray-600 block w-full p-2.5 gray:bg-gray-700 gray:border-gray-600 gray:placeholder-gray-400 gray:text-white gray:focus:ring-gray-500 gray:focus:border-gray-500"
+                                       class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-gray-600 focus:border-gray-600 block w-full p-2.5 gray:bg-gray-700 gray:border-gray-600 gray:placeholder-gray-500 gray:text-white gray:focus:ring-gray-500 gray:focus:border-gray-500"
                                        placeholder="username"
                                        required="">
                             </div>
                             <div>
                                 <label for="password"
-                                       class="block mb-2 font-semibold text-gray-900 gray:text-white">Password</label>
+                                       class="block mb-2 font-base  text-gray-900 gray:text-white">Password</label>
                                 <input type="password"
                                        name="password"
                                        id="password"
                                        placeholder="••••••••"
-                                       class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-gray-600 focus:border-gray-600 block w-full p-2.5 gray:bg-gray-700 gray:border-gray-600 gray:placeholder-gray-400 gray:text-white gray:focus:ring-gray-500 gray:focus:border-gray-500"
+                                       class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-gray-600 focus:border-gray-600 block w-full p-2.5 gray:bg-gray-700 gray:border-gray-600 gray:placeholder-gray-500 gray:text-white gray:focus:ring-gray-500 gray:focus:border-gray-500"
                                        required="" />
                                 <button type="button"
                                         id="togglePassword"
@@ -68,7 +66,7 @@
                             </div>
                             <button type="submit"
                                     value="login"
-                                    class="w-full text-white bg-gray-600 hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-1.5 text-center ">
+                                    class="w-full text-white bg-gray-500 hover:bg-gray-600 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-1.5 text-center ">
                                 Sign in
                             </button>
                             <input type="hidden" name="next" value="{{ next }}">

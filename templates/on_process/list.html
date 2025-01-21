@@ -11,7 +11,8 @@
     <tbody>
         {% for a in assessments %}
             <tr class="odd:bg-white  even:bg-gray-50  border-b">
-                <th scope="row" class="px-6 py-4 font-medium text-gray-900 ">{{ a }}</th>
+                <th scope="row" class="px-6 py-4 font-medium text-gray-900 ">{{ a.job_test }}</th>
+                <td class="px-6 py-4">{{ a.machine }}</td>
                 <td class="px-6 py-4">{{ a.status }}</td>
                 <td class="px-6 py-4">{{ a.shift.name }}</td>
                 <td class="px-6 py-4">
