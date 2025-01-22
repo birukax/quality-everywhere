@@ -30,9 +30,9 @@ def test_detail(request, id):
     job_test = get_object_or_404(JobTest, id=id)
     if job_test.status == "READY":
         first_off_ready = True
-    if job_test.status in ("FIRST-OFF COMPLETED", "ON-PROCESS COMPLETED"):
+    if job_test.status == "FIRST-OFF COMPLETED":
         on_process_ready = True
-    if job_test.status == "ON-PROCESS COMPLETED":
+    if job_test.status in ("FIRST-OFF COMPLETED", "ON-PROCESS CREATED"):
         next_machine = True
     context["job_test"] = job_test
     context["next_machine"] = next_machine
@@ -73,14 +73,14 @@ def detail(request, id):
     ready = False
     job = get_object_or_404(Job, id=id)
     edit_job_form = EditJobForm(instance=job)
-    unfinished_test = job.job_tests.get(~Q(status="COMPLETED"))
+    # unfinished_test = job.job_tests.get(~Q(status="COMPLETED"))
     if job.artwork and job.route and job.press_machine and job.product:
         ready = True
     context = {
         "job": job,
         "ready": ready,
         "edit_job_form": edit_job_form,
-        "unfinished_test": unfinished_test,
+        # "unfinished_test": unfinished_test,
     }
     return render(request, "job/detail.html", context)
 

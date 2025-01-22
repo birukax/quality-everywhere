@@ -139,7 +139,7 @@ def create_on_process(request, id):
             )
             if machine.tests:
                 assessment.save()
-                assessment.job_test.status = "ON PROCESS CREATED"
+                assessment.job_test.status = "ON-PROCESS CREATED"
                 assessment.job_test.save()
                 return redirect("assessment:on_process_detail", id=assessment.id)
     else:

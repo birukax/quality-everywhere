@@ -50,9 +50,9 @@ def approve_assessment(request, id):
         if type == "FIRST-OFF":
             assessment.assessment.job_test.status = "FIRST-OFF COMPLETED"
             assessment.assessment.job_test.save()
-        elif type == "ON-PROCESS":
-            assessment.assessment.job_test.status = "ON-PROCESS COMPLETED"
-            assessment.assessment.job_test.save()
+        # elif type == "ON-PROCESS":
+        #     assessment.assessment.job_test.status = "ON-PROCESS COMPLETED"
+        #     assessment.assessment.job_test.save()
         assessment.assessment.job_test.save()
     return redirect("approval:assessment_list", type=assessment.assessment.type)
 
