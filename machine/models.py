@@ -14,6 +14,7 @@ MACHINE_TYPE = (
 class Machine(models.Model):
     name = models.CharField(max_length=100, unique=True)
     type = models.CharField(max_length=100, choices=MACHINE_TYPE, blank=True, null=True)
+    viscosity_test = models.BooleanField(default=False)
     tests = models.ManyToManyField(
         "assessment.Test", related_name="machines", blank=True
     )
