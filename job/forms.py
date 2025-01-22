@@ -26,8 +26,8 @@ class EditJobForm(forms.ModelForm):
 class CreateJobTestForm(forms.ModelForm):
     class Meta:
         model = JobTest
-        fields = ("paper", "batch_no")
+        fields = ("raw_material", "batch_no")
         widgets = {
-            "paper": forms.Select(),
+            "raw_material": forms.Select(),
             "batch_no": forms.TextInput(attrs={"class": ""}),
         }

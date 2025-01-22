@@ -35,6 +35,7 @@
                         <th class="py-1 px-2">Time</th>
                         <th class="py-1 px-2">Sample</th>
                         <th class="py-1 px-2">Action Taken</th>
+                        <th class="py-1 px-2">Created By</th>
                     </tr>
                     {% for nc in conformities %}
                         <tr class="text-left">
@@ -42,6 +43,7 @@
                             <td class="px-2 py-1">{{ nc.time }}</td>
                             <td class="px-2 py-1">{{ nc.sample_no }}</td>
                             <td class="px-2 py-1">{{ nc.action }}</td>
+                            <td class="px-2 py-1">{{ nc.user.username }}</td>
                         </tr>
                     {% endfor %}
                 </table>

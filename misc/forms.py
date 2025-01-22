@@ -1,16 +1,16 @@
 from django import forms
-from .models import Paper, Shift, Color, ColorStandard
+from .models import RawMaterial, Shift, Color, ColorStandard
 
 
-class CreatePaperForm(forms.ModelForm):
+class CreateRawMaterialForm(forms.ModelForm):
     class Meta:
-        model = Paper
+        model = RawMaterial
         fields = ["no", "name"]
 
 
-class EditPaperForm(forms.ModelForm):
+class EditRawMaterialForm(forms.ModelForm):
     class Meta:
-        model = Paper
+        model = RawMaterial
         fields = ["no", "name"]
 
 

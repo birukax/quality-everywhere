@@ -11,46 +11,171 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('machine', '0001_initial'),
-        ('misc', '0001_initial'),
+        ("machine", "0001_initial"),
+        ("misc", "0001_initial"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Job',
+            name="Job",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('no', models.CharField(max_length=100)),
-                ('certificate_no', models.CharField(blank=True, max_length=100, null=True)),
-                ('artwork_approved', models.BooleanField(default=False)),
-                ('artwork', models.FileField(blank=True, help_text='Upload artwork file', null=True, upload_to='artworks/', validators=[job.validators.validate_artwork])),
-                ('color_standard', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='misc.colorstandard')),
-                ('customer', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='misc.customer')),
-                ('press_machine', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='jobs', to='machine.machine')),
-                ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='misc.product')),
-                ('route', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='machine.route')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("no", models.CharField(max_length=100)),
+                (
+                    "certificate_no",
+                    models.CharField(blank=True, max_length=100, null=True),
+                ),
+                ("artwork_approved", models.BooleanField(default=False)),
+                (
+                    "artwork",
+                    models.FileField(
+                        blank=True,
+                        help_text="Upload artwork file",
+                        null=True,
+                        upload_to="artworks/",
+                        validators=[job.validators.validate_artwork],
+                    ),
+                ),
+                (
+                    "color_standard",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="misc.colorstandard",
+                    ),
+                ),
+                (
+                    "customer",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="misc.customer",
+                    ),
+                ),
+                (
+                    "press_machine",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="jobs",
+                        to="machine.machine",
+                    ),
+                ),
+                (
+                    "product",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="misc.product"
+                    ),
+                ),
+                (
+                    "route",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="machine.route",
+                    ),
+                ),
             ],
             options={
-                'ordering': ['-no'],
+                "ordering": ["-no"],
             },
         ),
         migrations.CreateModel(
-            name='JobTest',
+            name="JobTest",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('status', models.CharField(choices=[('CREATED', 'CREATED'), ('FIRST-OFF CREATED', 'FIRST-OFF CREATED'), ('FIRST-OFF PENDING', 'FIRST-OFF PENDING'), ('FIRST-OFF COMPLETED', 'FIRST-OFF COMPLETED'), ('ON-PROCESS', 'ON-PROCESS'), ('ON-PROCESS PENDING', 'ON-PROCESS PENDING'), ('COMPLETED', 'COMPLETED')], default='CREATED', max_length=100)),
-                ('batch_no', models.CharField(blank=True, max_length=50, null=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('color_standard', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='misc.colorstandard')),
-                ('created_by', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='created_job_tests', to=settings.AUTH_USER_MODEL)),
-                ('current_machine', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='current_job_tests', to='machine.machine')),
-                ('job', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='job_tests', to='job.job')),
-                ('paper', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='misc.paper')),
-                ('route', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='machine.route')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "status",
+                    models.CharField(
+                        choices=[
+                            ("CREATED", "CREATED"),
+                            ("FIRST-OFF CREATED", "FIRST-OFF CREATED"),
+                            ("FIRST-OFF PENDING", "FIRST-OFF PENDING"),
+                            ("FIRST-OFF COMPLETED", "FIRST-OFF COMPLETED"),
+                            ("ON-PROCESS", "ON-PROCESS"),
+                            ("ON-PROCESS PENDING", "ON-PROCESS PENDING"),
+                            ("COMPLETED", "COMPLETED"),
+                        ],
+                        default="CREATED",
+                        max_length=100,
+                    ),
+                ),
+                ("batch_no", models.CharField(blank=True, max_length=50, null=True)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                (
+                    "color_standard",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="misc.colorstandard",
+                    ),
+                ),
+                (
+                    "created_by",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="created_job_tests",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "current_machine",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="current_job_tests",
+                        to="machine.machine",
+                    ),
+                ),
+                (
+                    "job",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="job_tests",
+                        to="job.job",
+                    ),
+                ),
+                (
+                    "paper",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="misc.paper"
+                    ),
+                ),
+                (
+                    "route",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="machine.route",
+                    ),
+                ),
             ],
             options={
-                'ordering': ['-id'],
+                "ordering": ["-id"],
             },
         ),
     ]

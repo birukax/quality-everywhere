@@ -118,7 +118,7 @@ def create_test(request, id):
                 route=job.route,
                 color_standard=job.color_standard,
                 current_machine=current_machine.machine,
-                paper=form.cleaned_data["paper"],
+                raw_material=form.cleaned_data["raw_material"],
                 batch_no=form.cleaned_data["batch_no"],
                 created_by=request.user,
             )

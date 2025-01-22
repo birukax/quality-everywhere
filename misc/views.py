@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Color, ColorStandard, Customer, Product, Paper, Shift
+from .models import Color, ColorStandard, Customer, Product, RawMaterial, Shift
 from .tasks import (
     product_get,
     customer_get,
-    paper_create,
-    paper_edit,
+    raw_material_create,
+    raw_material_edit,
     shift_create,
     shift_edit,
     color_create,
@@ -13,8 +13,8 @@ from .tasks import (
     color_standard_edit,
 )
 from .forms import (
-    CreatePaperForm,
-    EditPaperForm,
+    CreateRawMaterialForm,
+    EditRawMaterialForm,
     CreateShiftForm,
     EditShiftForm,
     CreateColorForm,
@@ -46,31 +46,31 @@ def get_products(request):
     return redirect("misc:product_list")
 
 
-def paper_list(request):
-    papers = Paper.objects.all()
-    context = {"papers": papers}
-    return render(request, "misc/paper/list.html", context)
+def raw_material_list(request):
+    raw_materials = RawMaterial.objects.all()
+    context = {"raw_materials": raw_materials}
+    return render(request, "misc/raw_material/list.html", context)
 
 
-def create_paper(request):
+def create_raw_material(request):
     if request.method == "GET":
-        form = CreatePaperForm()
+        form = CreateRawMaterialForm()
         context = {"form": form}
-        return render(request, "misc/paper/create.html", context)
+        return render(request, "misc/raw_material/create.html", context)
 
-    paper_create(request)
-    return redirect("misc:paper_list")
+    raw_material_create(request)
+    return redirect("misc:raw_material_list")
 
 
-def edit_paper(request, id):
+def edit_raw_material(request, id):
     if request.method == "GET":
-        paper = get_object_or_404(Paper, id=id)
-        form = EditPaperForm(instance=paper)
-        context = {"form": form, "paper": paper}
-        return render(request, "misc/paper/edit.html", context)
+        raw_material = get_object_or_404(RawMaterial, id=id)
+        form = EditRawMaterialForm(instance=raw_material)
+        context = {"form": form, "raw_material": raw_material}
+        return render(request, "misc/raw_material/edit.html", context)
 
-    paper_edit(request, id)
-    return redirect("misc:paper_list")
+    raw_material_edit(request, id)
+    return redirect("misc:raw_material_list")
 
 
 def shift_list(request):

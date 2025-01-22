@@ -25,6 +25,7 @@ class Color(models.Model):
         "misc.ColorStandard", on_delete=models.CASCADE, related_name="colors"
     )
     name = models.CharField(max_length=100)
+    viscosity = models.FloatField(null=True, blank=True)
     code = models.CharField(max_length=100, null=True, blank=True)
 
     def __str__(self):
@@ -42,7 +43,7 @@ class Product(models.Model):
         ordering = ["-id"]
 
 
-class Paper(models.Model):
+class RawMaterial(models.Model):
     no = models.CharField(max_length=100)
     name = models.CharField(max_length=100)
 

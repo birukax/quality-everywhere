@@ -68,7 +68,7 @@ class JobTest(models.Model):
         blank=True,
         related_name="current_job_tests",
     )
-    paper = models.ForeignKey("misc.Paper", on_delete=models.CASCADE)
+    raw_material = models.ForeignKey("misc.RawMaterial", on_delete=models.CASCADE)
     route = models.ForeignKey(
         "machine.Route", on_delete=models.CASCADE, null=True, blank=True
     )

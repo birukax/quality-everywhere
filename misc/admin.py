@@ -4,7 +4,7 @@ from .models import (
     ColorStandard,
     Color,
     Product,
-    Paper,
+    RawMaterial,
     Shift,
 )
 
@@ -12,5 +12,5 @@ admin.site.register(Customer)
 admin.site.register(ColorStandard)
 admin.site.register(Color)
 admin.site.register(Product)
-admin.site.register(Paper)
+admin.site.register(RawMaterial)
 admin.site.register(Shift)

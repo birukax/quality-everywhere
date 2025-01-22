@@ -1,12 +1,12 @@
 import pyodbc
 import requests
-from .models import Product, Customer, Paper, Shift, Color, ColorStandard
+from .models import Product, Customer, RawMaterial, Shift, Color, ColorStandard
 from decouple import config
 from requests_ntlm import HttpNtlmAuth
 from django.shortcuts import get_object_or_404
 from .forms import (
-    CreatePaperForm,
-    EditPaperForm,
+    CreateRawMaterialForm,
+    EditRawMaterialForm,
     CreateShiftForm,
     EditShiftForm,
     CreateColorForm,
@@ -60,21 +60,21 @@ def customer_get():
         print(e)
 
 
-def paper_create(request):
+def raw_material_create(request):
     if request.method == "POST":
-        form = CreatePaperForm(request.POST)
+        form = CreateRawMaterialForm(request.POST)
         if form.is_valid():
             form.save()
 
 
-def paper_edit(request, id):
-    paper = get_object_or_404(Paper, id=id)
+def raw_material_edit(request, id):
+    raw_material = get_object_or_404(RawMaterial, id=id)
     if request.method == "POST":
-        form = EditPaperForm(request.POST, instance=paper)
+        form = EditRawMaterialForm(request.POST, instance=raw_material)
         if form.is_valid():
-            paper.name = form.cleaned_data["name"]
-            paper.no = form.cleaned_data["no"]
-            paper.save()
+            raw_material.name = form.cleaned_data["name"]
+            raw_material.no = form.cleaned_data["no"]
+            raw_material.save()
 
 
 def shift_create(request):
