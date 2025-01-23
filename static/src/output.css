@@ -1233,6 +1233,10 @@ input:checked + .toggle-bg {
   display: none;
 }
 
+.h-24 {
+  height: 6rem;
+}
+
 .h-3 {
   height: 0.75rem;
 }
@@ -1273,12 +1277,36 @@ input:checked + .toggle-bg {
   height: 100vh;
 }
 
+.h-64 {
+  height: 16rem;
+}
+
+.h-72 {
+  height: 18rem;
+}
+
+.h-60 {
+  height: 15rem;
+}
+
+.h-20 {
+  height: 5rem;
+}
+
+.h-16 {
+  height: 4rem;
+}
+
 .max-h-full {
   max-height: 100%;
 }
 
 .w-1\/2 {
   width: 50%;
+}
+
+.w-24 {
+  width: 6rem;
 }
 
 .w-3 {
@@ -1452,6 +1480,14 @@ input:checked + .toggle-bg {
   justify-content: space-between;
 }
 
+.justify-items-end {
+  justify-items: end;
+}
+
+.justify-items-center {
+  justify-items: center;
+}
+
 .justify-items-stretch {
   justify-items: stretch;
 }
@@ -1472,6 +1508,12 @@ input:checked + .toggle-bg {
   --tw-space-x-reverse: 0;
   margin-right: calc(0.5rem * var(--tw-space-x-reverse));
   margin-left: calc(0.5rem * calc(1 - var(--tw-space-x-reverse)));
+}
+
+.space-y-1 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.25rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.25rem * var(--tw-space-y-reverse));
 }
 
 .space-y-2 > :not([hidden]) ~ :not([hidden]) {
@@ -1705,9 +1747,19 @@ input:checked + .toggle-bg {
   background-color: rgb(255 255 255 / 0.5);
 }
 
+.bg-black {
+  --tw-bg-opacity: 1;
+  background-color: rgb(0 0 0 / var(--tw-bg-opacity, 1));
+}
+
 .object-cover {
   -o-object-fit: cover;
      object-fit: cover;
+}
+
+.object-fill {
+  -o-object-fit: fill;
+     object-fit: fill;
 }
 
 .p-1 {
@@ -1835,14 +1887,13 @@ input:checked + .toggle-bg {
   text-align: right;
 }
 
+.text-start {
+  text-align: start;
+}
+
 .text-2xl {
   font-size: 1.5rem;
   line-height: 2rem;
-}
-
-.text-4xl {
-  font-size: 2.25rem;
-  line-height: 2.5rem;
 }
 
 .text-base {
@@ -2366,6 +2417,18 @@ input:checked + .toggle-bg {
 
   .md\:mt-6 {
     margin-top: 1.5rem;
+  }
+
+  .md\:h-28 {
+    height: 7rem;
+  }
+
+  .md\:h-24 {
+    height: 6rem;
+  }
+
+  .md\:h-20 {
+    height: 5rem;
   }
 
   .md\:grid-cols-4 {

@@ -28,10 +28,7 @@
                 </button>
             </div>
             <!-- Modal body -->
-            <form class="p-4 md:p-5"
-                  method="post"
-                  action="{% url 'job:edit' job.id %}"
-                  enctype="multipart/form-data">
+            <form class="p-4 md:p-5" method="post" action="{% url 'job:edit' job.id %}">
                 {% csrf_token %}
                 <div class="grid gap-4 mb-4 ">
                     {% for field in edit_job_form %}

@@ -16,3 +16,8 @@ def validate_artwork(file):
             raise ValidationError("Invalid image file")
     except Exception:
         raise ValidationError("Invalid image file")
+
+
+def validate_code(value):
+    if " " in value:
+        raise ValidationError("Code should not contain spaces")

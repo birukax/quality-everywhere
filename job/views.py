@@ -89,7 +89,7 @@ def detail(request, id):
 def edit(request, id):
     job = get_object_or_404(Job, id=id)
     if request.method == "POST":
-        form = EditJobForm(request.POST, request.FILES, instance=job)
+        form = EditJobForm(request.POST, instance=job)
         if form.is_valid():
             job.customer = form.cleaned_data["customer"]
             job.route = form.cleaned_data["route"]
