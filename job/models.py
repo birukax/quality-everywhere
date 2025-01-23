@@ -16,9 +16,15 @@ STATUS = (
 
 class Job(models.Model):
     no = models.CharField(max_length=100)
-    product = models.ForeignKey("product.Product", on_delete=models.CASCADE)
+    product = models.ForeignKey(
+        "product.Product", on_delete=models.CASCADE, related_name="jobs"
+    )
     customer = models.ForeignKey(
-        "misc.Customer", on_delete=models.CASCADE, null=True, blank=True
+        "misc.Customer",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="jobs",
     )
     press_machine = models.ForeignKey(
         "machine.Machine",
@@ -28,10 +34,18 @@ class Job(models.Model):
         related_name="jobs",
     )
     route = models.ForeignKey(
-        "machine.Route", on_delete=models.CASCADE, null=True, blank=True
+        "machine.Route",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="jobs",
     )
     color_standard = models.ForeignKey(
-        "misc.ColorStandard", on_delete=models.CASCADE, null=True, blank=True
+        "misc.ColorStandard",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="jobs",
     )
     certificate_no = models.CharField(max_length=100, null=True, blank=True)
 
@@ -61,10 +75,18 @@ class JobTest(models.Model):
     )
     raw_material = models.ForeignKey("misc.RawMaterial", on_delete=models.CASCADE)
     route = models.ForeignKey(
-        "machine.Route", on_delete=models.CASCADE, null=True, blank=True
+        "machine.Route",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="job_tests",
     )
     color_standard = models.ForeignKey(
-        "misc.ColorStandard", on_delete=models.CASCADE, null=True, blank=True
+        "misc.ColorStandard",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="job_tests",
     )
     batch_no = models.CharField(
         max_length=50,

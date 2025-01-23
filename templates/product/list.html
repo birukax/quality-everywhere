@@ -20,7 +20,10 @@
                 <th scope="row" class="px-4 py-3 font-medium text-gray-900  ">
                     <p>{{ p.name }}</p>
                 </th>
-                <td class="px-4 py-3 flex justify-end">{% include 'misc/product/detail.html' %}</td>
+                <td class="px-4 py-3 flex justify-end">
+                    <a href="{{ p.get_absolute_url }}"
+                       class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Detail</a>
+                </td>
             </tr>
         {% endfor %}
     </tbody>
