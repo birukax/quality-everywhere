@@ -1,7 +1,6 @@
 from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import User
-from .validators import validate_artwork
 
 STATUS = (
     ("READY", "READY"),
@@ -17,7 +16,7 @@ STATUS = (
 
 class Job(models.Model):
     no = models.CharField(max_length=100)
-    product = models.ForeignKey("misc.Product", on_delete=models.CASCADE)
+    product = models.ForeignKey("product.Product", on_delete=models.CASCADE)
     customer = models.ForeignKey(
         "misc.Customer", on_delete=models.CASCADE, null=True, blank=True
     )
@@ -35,14 +34,6 @@ class Job(models.Model):
         "misc.ColorStandard", on_delete=models.CASCADE, null=True, blank=True
     )
     certificate_no = models.CharField(max_length=100, null=True, blank=True)
-    artwork_approved = models.BooleanField(default=False)
-    artwork = models.FileField(
-        upload_to="artworks/",
-        null=True,
-        blank=True,
-        validators=[validate_artwork],
-        help_text="Upload artwork file",
-    )
 
     class Meta:
         ordering = ["-no"]

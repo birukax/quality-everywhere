@@ -5,7 +5,7 @@ from assessment.models import FirstOff
 from .models import Job
 from decouple import config
 from requests_ntlm import HttpNtlmAuth
-from misc.models import Product
+from product.models import Product
 
 
 def job_get():

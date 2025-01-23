@@ -6,8 +6,6 @@ app_name = "misc"
 urlpatterns = [
     path("customer/list", views.customer_list, name="customer_list"),
     path("customer/get", views.get_customers, name="get_customers"),
-    path("product/list", views.product_list, name="product_list"),
-    path("product/get", views.get_products, name="get_products"),
     path("raw_material/list", views.raw_material_list, name="raw_material_list"),
     path("raw_material/create", views.create_raw_material, name="create_raw_material"),
     path(

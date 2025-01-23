@@ -96,8 +96,6 @@ def edit(request, id):
             job.press_machine = form.cleaned_data["press_machine"]
             job.color_standard = form.cleaned_data["color_standard"]
             job.certificate_no = form.cleaned_data["certificate_no"]
-            job.artwork_approved = form.cleaned_data["artwork_approved"]
-            job.artwork = form.cleaned_data["artwork"]
             job.save()
         else:
             print(form.errors)

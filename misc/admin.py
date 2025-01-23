@@ -3,7 +3,6 @@ from .models import (
     Customer,
     ColorStandard,
     Color,
-    Product,
     RawMaterial,
     Shift,
 )
@@ -11,6 +10,5 @@ from .models import (
 admin.site.register(Customer)
 admin.site.register(ColorStandard)
 admin.site.register(Color)
-admin.site.register(Product)
 admin.site.register(RawMaterial)
 admin.site.register(Shift)

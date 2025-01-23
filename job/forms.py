@@ -12,9 +12,7 @@ class EditJobForm(forms.ModelForm):
             "press_machine",
             "color_standard",
             "route",
-            "artwork_approved",
             "certificate_no",
-            "artwork",
         )
 
     press_machine = forms.ModelChoiceField(

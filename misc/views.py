@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Color, ColorStandard, Customer, Product, RawMaterial, Shift
+from .models import Color, ColorStandard, Customer, RawMaterial, Shift
 from .tasks import (
-    product_get,
     customer_get,
     raw_material_create,
     raw_material_edit,
@@ -33,17 +32,6 @@ def customer_list(request):
 def get_customers(request):
     customer_get()
     return redirect("misc:customer_list")
-
-
-def product_list(request):
-    products = Product.objects.all()
-    context = {"products": products}
-    return render(request, "misc/product/list.html", context)
-
-
-def get_products(request):
-    product_get()
-    return redirect("misc:product_list")
 
 
 def raw_material_list(request):
