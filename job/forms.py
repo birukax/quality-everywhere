@@ -9,16 +9,9 @@ class EditJobForm(forms.ModelForm):
 
         fields = (
             "customer",
-            "press_machine",
             "color_standard",
             "route",
-            "certificate_no",
         )
-
-    press_machine = forms.ModelChoiceField(
-        queryset=Machine.objects.filter(type="PRESS"),
-        required=False,
-    )
 
 
 class CreateJobTestForm(forms.ModelForm):

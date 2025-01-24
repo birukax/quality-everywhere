@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from .models import Job, JobTest
+from product.models import Artwork
 from machine.models import Route, MachineRoute
 from .tasks import job_get
 from .forms import EditJobForm, CreateJobTestForm
@@ -72,15 +73,17 @@ def get_jobs(request):
 def detail(request, id):
     ready = False
     job = get_object_or_404(Job, id=id)
+    artwork = Artwork.objects.filter(product=job.product).latest("created_at")
     edit_job_form = EditJobForm(instance=job)
-    # unfinished_test = job.job_tests.get(~Q(status="COMPLETED"))
-    if job.route and job.press_machine and job.product:
+    unfinished_test = job.job_tests.filter(~Q(status="COMPLETED")).exists()
+    if job.route and job.product:
         ready = True
     context = {
         "job": job,
         "ready": ready,
+        "artwork": artwork,
         "edit_job_form": edit_job_form,
-        # "unfinished_test": unfinished_test,
+        "unfinished_test": unfinished_test,
     }
     return render(request, "job/detail.html", context)
 
@@ -93,9 +96,7 @@ def edit(request, id):
         if form.is_valid():
             job.customer = form.cleaned_data["customer"]
             job.route = form.cleaned_data["route"]
-            job.press_machine = form.cleaned_data["press_machine"]
             job.color_standard = form.cleaned_data["color_standard"]
-            job.certificate_no = form.cleaned_data["certificate_no"]
             job.save()
         else:
             print(form.errors)

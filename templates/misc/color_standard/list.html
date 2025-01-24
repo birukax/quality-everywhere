@@ -6,9 +6,9 @@
     </a>
 {% endblock buttons %}
 {% block table %}
-    <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+    <thead class="text-xs sm:text-sm text-gray-700 uppercase bg-gray-50">
         <tr>
-            <th scope="col" class="px-6 py-3">Standard Name</th>
+            <th scope="col" class="px-6 py-3">Name</th>
             <th scope="col" class="px-6 py-3">Colors</th>
             <th scope="col" class="px-6 py-3 text-right">Action</th>
         </tr>
@@ -19,7 +19,7 @@
                 <th scope="row" class="px-5 py-3 font-medium text-gray-900 ">
                     <p>{{ cs.name }}</p>
                 </th>
-                <td class="px-5 py-3 capitalize">{{ cs.colors.all.count }}</td>
+                <td class="px-5 py-3 capitalize">{{ cs.colors.count }}</td>
                 <td class="px-5 py-3 flex justify-end">{% include 'misc/color_standard/detail.html' %}</td>
             </tr>
         {% endfor %}

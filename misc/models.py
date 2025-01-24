@@ -28,7 +28,7 @@ class ColorStandard(models.Model):
 class Color(models.Model):
     name = models.CharField(max_length=100)
     viscosity = models.FloatField(null=True, blank=True)
-    code = models.CharField(max_length=100, null=True, blank=True)
+    code = models.CharField(max_length=100, unique=True)
 
     def __str__(self):
         return f"{self.name}-{self.code}"

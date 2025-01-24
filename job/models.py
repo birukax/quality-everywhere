@@ -26,13 +26,6 @@ class Job(models.Model):
         blank=True,
         related_name="jobs",
     )
-    press_machine = models.ForeignKey(
-        "machine.Machine",
-        on_delete=models.CASCADE,
-        null=True,
-        blank=True,
-        related_name="jobs",
-    )
     route = models.ForeignKey(
         "machine.Route",
         on_delete=models.CASCADE,
@@ -47,7 +40,7 @@ class Job(models.Model):
         blank=True,
         related_name="jobs",
     )
-    certificate_no = models.CharField(max_length=100, null=True, blank=True)
+    # certificate_no = models.CharField(max_length=100, null=True, blank=True)
 
     class Meta:
         ordering = ["-no"]
@@ -65,7 +58,9 @@ class JobTest(models.Model):
     job = models.ForeignKey(
         "job.Job", on_delete=models.CASCADE, related_name="job_tests"
     )
-
+    artwork = models.ForeignKey(
+        "product.Artwork", on_delete=models.RESTRICT, related_name="job_tests"
+    )
     current_machine = models.ForeignKey(
         "machine.Machine",
         on_delete=models.CASCADE,

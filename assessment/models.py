@@ -69,7 +69,7 @@ class Test(models.Model):
     # type = models.CharField(max_length=100)
 
     class Meta:
-        ordering = ["-id"]
+        ordering = ["name"]
 
     def __str__(self):
         return self.name
@@ -80,7 +80,7 @@ class Conformity(models.Model):
     # type = models.CharField(max_length=100)
 
     class Meta:
-        ordering = ["-id"]
+        ordering = ["name"]
         verbose_name_plural = "conformities"
 
     def __str__(self):
