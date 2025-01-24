@@ -74,7 +74,7 @@ def detail(request, id):
     job = get_object_or_404(Job, id=id)
     edit_job_form = EditJobForm(instance=job)
     # unfinished_test = job.job_tests.get(~Q(status="COMPLETED"))
-    if job.artwork and job.route and job.press_machine and job.product:
+    if job.route and job.press_machine and job.product:
         ready = True
     context = {
         "job": job,

@@ -14,22 +14,24 @@ class Customer(models.Model):
 
 
 class ColorStandard(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
+    colors = models.ManyToManyField(
+        "misc.Color",
+        blank=True,
+        related_name="color_standards",
+    )
 
     def __str__(self):
         return self.name
 
 
 class Color(models.Model):
-    color_standard = models.ForeignKey(
-        "misc.ColorStandard", on_delete=models.CASCADE, related_name="colors"
-    )
     name = models.CharField(max_length=100)
     viscosity = models.FloatField(null=True, blank=True)
     code = models.CharField(max_length=100, null=True, blank=True)
 
     def __str__(self):
-        return self.name
+        return f"{self.name}-{self.code}"
 
 
 class RawMaterial(models.Model):

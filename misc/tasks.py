@@ -85,7 +85,7 @@ def color_edit(request, id):
         if form.is_valid():
             color.name = form.cleaned_data["name"]
             color.code = form.cleaned_data["code"]
-            color.color_standard = form.cleaned_data["color_standard"]
+            color.viscosity = form.cleaned_data["viscosity"]
             color.save()
 
 
@@ -102,6 +102,7 @@ def color_standard_edit(request, id):
         form = EditColorStandardForm(request.POST, instance=color_standard)
         if form.is_valid():
             color_standard.name = form.cleaned_data["name"]
+            color_standard.colors.set(form.cleaned_data["colors"])
             color_standard.save()
 
 

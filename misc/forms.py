@@ -29,22 +29,28 @@ class EditShiftForm(forms.ModelForm):
 class CreateColorStandardForm(forms.ModelForm):
     class Meta:
         model = ColorStandard
-        fields = ["name"]
+        fields = ["name", "colors"]
+        widgets = {
+            "colors": forms.CheckboxSelectMultiple(attrs={"class": "space-y-2"}),
+        }
 
 
 class EditColorStandardForm(forms.ModelForm):
     class Meta:
         model = ColorStandard
-        fields = ["name"]
+        fields = ["name", "colors"]
+        widgets = {
+            "colors": forms.CheckboxSelectMultiple(attrs={"class": "space-y-2"}),
+        }
 
 
 class CreateColorForm(forms.ModelForm):
     class Meta:
         model = Color
-        fields = ["name", "code", "color_standard"]
+        fields = ["name", "code", "viscosity"]
 
 
 class EditColorForm(forms.ModelForm):
     class Meta:
         model = Color
-        fields = ["name", "code", "color_standard"]
+        fields = ["name", "code", "viscosity"]

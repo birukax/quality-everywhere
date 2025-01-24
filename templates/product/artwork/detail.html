@@ -1,14 +1,14 @@
 <!-- Modal toggle -->
 <button data-modal-target="artwork-detail-{{ a.id }}"
         data-modal-toggle="artwork-detail-{{ a.id }}"
-        class="block text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-3 py-1 text-center "
-        type="button">Detail</button>
+        class="block text-white bg-gray-800 hover:bg-gray-900 focus:ring-2 focus:outline-none focus:ring-gray-300 font-normal rounded-lg text-sm px-4 py-1 text-center "
+        type="button">View</button>
 <!-- Main modal -->
 <div id="artwork-detail-{{ a.id }}"
      tabindex="-1"
      aria-hidden="true"
      class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-    <div class="relative p-4 w-full max-w-md max-h-full">
+    <div class="relative p-4 w-full max-w-2xl max-h-full">
         <!-- Modal content -->
         <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
             <!-- Modal header -->
@@ -29,27 +29,42 @@
             </div>
             <!-- Modal body -->
             <div class="p-4 md:p-5">
-                <ul class="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
+                <ul class="max-w-full divide-y divide-gray-200 ">
                     <li class="pb-3 sm:pb-4">
                         <div class="flex items-center justify-between">
-                            <div class="inline-flex  items-center text-base font-semibold text-gray-900 ">No.</div>
+                            <div class="inline-flex  items-center text-base font-semibold text-gray-900 ">Product No.</div>
                             <div class="flex-row text-right">
-                                <p class="text-sm font-medium text-gray-900 truncate ">{{ a.product }}</p>
+                                <p class="text-sm font-medium text-gray-900 truncate ">{{ a.product.no }}</p>
                             </div>
                         </div>
                     </li>
                     <li class="pb-3 sm:pb-4">
                         <div class="flex items-center justify-between">
-                            <div class="inline-flex  items-center text-base font-semibold text-gray-900 ">Name</div>
+                            <div class="inline-flex  items-center text-base font-semibold text-gray-900 ">Product Name</div>
                             <div class="flex-row text-right">
-                                <p class="text-sm font-medium text-gray-900 truncate ">{{ a.name }}</p>
+                                <p class="text-sm font-medium text-gray-900 truncate ">{{ a.product.name }}</p>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="pb-3 sm:pb-4">
+                        <div class="flex items-center justify-between">
+                            <div class="inline-flex  items-center text-base font-semibold text-gray-900 ">Code</div>
+                            <div class="flex-row text-right">
+                                <p class="text-sm font-medium text-gray-900 truncate ">{{ a.code }}</p>
                             </div>
                         </div>
                     </li>
                 </ul>
-                <div class="text-right">
+                <div class="mx-auto  items-center w-fit mb-2">
+                    <img src="{{ a.file.url }}"
+                         alt="Job Artwork"
+                         height=""
+                         width=""
+                         class=" h-auto w-full" />
+                </div>
+                <div class="text-right ">
                     <a href="{% url 'product:edit_artwork' a.id %}"
-                       class="text-white inline-flex items-center bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-3 py-1 text-center">
+                       class="text-white inline-flex items-center bg-gray-700 hover:bg-gray-800 focus:ring-2 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-1.5 text-center">
                         Edit
                     </a>
                 </div>

@@ -5,36 +5,33 @@
     <thead class="text-xs text-gray-700 uppercase bg-gray-50">
         <tr>
             <th scope="col" class="px-2 py-3 text-center">Artwork</th>
-            <th scope="col" class="px-3 py-1">
-                Product ID &
-                <br>
-                <span class="font-normal">Product Name</span>
-            </th>
-            <th scope="col" class="px-3 py-1">Code</th>
-            <th scope="col" class="px-3 py-1 text-right">Action</th>
+            <th scope="col" class="px-3 py-1">Product</th>
+            <th scope="col" class="px-3 py-1 ">Action</th>
         </tr>
     </thead>
     <tbody>
         {% for a in artworks %}
             <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b">
-                <td class="px-3 py-1">
+                <td class="px-3 py-4">
                     <div class="mx-auto  items-center w-fit">
                         <img src="{{ a.file.url }}"
                              alt="Job Artwork"
                              height=""
                              width=""
-                             class=" h-16 md:h-20  rounded-lg" />
+                             class=" h-auto w-32 " />
                     </div>
                 </td>
-                <th scope="row" class="px-3 py-1 font-medium text-gray-900 ">
-                    <p>
-                        {{ a.product.name }}
-                        <br>
+                <th scope="row" class="px-3 py-1 text-gray-950 font-normal">
+                    <div>
                         <span class="font-normal">{{ a.product.no }}</span>
-                    </p>
+                    </div>
+                    <div class="font-semibold whitespace-nowrap">{{ a.product.name }}</div>
+                    <div>
+                        <span class="font-bold text-gray-600">Code:</span>
+                        {{ a.code }}
+                    </div>
                 </th>
-                <td class="px-3 py-1 capitalize">{{ a.code }}</td>
-                <td class="px-3 py-1 w-fit mx-auto items-center">{% include 'product/artwork/detail.html' %}</td>
+                <td class="px-3 py-1 ">{% include 'product/artwork/detail.html' %}</td>
             </tr>
         {% endfor %}
     </tbody>
