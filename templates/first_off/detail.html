@@ -99,19 +99,21 @@
             <div class="flex gap-4">
                 {% if assessment.status == 'OPEN' or assessment.status == 'REJECTED' %}
                     {% include 'first_off/edit.html' %}
-                    <a href="{% url 'approval:create_assessment_approval' assessment.id %}"
-                       class="text-white inline-flex items-center bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-3 py-1.5 text-center">
-                        Submit
-                    </a>
+                    {% if can_submit %}
+                        <a href="{% url 'approval:create_assessment_approval' assessment.id %}"
+                           class="text-white inline-flex items-center bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-3 py-1.5 text-center">
+                            Submit
+                        </a>
+                    {% endif %}
                 {% endif %}
             </div>
-            {% if assessment.job.artwork %}
-                <div class="mt-4 w-full h-96">
-                    <img src="{{ assessment.job.artwork.url }}"
-                         alt="Job Artwork"
+            {% if assessment.job_test.artwork %}
+                <div class="mt-4 w-fit  items-center mx-auto">
+                    <img src="{{ assessment.job_test.artwork.file.url }}"
+                         alt="Artwork"
                          height=""
                          width=""
-                         class=" object-cover rounded-lg">
+                         class=" h-auto w-full  rounded-lg" />
                 </div>
             {% endif %}
         </div>

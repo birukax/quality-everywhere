@@ -41,33 +41,36 @@
                         <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ job_test.color_standard.name }}</span>
                     </a>
                 </li>
-                <li>
-                    <a class="flex items-center p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
-                        <span class="flex-1 ms-3 whitespace-nowrap">Certificate No.</span>
-                        <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ job_test.job.certificate_no }}</span>
-                    </a>
-                </li>
             </ul>
             <div class="flex gap-4 items-center">
                 {% if first_off_ready %}
                     <a href="{% url 'assessment:create_first_off' job_test.id %}"
-                       class="text-white inline-flex items-center bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-3 py-1.5 text-center">
+                       class="text-white inline-flex items-center bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-1.5 text-center">
                         Create First-Off
                     </a>
                 {% endif %}
                 {% if on_process_ready %}
                     <a href="{% url 'assessment:create_on_process' job_test.id %}"
-                       class="text-white inline-flex items-center bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-3 py-1.5 text-center">
+                       class="text-white inline-flex items-center bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-1.5 text-center">
                         Create On-Process
                     </a>
                 {% endif %}
                 {% if next_machine %}
                     <a href="{% url 'job:next_machine' job_test.id %}"
-                       class="text-white inline-flex items-center bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-3 py-1.5 text-center">
+                       class="text-white inline-flex items-center bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-1.5 text-center">
                         Next Machine
                     </a>
                 {% endif %}
             </div>
+            {% if job_test.artwork %}
+                <div class="mt-4 w-fit  items-center mx-auto">
+                    <img src="{{ job_test.artwork.file.url }}"
+                         alt="Artwork"
+                         height=""
+                         width=""
+                         class=" h-auto w-full  rounded-lg" />
+                </div>
+            {% endif %}
         </div>
     </div>
 {% endblock content %}

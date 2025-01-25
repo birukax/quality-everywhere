@@ -45,6 +45,7 @@ def on_process_list(request, status):
 
 @login_required
 def first_off_detail(request, id):
+    can_submit = True
     assessment = get_object_or_404(Assessment, id=id)
     approvals = AssessmentApproval.objects.filter(assessment=assessment)
     color_standard = ColorStandard.objects.get(id=assessment.job_test.color_standard.id)
@@ -54,6 +55,8 @@ def first_off_detail(request, id):
     formset = test_formset(queryset=tests)
     passed = tests.filter(value=True)
     failed = tests.filter(value=False)
+    if passed.count() == 0 and failed.count() == 0:
+        can_submit = False
     context = {
         "assessment": assessment,
         "approvals": approvals,
@@ -63,7 +66,9 @@ def first_off_detail(request, id):
         "tests": tests,
         "passed": passed,
         "failed": failed,
+        "can_submit": can_submit,
     }
+
     return render(request, "first_off/detail.html", context)
 
 

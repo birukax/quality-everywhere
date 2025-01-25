@@ -22,7 +22,7 @@ def test_list(request):
     return render(request, "job/test/list.html", context)
 
 
-@login_required
+@login_requireds
 def test_detail(request, id):
     context = {}
     first_off_ready = False
@@ -33,7 +33,7 @@ def test_detail(request, id):
         first_off_ready = True
     if job_test.status == "FIRST-OFF COMPLETED":
         on_process_ready = True
-    if job_test.status in ("FIRST-OFF COMPLETED", "ON-PROCESS CREATED"):
+    if job_test.status in ("ON-PROCESS CREATED"):
         next_machine = True
     context["job_test"] = job_test
     context["next_machine"] = next_machine
@@ -71,20 +71,24 @@ def get_jobs(request):
 
 @login_required
 def detail(request, id):
+    context = {}
     ready = False
+
     job = get_object_or_404(Job, id=id)
-    artwork = Artwork.objects.filter(product=job.product).latest("created_at")
+    if Artwork.objects.filter(product=job.product):
+        artwork = Artwork.objects.filter(product=job.product).latest("created_at")
+        context["artwork"] = artwork
     edit_job_form = EditJobForm(instance=job)
-    unfinished_test = job.job_tests.filter(~Q(status="COMPLETED")).exists()
+    if JobTest.objects.filter(~Q(status="COMPLETED"), job=job).exists():
+        unfinished_test = JobTest.objects.filter(
+            ~Q(status="COMPLETED"), job=job
+        ).first()
+        context["unfinished_test"] = unfinished_test
     if job.route and job.product:
         ready = True
-    context = {
-        "job": job,
-        "ready": ready,
-        "artwork": artwork,
-        "edit_job_form": edit_job_form,
-        "unfinished_test": unfinished_test,
-    }
+    context["job"] = job
+    context["ready"] = ready
+    context["edit_job_form"] = edit_job_form
     return render(request, "job/detail.html", context)
 
 
@@ -121,6 +125,10 @@ def create_test(request, id):
                 batch_no=form.cleaned_data["batch_no"],
                 created_by=request.user,
             )
+            if Artwork.objects.filter(product=job.product).exists():
+                job_test.artwork = Artwork.objects.filter(product=job.product).latest(
+                    "created_at"
+                )
             job_test.save()
             return redirect("job:detail", id=id)
     else:
