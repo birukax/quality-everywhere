@@ -12,18 +12,17 @@ def approvals(request):
 
 def create_assessment_approval(request, id):
     assessment = get_object_or_404(Assessment, id=id)
-    if not assessment.status in ("PENDING", "COMPLETED"):
-        approvers = ["OPERATOR", "SUPERVISOR"]
-        for a in approvers:
-            app = AssessmentApproval(assessment=assessment, approver=a)
-            app.save()
-        assessment.status = "PENDING"
-        assessment.inspected_by = request.user
-        assessment.save()
     if assessment.type == "FIRST-OFF":
+        if not assessment.status in ("PENDING", "COMPLETED"):
+            approvers = ["OPERATOR", "SUPERVISOR"]
+            for a in approvers:
+                app = AssessmentApproval(assessment=assessment, approver=a)
+                app.save()
+            assessment.status = "PENDING"
+            assessment.inspected_by = request.user
+            assessment.save()
         return redirect("assessment:first_off_detail", id=assessment.id)
-    elif assessment.type == "ON-PROCESS":
-        return redirect("assessment:on_process_detail", id=assessment.id)
+    return redirect("assessment:on_process_detail", id=assessment.id)
 
 
 def assessment_list(request, type):

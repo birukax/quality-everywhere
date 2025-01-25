@@ -21,15 +21,15 @@ class EditAssessmentForm(forms.ModelForm):
     class Meta:
         model = Assessment
         fields = (
-            "date",
-            "time",
+            # "date",
+            # "time",
             "shift",
         )
 
-        widgets = {
-            "date": forms.DateInput(attrs={"type": "date"}),
-            "time": forms.TimeInput(attrs={"type": "time"}),
-        }
+        # widgets = {
+        #     "date": forms.DateInput(attrs={"type": "date"}),
+        #     "time": forms.TimeInput(attrs={"type": "time"}),
+        # }
 
 
 class FirstOffTestsFrom(forms.ModelForm):
@@ -51,10 +51,10 @@ class OnProcessConformitiesForm(forms.ModelForm):
     class Meta:
         model = OnProcess
         fields = (
-            "time",
             "conformity",
             "sample_no",
             "action",
+            "time",
         )
 
         widgets = {

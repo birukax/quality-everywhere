@@ -68,10 +68,6 @@
             <div class="flex gap-4">
                 {% if assessment.status == 'OPEN' or assessment.status == 'REJECTED' %}
                     {% include 'on_process/edit.html' %}
-                    <a href="{% url 'approval:create_assessment_approval' assessment.id %}"
-                       class="text-white inline-flex items-center bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-3 py-1.5 text-center">
-                        Submit
-                    </a>
                 {% endif %}
             </div>
             {% if assessment.job.artwork %}

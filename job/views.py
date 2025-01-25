@@ -22,7 +22,7 @@ def test_list(request):
     return render(request, "job/test/list.html", context)
 
 
-@login_requireds
+@login_required
 def test_detail(request, id):
     context = {}
     first_off_ready = False

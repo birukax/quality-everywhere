@@ -75,7 +75,6 @@ def first_off_detail(request, id):
 @login_required
 def on_process_detail(request, id):
     assessment = get_object_or_404(Assessment, id=id)
-    approvals = AssessmentApproval.objects.filter(assessment=assessment)
     color_standard = ColorStandard.objects.get(id=assessment.job_test.color_standard.id)
     conformities = OnProcess.objects.filter(assessment=assessment)
     edit_assessment_form = EditAssessmentForm(instance=assessment)
@@ -83,7 +82,6 @@ def on_process_detail(request, id):
     conformity_form.fields["conformity"].queryset = assessment.machine.conformities
     context = {
         "assessment": assessment,
-        "approvals": approvals,
         "color_standard": color_standard,
         "edit_assessment_form": edit_assessment_form,
         "conformities": conformities,
