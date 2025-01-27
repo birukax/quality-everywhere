@@ -123,6 +123,9 @@ class Viscosity(models.Model):
     )
     value = models.FloatField(default=0)
 
+    class Meta:
+        verbose_name_plural = "viscosities"
+
 
 class FirstOff(models.Model):
     assessment = models.ForeignKey(

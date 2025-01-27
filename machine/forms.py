@@ -6,8 +6,13 @@ from assessment.models import Test, Conformity
 class CreateMachineForm(forms.ModelForm):
     class Meta:
         model = Machine
-        fields = ("name", "type", "tests", "conformities")
+        fields = ("name", "type", "viscosity_test", "tests", "conformities")
         widgets = {
+            "name": forms.TextInput(attrs={"style": "width: 10rem"}),
+            "viscosity_test": forms.Select(
+                attrs={"style": "width: 7rem"},
+                choices=(((False, "No"), (True, "Yes"))),
+            ),
             "tests": forms.CheckboxSelectMultiple(attrs={"class": "space-y-2"}),
             "conformities": forms.CheckboxSelectMultiple(attrs={"class": "space-y-2"}),
         }
@@ -16,8 +21,13 @@ class CreateMachineForm(forms.ModelForm):
 class EditMachineForm(forms.ModelForm):
     class Meta:
         model = Machine
-        fields = ("name", "type", "tests", "conformities")
+        fields = ("name", "type", "viscosity_test", "tests", "conformities")
         widgets = {
+            "name": forms.TextInput(attrs={"style": "width: 10rem"}),
+            "viscosity_test": forms.Select(
+                attrs={"style": "width: 7rem"},
+                choices=(((False, "No"), (True, "Yes"))),
+            ),
             "tests": forms.CheckboxSelectMultiple(attrs={"class": "space-y-2"}),
             "conformities": forms.CheckboxSelectMultiple(attrs={"class": "space-y-2"}),
         }
