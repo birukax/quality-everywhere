@@ -87,6 +87,19 @@ class Conformity(models.Model):
         return self.name
 
 
+class Waste(models.Model):
+    quantity = models.IntegerField()
+    assessment = models.ForeignKey(
+        "assessment.Assessment",
+        on_delete=models.CASCADE,
+        related_name="wastes",
+    )
+    machine = models.ForeignKey(
+        "machine.Machine",
+        on_delete=models.CASCADE,
+    )
+
+
 class FirstOff(models.Model):
     assessment = models.ForeignKey(
         Assessment,
@@ -126,6 +139,12 @@ class OnProcess(models.Model):
         null=True,
         blank=True,
     )
+    shift = models.ForeignKey(
+        "misc.Shift",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+    )
     action = models.CharField(
         max_length=100,
         null=True,
@@ -138,6 +157,9 @@ class OnProcess(models.Model):
         blank=True,
         null=True,
     )
+
+    class Meta:
+        ordering = ["-time"]
 
     def __str__(self):
         return f"{self.assessment.machine} - {self.conformity}"

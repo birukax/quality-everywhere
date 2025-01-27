@@ -194,6 +194,7 @@ def save_conformities(request, id):
         conformity = conformity_form.save(commit=False)
         conformity.assessment = assessment
         conformity.created_by = request.user
+        conformity.shift = assessment.shift
         conformity.save()
     return redirect("assessment:on_process_detail", id=assessment.id)
 

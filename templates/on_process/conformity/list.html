@@ -8,7 +8,7 @@
      tabindex="-1"
      aria-hidden="true"
      class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-    <div class="relative p-4 w-full max-w-xl max-h-full">
+    <div class="relative p-4 w-full max-w-3xl max-h-full">
         <!-- Modal content -->
         <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
             <!-- Modal header -->
@@ -29,21 +29,40 @@
             </div>
             <!-- Modal body -->
             <div class="p-2 md:p-3">
-                <table class="w-full table table-auto items-center">
+                <table class="w-full table table-auto ">
                     <tr class="text-left uppercase">
                         <th class="py-1 px-2">NC</th>
-                        <th class="py-1 px-2">Time</th>
-                        <th class="py-1 px-2">Sample</th>
-                        <th class="py-1 px-2">Action Taken</th>
-                        <th class="py-1 px-2">Created By</th>
+                        <th class="py-1 px-2 ">Descripton</th>
+                        <th class="py-1 px-2 text-blue-700">Action Taken</th>
                     </tr>
                     {% for nc in conformities %}
-                        <tr class="text-left">
-                            <td class="px-2 py-1">{{ nc.conformity.name }}</td>
-                            <td class="px-2 py-1">{{ nc.time }}</td>
-                            <td class="px-2 py-1">{{ nc.sample_no }}</td>
-                            <td class="px-2 py-1">{{ nc.action }}</td>
-                            <td class="px-2 py-1">{{ nc.created_by.username }}</td>
+                        <tr class="text-left items-start border-y">
+                            <td class="px-2 py-1">
+                                {% if nc.conformity == None %}
+                                    OK
+                                {% else %}
+                                    {{ nc.conformity }}
+                                {% endif %}
+                            </td>
+                            <td class="px-2 py-1 ">
+                                <div class="flex gap-3">
+                                    <p class="font-semibold whitespace-nowrap">Inspector:</p>
+                                    <p class="text-gray-700">{{ nc.created_by.username }}</p>
+                                </div>
+                                <div class="flex gap-3">
+                                    <p class="font-semibold whitespace-nowrap">Sample No.:</p>
+                                    <p class="text-gray-700">{{ nc.sample_no }}</p>
+                                </div>
+                                <div class="flex gap-3">
+                                    <p class="font-semibold whitespace-nowrap">Time:</p>
+                                    <p class="text-gray-700">{{ nc.time }}</p>
+                                </div>
+                                <div class="flex gap-3">
+                                    <p class="font-semibold whitespace-nowrap">Shift:</p>
+                                    <p class="text-gray-700">{{ nc.shift.name }}</p>
+                                </div>
+                            </td>
+                            <td class="px-2 py-1 text-blue-700">{{ nc.action }}</td>
                         </tr>
                     {% endfor %}
                 </table>
