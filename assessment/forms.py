@@ -58,10 +58,11 @@ class OnProcessConformitiesForm(forms.ModelForm):
         )
 
         widgets = {
-            "time": forms.TimeInput(attrs={"type": "date"}),
+            "date": forms.TimeInput(attrs={"type": "date"}),
+            "conformity": forms.Select(attrs={"style": "width: 10rem"}),
             "time": forms.TimeInput(attrs={"type": "time"}),
-            "sample_no": forms.TextInput(),
-            "action": forms.Textarea(attrs={"rows": 3, "cols": 20}),
+            "sample_no": forms.TextInput(attrs={"style": "width: 10rem"}),
+            "action": forms.Textarea(attrs={"rows": 3, "cols": 36}),
         }
 
 

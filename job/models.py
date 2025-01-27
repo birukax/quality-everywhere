@@ -99,7 +99,7 @@ class JobTest(models.Model):
         ordering = ["-id"]
 
     def __str__(self):
-        return f"{self.job.no } - {self.job.product.name} | {self.id}"
+        return f"{self.job.no } | {self.id}"
 
     def get_absolute_url(self):
         return reverse("job:test_detail", args={self.id})

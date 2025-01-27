@@ -62,7 +62,7 @@
                         <div class="flex items-center justify-between">
                             <div class="inline-flex  items-center text-base font-semibold text-gray-900 ">Job detail</div>
                             <div class="flex-row text-right">
-                                <p class="text-sm font-medium text-gray-900">{{ ass.assessment }}</p>
+                                <p class="text-sm font-medium text-gray-900">{{ ass.assessment.job_test }}</p>
                             </div>
                         </div>
                     </li>
@@ -98,9 +98,9 @@
                                     <td class="px-2 py-1">{{ t.test.name }}</td>
                                     <td class="px-2 py-1">
                                         {% if t.value %}
-                                            <p class="text-sm font-base text-green-700">{{ t.value }}</p>
+                                            <p class="text-sm font-base text-green-700">Passed</p>
                                         {% else %}
-                                            <p class="text-sm font-base text-red-700">{{ t.value }}</p>
+                                            <p class="text-sm font-base text-red-700">Failed</p>
                                         {% endif %}
                                     </td>
                                     <td class="px-2 py-1">{{ t.remark }}</td>

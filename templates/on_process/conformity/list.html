@@ -31,20 +31,22 @@
             <div class="p-2 md:p-3">
                 <table class="w-full table table-auto ">
                     <tr class="text-left uppercase">
-                        <th class="py-1 px-2">NC</th>
-                        <th class="py-1 px-2 ">Descripton</th>
+                        <th class="py-1 px-2 ">Assessment</th>
                         <th class="py-1 px-2 text-blue-700">Action Taken</th>
                     </tr>
                     {% for nc in conformities %}
-                        <tr class="text-left items-start border-y">
-                            <td class="px-2 py-1">
-                                {% if nc.conformity == None %}
-                                    OK
-                                {% else %}
-                                    {{ nc.conformity }}
-                                {% endif %}
-                            </td>
+                        <tr class="text-left align-top border-y">
                             <td class="px-2 py-1 ">
+                                <div class="flex gap-3">
+                                    <p class="font-semibold">NC:</p>
+                                    <p class="text-gray-700 whitespace-normal lg:whitespace-nowrap">
+                                        {% if nc.conformity == None %}
+                                            OK
+                                        {% else %}
+                                            {{ nc.conformity }}
+                                        {% endif %}
+                                    </p>
+                                </div>
                                 <div class="flex gap-3">
                                     <p class="font-semibold whitespace-nowrap">Inspector:</p>
                                     <p class="text-gray-700">{{ nc.created_by.username }}</p>

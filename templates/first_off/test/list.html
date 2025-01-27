@@ -36,9 +36,9 @@
                                 <div class="inline-flex  items-center text-base font-semibold text-gray-900 ">{{ test.test.name }}</div>
                                 <div class="flex-row text-right">
                                     {% if test.value %}
-                                        <p class="text-base font-semibold text-green-700 truncate ">{{ test.value }}</p>
+                                        <p class="text-base font-semibold text-green-700 truncate ">Passed</p>
                                     {% else %}
-                                        <p class="text-base font-semibold text-red-700 truncate ">{{ test.value }}</p>
+                                        <p class="text-base font-semibold text-red-700 truncate ">Failed</p>
                                     {% endif %}
                                     {% if test.remark == None %}
                                         <p class="text-sm text-gray-600 truncate ">No Remark</p>

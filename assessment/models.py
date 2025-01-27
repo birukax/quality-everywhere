@@ -1,4 +1,3 @@
-import django
 from django.db import models
 import datetime
 from django.contrib.auth.models import User
@@ -25,7 +24,7 @@ class Assessment(models.Model):
         null=True,
         blank=True,
     )
-    date = models.DateField(default=datetime.datetime.today)
+    date = models.DateField(default=datetime.datetime.now)
     time = models.TimeField(default=datetime.datetime.now)
     shift = models.ForeignKey(
         "misc.Shift",
@@ -104,6 +103,25 @@ class Waste(models.Model):
         "machine.Machine",
         on_delete=models.CASCADE,
     )
+
+
+class Viscosity(models.Model):
+    sample_no = models.CharField(
+        max_length=30,
+        null=True,
+        blank=True,
+    )
+    assessment = models.ForeignKey(
+        "assessment.Assessment",
+        on_delete=models.CASCADE,
+        related_name="viscosities",
+    )
+    color = models.ForeignKey(
+        "misc.Color",
+        on_delete=models.CASCADE,
+        related_name="viscosities",
+    )
+    value = models.FloatField(default=0)
 
 
 class FirstOff(models.Model):

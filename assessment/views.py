@@ -81,7 +81,6 @@ def on_process_detail(request, id):
     conformities = OnProcess.objects.filter(assessment=assessment)
     wastes = Waste.objects.filter(assessment=assessment)
     total_waste = wastes.aggregate(total=Sum("quantity"))["total"] or 0
-    print(total_waste)
     edit_assessment_form = EditAssessmentForm(instance=assessment)
     create_waste_form = CreateWasteForm()
     conformity_form = OnProcessConformitiesForm()
@@ -143,8 +142,6 @@ def create_on_process(request, id):
             machine = job_test.current_machine
             assessment = Assessment(
                 job_test=job_test,
-                date=form.cleaned_data["date"],
-                time=form.cleaned_data["time"],
                 shift=form.cleaned_data["shift"],
                 machine=machine,
                 type="ON-PROCESS",
@@ -280,3 +277,10 @@ def edit_conformity(request, id):
 
     conformity_edit(request, id)
     return redirect("assessment:conformity_list")
+
+
+@login_required
+def waste_list(request):
+    wastes = Waste.objects.all()
+    context = {"wastes": wastes}
+    return render(request, "assessment/waste/list.html", context)
