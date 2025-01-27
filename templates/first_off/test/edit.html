@@ -30,7 +30,7 @@
             <!-- Modal body -->
             <form class="p-4 md:p-5"
                   method="post"
-                  action="{% url 'assessment:save_tests' assessment.id %}">
+                  action="{% url 'assessment:save_test' assessment.id %}">
                 {% csrf_token %}
                 {{ formset.management_form }}
                 <p class="text-red-700 text-sm">

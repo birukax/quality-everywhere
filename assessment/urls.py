@@ -8,7 +8,7 @@ urlpatterns = [
     path("first-off/list/<str:status>", views.first_off_list, name="first_off_list"),
     path("first-off/detail/<int:id>", views.first_off_detail, name="first_off_detail"),
     path("first-off/edit/<int:id>", views.edit_first_off, name="edit_first_off"),
-    path("first-off/tests/save/<int:id>", views.save_tests, name="save_tests"),
+    path("first-off/test/save/<int:id>", views.save_test, name="save_test"),
     path(
         "on-proces/create/<int:id>", views.create_on_process, name="create_on_process"
     ),
@@ -18,10 +18,11 @@ urlpatterns = [
     ),
     path("on-process/edit/<int:id>", views.edit_on_process, name="edit_on_process"),
     path(
-        "on-process/conformities/save/<int:id>",
-        views.save_conformities,
-        name="save_conformities",
+        "on-process/conformity/save/<int:id>",
+        views.save_conformity,
+        name="save_conformity",
     ),
+    path("waste/save/<int:id>", views.create_waste, name="create_waste"),
     path("test/list", views.test_list, name="test_list"),
     path("test/create", views.create_test, name="create_test"),
     path("test/<int:id>/edit", views.edit_test, name="edit_test"),

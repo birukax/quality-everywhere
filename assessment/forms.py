@@ -1,6 +1,5 @@
 from django import forms
-from .models import Test, Conformity, Assessment, FirstOff, OnProcess
-from machine.models import Machine
+from .models import Test, Conformity, Assessment, FirstOff, OnProcess, Waste
 
 
 class CreateAssessmentForm(forms.ModelForm):
@@ -53,13 +52,16 @@ class OnProcessConformitiesForm(forms.ModelForm):
         fields = (
             "conformity",
             "sample_no",
-            "action",
+            "date",
             "time",
+            "action",
         )
 
         widgets = {
+            "time": forms.TimeInput(attrs={"type": "date"}),
             "time": forms.TimeInput(attrs={"type": "time"}),
             "sample_no": forms.TextInput(),
+            "action": forms.Textarea(attrs={"rows": 3, "cols": 20}),
         }
 
 
@@ -85,3 +87,9 @@ class EditConformityForm(forms.ModelForm):
     class Meta:
         model = Conformity
         fields = ["name"]
+
+
+class CreateWasteForm(forms.ModelForm):
+    class Meta:
+        model = Waste
+        fields = ["quantity"]

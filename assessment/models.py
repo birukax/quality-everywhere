@@ -88,7 +88,13 @@ class Conformity(models.Model):
 
 
 class Waste(models.Model):
-    quantity = models.IntegerField()
+    quantity = models.PositiveIntegerField(default=0)
+    shift = models.ForeignKey(
+        "misc.Shift",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+    )
     assessment = models.ForeignKey(
         "assessment.Assessment",
         on_delete=models.CASCADE,
@@ -133,6 +139,7 @@ class OnProcess(models.Model):
         null=True,
         blank=True,
     )
+    date = models.DateField(default=datetime.datetime.today)
     time = models.TimeField(default=datetime.datetime.now)
     sample_no = models.CharField(
         max_length=30,
@@ -145,8 +152,8 @@ class OnProcess(models.Model):
         null=True,
         blank=True,
     )
-    action = models.CharField(
-        max_length=100,
+    action = models.TextField(
+        max_length=300,
         null=True,
         blank=True,
     )

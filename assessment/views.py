@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.forms import modelformset_factory
-from .models import Test, Conformity, Assessment, FirstOff, OnProcess
+from django.db.models import Sum
+from .models import Test, Conformity, Assessment, FirstOff, OnProcess, Waste
 from misc.models import ColorStandard
 from job.models import JobTest
 from approval.models import AssessmentApproval
@@ -16,6 +17,7 @@ from .forms import (
     EditAssessmentForm,
     FirstOffTestsFrom,
     OnProcessConformitiesForm,
+    CreateWasteForm,
 )
 
 
@@ -77,14 +79,21 @@ def on_process_detail(request, id):
     assessment = get_object_or_404(Assessment, id=id)
     color_standard = ColorStandard.objects.get(id=assessment.job_test.color_standard.id)
     conformities = OnProcess.objects.filter(assessment=assessment)
+    wastes = Waste.objects.filter(assessment=assessment)
+    total_waste = wastes.aggregate(total=Sum("quantity"))["total"] or 0
+    print(total_waste)
     edit_assessment_form = EditAssessmentForm(instance=assessment)
+    create_waste_form = CreateWasteForm()
     conformity_form = OnProcessConformitiesForm()
     conformity_form.fields["conformity"].queryset = assessment.machine.conformities
     context = {
         "assessment": assessment,
         "color_standard": color_standard,
         "edit_assessment_form": edit_assessment_form,
+        "create_waste_form": create_waste_form,
         "conformities": conformities,
+        "wastes": wastes,
+        "total_waste": total_waste,
         "form": conformity_form,
     }
     return render(request, "on_process/detail.html", context)
@@ -177,7 +186,7 @@ def edit_on_process(request, id):
 
 
 @login_required
-def save_tests(request, id):
+def save_test(request, id):
     assessment = get_object_or_404(Assessment, id=id)
     test_formset = modelformset_factory(FirstOff, form=FirstOffTestsFrom, extra=0)
     formset = test_formset(request.POST)
@@ -187,7 +196,7 @@ def save_tests(request, id):
 
 
 @login_required
-def save_conformities(request, id):
+def save_conformity(request, id):
     assessment = get_object_or_404(Assessment, id=id)
     conformity_form = OnProcessConformitiesForm(request.POST)
     if conformity_form.is_valid():
@@ -196,6 +205,20 @@ def save_conformities(request, id):
         conformity.created_by = request.user
         conformity.shift = assessment.shift
         conformity.save()
+    return redirect("assessment:on_process_detail", id=assessment.id)
+
+
+@login_required
+def create_waste(request, id):
+    assessment = get_object_or_404(Assessment, id=id)
+    if request.method == "POST":
+        form = CreateWasteForm(request.POST)
+        if form.is_valid():
+            waste = form.save(commit=False)
+            waste.assessment = assessment
+            waste.machine = assessment.machine
+            waste.shift = assessment.shift
+            waste.save()
     return redirect("assessment:on_process_detail", id=assessment.id)
 
 
