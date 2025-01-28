@@ -34,10 +34,10 @@
                         <th class="py-1 px-2 ">Shift</th>
                         <th class="py-1 px-2 ">Quantity</th>
                     </tr>
-                    {% for w in viscosities %}
+                    {% for v in viscosities %}
                         <tr class="text-left items-start border-y">
-                            <td class="px-2 py-1 ">{{ w.shift.name }}</td>
-                            <td class="px-2 py-1 ">{{ w.quantity }}</td>
+                            <td class="px-2 py-1 ">{{ v.value }}</td>
+                            <td class="px-2 py-1 ">{{ v.quantity }}</td>
                         </tr>
                     {% endfor %}
                 </table>

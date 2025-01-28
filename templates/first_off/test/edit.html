@@ -32,6 +32,7 @@
                   method="post"
                   action="{% url 'assessment:save_test' assessment.id %}">
                 {% csrf_token %}
+                {{ form.media }}
                 {{ formset.management_form }}
                 <p class="text-red-700 text-sm">
                     {% if formset.non_form_errors %}{{ formset.non_form_errors|join:", " }}{% endif %}

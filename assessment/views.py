@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.forms import modelformset_factory
+from django.forms import modelformset_factory, formset_factory
 from django.db.models import Sum
-from .models import Test, Conformity, Assessment, FirstOff, OnProcess, Waste
+from .models import Test, Conformity, Assessment, FirstOff, OnProcess, Waste, Viscosity
 from misc.models import ColorStandard
 from job.models import JobTest
 from approval.models import AssessmentApproval
@@ -18,6 +18,8 @@ from .forms import (
     FirstOffTestsFrom,
     OnProcessConformitiesForm,
     CreateWasteForm,
+    SampleForm,
+    CreateViscosityForm,
 )
 
 
@@ -77,14 +79,26 @@ def first_off_detail(request, id):
 @login_required
 def on_process_detail(request, id):
     assessment = get_object_or_404(Assessment, id=id)
-    color_standard = ColorStandard.objects.get(id=assessment.job_test.color_standard.id)
-    conformities = OnProcess.objects.filter(assessment=assessment)
-    wastes = Waste.objects.filter(assessment=assessment)
-    total_waste = wastes.aggregate(total=Sum("quantity"))["total"] or 0
     edit_assessment_form = EditAssessmentForm(instance=assessment)
-    create_waste_form = CreateWasteForm()
+    color_standard = ColorStandard.objects.get(id=assessment.job_test.color_standard.id)
+    colors = [
+        {
+            "color_id": color.id,
+            "color_name": color.name,
+            "color_viscosity": color.viscosity,
+        }
+        for color in color_standard.colors.all()
+    ]
+    conformities = OnProcess.objects.filter(assessment=assessment)
     conformity_form = OnProcessConformitiesForm()
+    wastes = Waste.objects.filter(assessment=assessment)
     conformity_form.fields["conformity"].queryset = assessment.machine.conformities
+    total_waste = wastes.aggregate(total=Sum("quantity"))["total"] or 0
+    create_waste_form = CreateWasteForm()
+    viscosities = Viscosity.objects.filter(assessment=assessment)
+    sample_form = SampleForm()
+    viscosities_formset = formset_factory(form=CreateViscosityForm, extra=0)
+    formset = viscosities_formset(initial=colors)
     context = {
         "assessment": assessment,
         "color_standard": color_standard,
@@ -92,8 +106,11 @@ def on_process_detail(request, id):
         "create_waste_form": create_waste_form,
         "conformities": conformities,
         "wastes": wastes,
+        "viscosities": viscosities,
         "total_waste": total_waste,
         "form": conformity_form,
+        "sample_form": sample_form,
+        "formset": formset,
     }
     return render(request, "on_process/detail.html", context)
 
@@ -202,6 +219,28 @@ def save_conformity(request, id):
         conformity.created_by = request.user
         conformity.shift = assessment.shift
         conformity.save()
+    return redirect("assessment:on_process_detail", id=assessment.id)
+
+
+@login_required
+def save_viscosity(request, id):
+    assessment = get_object_or_404(Assessment, id=id)
+    if request.method == "POST":
+        viscosities_formset = formset_factory(form=CreateViscosityForm, extra=0)
+        sample_form = SampleForm(request.POST)
+        formset = viscosities_formset(request.POST)
+        if sample_form.is_valid() and formset.is_valid():
+            sample_no = sample_form.cleaned_data["sample_no"]
+            for form in formset:
+                if form.cleaned_data:
+                    viscosity = Viscosity(
+                        sample_no=sample_no,
+                        assessment=assessment,
+                        color_id=form.cleaned_data["color_id"],
+                        value=form.cleaned_data["value"],
+                        created_by=request.user,
+                    )
+                    viscosity.save()
     return redirect("assessment:on_process_detail", id=assessment.id)
 
 

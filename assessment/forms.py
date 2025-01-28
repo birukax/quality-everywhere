@@ -1,5 +1,5 @@
 from django import forms
-from .models import Test, Conformity, Assessment, FirstOff, OnProcess, Waste
+from .models import Test, Conformity, Assessment, FirstOff, OnProcess, Waste, Viscosity
 
 
 class CreateAssessmentForm(forms.ModelForm):
@@ -94,3 +94,30 @@ class CreateWasteForm(forms.ModelForm):
     class Meta:
         model = Waste
         fields = ["quantity"]
+
+
+class SampleForm(forms.ModelForm):
+    class Meta:
+        model = Viscosity
+        fields = ["sample_no"]
+        widgets = {
+            "sample_no": forms.TextInput(attrs={"style": "width: 12rem"}),
+        }
+
+
+class CreateViscosityForm(forms.Form):
+    color_id = forms.IntegerField(widget=forms.HiddenInput())
+    color_name = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={"readonly": "readonly"}),
+    )
+    color_viscosity = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={"readonly": "readonly"}),
+    )
+    value = forms.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        label="Viscosity Value",
+        widget=forms.NumberInput(attrs={"style": "width: 7rem"}),
+    )
