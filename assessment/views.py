@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.forms import modelformset_factory, formset_factory
 from django.db.models import Sum
 from .models import Test, Conformity, Assessment, FirstOff, OnProcess, Waste, Viscosity
-from misc.models import ColorStandard
+from misc.models import ColorStandard, Color
 from job.models import JobTest
 from approval.models import AssessmentApproval
 from .tasks import test_create, test_edit, conformity_create, conformity_edit
@@ -224,7 +224,7 @@ def save_conformity(request, id):
 
 @login_required
 def save_viscosity(request, id):
-    assessment = get_object_or_404(Assessment, id=id)
+    assessment = Assessment.objects.get(id=id)
     if request.method == "POST":
         viscosities_formset = formset_factory(form=CreateViscosityForm, extra=0)
         sample_form = SampleForm(request.POST)
@@ -233,14 +233,17 @@ def save_viscosity(request, id):
             sample_no = sample_form.cleaned_data["sample_no"]
             for form in formset:
                 if form.cleaned_data:
+                    color = Color.objects.get(id=form.cleaned_data["color_id"])
                     viscosity = Viscosity(
                         sample_no=sample_no,
                         assessment=assessment,
-                        color_id=form.cleaned_data["color_id"],
+                        color=color,
                         value=form.cleaned_data["value"],
                         created_by=request.user,
                     )
                     viscosity.save()
+        else:
+            print(formset.errors)
     return redirect("assessment:on_process_detail", id=assessment.id)
 
 

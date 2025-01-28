@@ -31,13 +31,17 @@
             <div class="p-2 md:p-3">
                 <table class="w-full table table-auto ">
                     <tr class="text-left uppercase">
-                        <th class="py-1 px-2 ">Shift</th>
-                        <th class="py-1 px-2 ">Quantity</th>
+                        <th class="py-1 px-2 ">Sample No</th>
+                        <th class="py-1 px-2 ">Color</th>
+                        <th class="py-1 px-2 ">Value</th>
+                        <th class="py-1 px-2 ">Created By</th>
                     </tr>
                     {% for v in viscosities %}
                         <tr class="text-left items-start border-y">
+                            <td class="px-2 py-1 ">{{ v.sample_no }}</td>
+                            <td class="px-2 py-1 ">{{ v.color.name }}</td>
                             <td class="px-2 py-1 ">{{ v.value }}</td>
-                            <td class="px-2 py-1 ">{{ v.quantity }}</td>
+                            <td class="px-2 py-1 ">{{ v.created_by }}</td>
                         </tr>
                     {% endfor %}
                 </table>

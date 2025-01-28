@@ -54,6 +54,7 @@
                     </p>
                     <div class="flex items-center gap-2 mb-4 justify-between">
                         {{ form.id }}
+                        <p class="hidden">{{ form.color_id }}</p>
                         <div class="font-bold mb-2">{{ form.color_name.value }}({{ form.color_viscosity.value }})</div>
                         <div class="flex gap-2">
                             {% for field in form.value %}
