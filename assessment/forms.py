@@ -100,9 +100,11 @@ class SampleForm(forms.ModelForm):
     class Meta:
         model = Viscosity
         fields = ["sample_no"]
-        widgets = {
-            "sample_no": forms.TextInput(attrs={"style": "width: 12rem"}),
-        }
+
+    sample_no = forms.CharField(
+        required=True,
+        widget=forms.TextInput(attrs={"style": "width: 12rem"}),
+    )
 
 
 class CreateViscosityForm(forms.Form):

@@ -105,6 +105,39 @@ class Waste(models.Model):
     )
 
 
+class SemiWaste(models.Model):
+    job_test = models.ForeignKey("job.JobTest", on_delete=models.RESTRICT)
+    shift = models.ForeignKey(
+        "misc.Shift",
+        on_delete=models.CASCADE,
+    )
+    quantity = models.PositiveIntegerField(default=0)
+    tag_no = models.CharField(max_length=30)
+    approved_quantity = models.PositiveIntegerField(default=0)
+    rejected_quantity = models.PositiveIntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+    created_by = models.ForeignKey(
+        User,
+        on_delete=models.RESTRICT,
+        related_name="created_semi_wastes",
+        blank=True,
+        null=True,
+    )
+    approved_by = models.ForeignKey(
+        User,
+        on_delete=models.RESTRICT,
+        related_name="approved_semi_wastes",
+        blank=True,
+        null=True,
+    )
+
+    class Meta:
+        verbose_name_plural = "semi_wastes"
+
+    def __str__(self):
+        return f"{self.job_test.job.no} - {self.tag_no}"
+
+
 class Viscosity(models.Model):
     sample_no = models.CharField(
         max_length=30,

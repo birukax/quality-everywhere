@@ -1500,10 +1500,6 @@ input:checked + .toggle-bg {
   justify-content: space-between;
 }
 
-.justify-around {
-  justify-content: space-around;
-}
-
 .justify-items-stretch {
   justify-items: stretch;
 }

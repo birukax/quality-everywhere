@@ -27,7 +27,7 @@ class ColorStandard(models.Model):
 
 class Color(models.Model):
     name = models.CharField(max_length=100)
-    viscosity = models.FloatField(null=True, blank=True)
+    viscosity = models.FloatField(default=0)
     code = models.CharField(max_length=100, unique=True)
 
     def __str__(self):

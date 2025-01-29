@@ -39,7 +39,7 @@
                     {% for v in viscosities %}
                         <tr class="text-left items-start border-y">
                             <td class="px-2 py-1 ">{{ v.sample_no }}</td>
-                            <td class="px-2 py-1 ">{{ v.color.name }}</td>
+                            <td class="px-2 py-1 ">{{ v.color.name }}({{ v.color.viscosity }})</td>
                             <td class="px-2 py-1 ">{{ v.value }}</td>
                             <td class="px-2 py-1 ">{{ v.created_by }}</td>
                         </tr>
