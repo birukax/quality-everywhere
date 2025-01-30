@@ -107,12 +107,18 @@ class Waste(models.Model):
 
 class SemiWaste(models.Model):
     job_test = models.ForeignKey("job.JobTest", on_delete=models.RESTRICT)
-    shift = models.ForeignKey(
-        "misc.Shift",
-        on_delete=models.CASCADE,
-    )
     quantity = models.PositiveIntegerField(default=0)
-    tag_no = models.CharField(max_length=30)
+    tag_no = models.CharField(max_length=30, unique=True)
+    remark = models.TextField(max_length=200, null=True, blank=True)
+    comment = models.TextField(max_length=200, null=True, blank=True)
+    status = models.CharField(
+        max_length=20,
+        choices=[
+            ("OPEN", "OPEN"),
+            ("COMPLETED", "COMPLETED"),
+        ],
+        default="OPEN",
+    )
     approved_quantity = models.PositiveIntegerField(default=0)
     rejected_quantity = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)

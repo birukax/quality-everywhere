@@ -2,7 +2,16 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.forms import modelformset_factory, formset_factory
 from django.db.models import Sum
-from .models import Test, Conformity, Assessment, FirstOff, OnProcess, Waste, Viscosity
+from .models import (
+    Test,
+    Conformity,
+    Assessment,
+    FirstOff,
+    OnProcess,
+    Waste,
+    SemiWaste,
+    Viscosity,
+)
 from misc.models import ColorStandard, Color
 from job.models import JobTest
 from approval.models import AssessmentApproval
@@ -20,6 +29,7 @@ from .forms import (
     CreateWasteForm,
     SampleForm,
     CreateViscosityForm,
+    UpdateSemiWasteForm,
 )
 
 
@@ -183,7 +193,6 @@ def edit_first_off(request, id):
         form = EditAssessmentForm(request.POST, instance=assessment)
         if form.is_valid():
             form.save()
-    context = {"form": form}
     return redirect("assessment:first_off_detail", id=assessment.id)
 
 
@@ -195,7 +204,6 @@ def edit_on_process(request, id):
         form = EditAssessmentForm(request.POST, instance=assessment)
         if form.is_valid():
             form.save()
-    context = {"form": form}
     return redirect("assessment:on_process_detail", id=assessment.id)
 
 
@@ -326,3 +334,36 @@ def waste_list(request):
     wastes = Waste.objects.all()
     context = {"wastes": wastes}
     return render(request, "assessment/waste/list.html", context)
+
+
+@login_required
+def semi_waste_list(request):
+    semi_wastes = SemiWaste.objects.all()
+    context = {"semi_wastes": semi_wastes}
+    return render(request, "assessment/semi_waste/list.html", context)
+
+
+@login_required
+def update_semi_waste(request, id):
+    context = {}
+    semi_waste = get_object_or_404(SemiWaste, id=id)
+    if request.method == "POST":
+        form = UpdateSemiWasteForm(request.POST, instance=semi_waste)
+        if form.is_valid():
+            semi_waste.approved_by = request.user
+            semi_waste.approved_quantity = form.cleaned_data["approved_quantity"]
+            semi_waste.rejected_quantity = (
+                semi_waste.quantity - form.cleaned_data["approved_quantity"]
+            )
+            semi_waste.status = "COMPLETED"
+            semi_waste.save()
+            return redirect("assessment:semi_waste_list")
+    else:
+        form = UpdateSemiWasteForm(instance=semi_waste)
+    context["form"] = form
+    context["semi_waste"] = semi_waste
+    return render(
+        request,
+        "assessment/semi_waste/update.html",
+        context,
+    )

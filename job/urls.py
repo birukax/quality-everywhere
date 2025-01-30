@@ -13,4 +13,9 @@ urlpatterns = [
     path("test/next-machine/<int:id>", views.next_machine, name="next_machine"),
     # path("test/edit/<int:id>", views.test_edit, name="test_edit"),
     path("test/create/<int:id>", views.create_test, name="create_test"),
+    path(
+        "test/semi-waste/create/<int:id>",
+        views.create_semi_waste,
+        name="create_semi_waste",
+    ),
 ]

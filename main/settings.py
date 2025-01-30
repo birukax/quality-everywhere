@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     "account",
     "approval",
     "compressor",
+    "django.contrib.humanize",
 ]
 
 MIDDLEWARE = [

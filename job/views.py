@@ -4,8 +4,10 @@ from django.db.models import Q
 from .models import Job, JobTest
 from product.models import Artwork
 from machine.models import Route, MachineRoute
+from assessment.models import SemiWaste
 from .tasks import job_get
 from .forms import EditJobForm, CreateJobTestForm
+from assessment.forms import CreateSemiWasteForm
 
 
 @login_required
@@ -29,6 +31,8 @@ def test_detail(request, id):
     on_process_ready = False
     next_machine = False
     job_test = get_object_or_404(JobTest, id=id)
+    create_semi_waste_form = CreateSemiWasteForm()
+    semi_wastes = SemiWaste.objects.filter(job_test=job_test)
     if job_test.status == "READY":
         first_off_ready = True
     if job_test.status == "FIRST-OFF COMPLETED":
@@ -39,7 +43,26 @@ def test_detail(request, id):
     context["next_machine"] = next_machine
     context["first_off_ready"] = first_off_ready
     context["on_process_ready"] = on_process_ready
+    context["semi_wastes"] = semi_wastes
+    context["form"] = create_semi_waste_form
     return render(request, "job/test/detail.html", context)
+
+
+@login_required
+def create_semi_waste(request, id):
+    job_test = JobTest.objects.get(id=id)
+    if request.method == "POST":
+        form = CreateSemiWasteForm(request.POST)
+        if form.is_valid():
+            semi_waste = SemiWaste(
+                job_test=job_test,
+                quantity=form.cleaned_data["quantity"],
+                tag_no=form.cleaned_data["tag_no"],
+                remark=form.cleaned_data["remark"],
+                created_by=request.user,
+            )
+            semi_waste.save()
+    return redirect("job:test_detail", id=job_test.id)
 
 
 @login_required

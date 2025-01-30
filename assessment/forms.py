@@ -1,5 +1,14 @@
 from django import forms
-from .models import Test, Conformity, Assessment, FirstOff, OnProcess, Waste, Viscosity
+from .models import (
+    Test,
+    Conformity,
+    Assessment,
+    FirstOff,
+    OnProcess,
+    Waste,
+    SemiWaste,
+    Viscosity,
+)
 
 
 class CreateAssessmentForm(forms.ModelForm):
@@ -94,6 +103,45 @@ class CreateWasteForm(forms.ModelForm):
     class Meta:
         model = Waste
         fields = ["quantity"]
+
+
+class CreateSemiWasteForm(forms.ModelForm):
+    class Meta:
+        model = SemiWaste
+        fields = ("tag_no", "quantity", "remark")
+        widgets = {
+            "tag_no": forms.TextInput(attrs={"style": "width: 12rem"}),
+            "quantity": forms.NumberInput(attrs={"style": "width: 12rem"}),
+            "remark": forms.Textarea(attrs={"rows": 3, "cols": 30}),
+        }
+
+
+class UpdateSemiWasteForm(forms.ModelForm):
+    class Meta:
+        model = SemiWaste
+        fields = ("quantity", "approved_quantity", "comment")
+
+        widgets = {
+            "approved_quantity": forms.NumberInput(attrs={"style": "width: 10rem"}),
+            "comment": forms.Textarea(attrs={"rows": 3, "cols": 30}),
+            "quantity": forms.HiddenInput(),
+        }
+
+    quantity = forms.IntegerField(
+        required=False,
+        disabled=True,
+        widget=forms.HiddenInput(),
+    )
+
+    def clean(self):
+        cleaned_data = super().clean()
+        approved_quantity = cleaned_data.get("approved_quantity")
+        quantity = cleaned_data.get("quantity")
+        if approved_quantity and quantity and approved_quantity > quantity:
+            raise forms.ValidationError(
+                "Approved quantity cannot be greater than the maximum quantity."
+            )
+        return cleaned_data
 
 
 class SampleForm(forms.ModelForm):

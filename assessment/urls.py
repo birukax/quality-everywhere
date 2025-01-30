@@ -30,5 +30,9 @@ urlpatterns = [
     path("conformity/<int:id>/edit", views.edit_conformity, name="edit_conformity"),
     path("waste/save/<int:id>", views.create_waste, name="create_waste"),
     path("waste/list", views.waste_list, name="waste_list"),
+    path("semi-waste/list", views.semi_waste_list, name="semi_waste_list"),
+    path(
+        "semi-waste/update/<int:id>", views.update_semi_waste, name="update_semi_waste"
+    ),
     path("viscosity/save/<int:id>", views.save_viscosity, name="save_viscosity"),
 ]
