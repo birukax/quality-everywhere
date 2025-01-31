@@ -43,6 +43,9 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "session_security",
     "rest_framework",
+    "compressor",
+    "django.contrib.humanize",
+    "django_select2",
     "misc",
     "machine",
     "job",
@@ -50,8 +53,6 @@ INSTALLED_APPS = [
     "assessment",
     "account",
     "approval",
-    "compressor",
-    "django.contrib.humanize",
 ]
 
 MIDDLEWARE = [

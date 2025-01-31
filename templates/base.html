@@ -14,6 +14,10 @@
         </title>
         {% compress css %}
             <link rel="stylesheet" href="{% static 'src/output.css' %}">
+            <link rel="stylesheet"
+                  href="{% static 'django_select2/django_select2.css' %}" />
+            <link rel="stylesheet"
+                  href="{% static 'django_select2/django_select2.js' %}" />
         {% endcompress %}
     </head>
     <body>
@@ -22,5 +26,6 @@
             {% block content %}{% endblock %}
         </div>
         <script src="{% static 'flowbite/dist/flowbite.min.js' %}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     </body>
 </html>

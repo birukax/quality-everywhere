@@ -174,6 +174,63 @@ class Viscosity(models.Model):
         verbose_name_plural = "viscosities"
 
 
+class Lamination(models.Model):
+    ply_structure = models.PositiveIntegerField(default=2)
+    assessment = models.ForeignKey(
+        "assessment.Assessment",
+        on_delete=models.CASCADE,
+        related_name="laminations",
+    )
+    mechanism = models.CharField(
+        max_length=30,
+        choices=[("SOLVENTLESS", "SOLVENTLESS"), ("SOLVENT-BASED", "SOLVENT-BASED")],
+        null=True,
+    )
+    mixing_ratio = models.CharField(null=True, max_length=20)
+    adhesive = models.CharField(
+        max_length=50,
+        null=True,
+        blank=True,
+    )
+    adhesive_batch_no = models.CharField(
+        max_length=30,
+        null=True,
+        blank=True,
+    )
+    hardner = models.CharField(
+        max_length=50,
+        null=True,
+        blank=True,
+    )
+    hardner_batch_no = models.CharField(
+        max_length=30,
+        null=True,
+        blank=True,
+    )
+    supplier = models.CharField(
+        max_length=50,
+        null=True,
+        blank=True,
+    )
+
+
+class Substrate(models.Model):
+    lamination = models.ForeignKey(
+        Lamination,
+        on_delete=models.RESTRICT,
+        related_name="substrates",
+    )
+    raw_material = models.ForeignKey(
+        "misc.RawMaterial",
+        on_delete=models.CASCADE,
+    )
+    batch_no = models.CharField(
+        max_length=30,
+        null=True,
+        blank=True,
+    )
+
+
 class FirstOff(models.Model):
     assessment = models.ForeignKey(
         Assessment,

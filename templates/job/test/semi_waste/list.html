@@ -35,14 +35,14 @@
                         <th class="py-1 px-2 ">Tag No.</th>
                         <th class="py-1 px-2 ">Quantity</th>
                         <th class="py-1 px-2 ">Approved</th>
-                        <th class="py-1 px-2 ">Created By</th>
+                        <th class="py-1 px-2 ">By</th>
                     </tr>
                     {% for sw in semi_wastes %}
                         <tr class="text-left items-start border-y">
                             <td class="px-2 py-1 ">{{ sw.tag_no }}</td>
                             <td class="px-2 py-1 ">{{ sw.quantity|intcomma }}</td>
                             <td class="px-2 py-1 ">{{ sw.approved_quantity|intcomma }}</td>
-                            <td class="px-2 py-1 ">{{ sw.created_by }}</td>
+                            <td class="px-2 py-1 ">{{ sw.approved_by }}</td>
                         </tr>
                     {% endfor %}
                 </table>

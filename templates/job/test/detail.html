@@ -72,6 +72,15 @@
                         Next Machine
                     </a>
                 {% endif %}
+                {% if ready_to_finish %}
+                    <form method='post' action="{% url 'job:finish_test' job_test.id %}">
+                        {% csrf_token %}
+                        <button type="submit"
+                                class="text-white inline-flex items-center bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-1.5 text-center">
+                            Finish Test
+                        </button>
+                    </form>
+                {% endif %}
             </div>
             {% if job_test.artwork %}
                 <div class="mt-4 w-fit  items-center mx-auto">

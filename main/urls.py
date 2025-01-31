@@ -33,6 +33,7 @@ urlpatterns = [
     path("machine/", include("machine.urls")),
     path("assessment/", include("assessment.urls")),
     re_path(r"^session_security/", include("session_security.urls")),
+    path("select2/", include("django_select2.urls")),
 ]
 
 

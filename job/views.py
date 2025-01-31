@@ -1,19 +1,29 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
+from django.core.paginator import Paginator
 from .models import Job, JobTest
 from product.models import Artwork
 from machine.models import Route, MachineRoute
-from assessment.models import SemiWaste
+from assessment.models import SemiWaste, Assessment
 from .tasks import job_get
 from .forms import EditJobForm, CreateJobTestForm
+from .filters import JobFilter, JobTestFilter
 from assessment.forms import CreateSemiWasteForm
 
 
 @login_required
 def list(request):
     jobs = Job.objects.all()
-    context = {"jobs": jobs}
+    job_filter = JobFilter(request.GET, queryset=jobs)
+    jobs = job_filter.qs
+    paginated = Paginator(jobs, 20)
+    page_number = request.GET.get("page")
+    page = paginated.get_page(page_number)
+    context = {
+        "page": page,
+        "job_filter": job_filter,
+    }
     return render(request, "job/list.html", context)
 
 
@@ -30,6 +40,7 @@ def test_detail(request, id):
     first_off_ready = False
     on_process_ready = False
     next_machine = False
+    ready_to_finish = False
     job_test = get_object_or_404(JobTest, id=id)
     create_semi_waste_form = CreateSemiWasteForm()
     semi_wastes = SemiWaste.objects.filter(job_test=job_test)
@@ -39,10 +50,18 @@ def test_detail(request, id):
         on_process_ready = True
     if job_test.status in ("ON-PROCESS CREATED"):
         next_machine = True
+    open_semi_wastes = SemiWaste.objects.filter(job_test=job_test, status="OPEN")
+    if (
+        job_test.status == "COMPLETED"
+        and not open_semi_wastes.exists()
+        and job_test.current_machine == None
+    ):
+        ready_to_finish = True
     context["job_test"] = job_test
     context["next_machine"] = next_machine
     context["first_off_ready"] = first_off_ready
     context["on_process_ready"] = on_process_ready
+    context["ready_to_finish"] = ready_to_finish
     context["semi_wastes"] = semi_wastes
     context["form"] = create_semi_waste_form
     return render(request, "job/test/detail.html", context)
@@ -83,6 +102,27 @@ def next_machine(request, id):
         job_test.current_machine = None
         job_test.status = "COMPLETED"
         job_test.save()
+    return redirect("job:test_detail", id=job_test.id)
+
+
+def finish_test(request, id):
+    if request.method == "POST":
+        job_test = JobTest.objects.get(id=id)
+        open_semi_wastes = SemiWaste.objects.filter(job_test=job_test, status="OPEN")
+        if (
+            job_test.status == "COMPLETED"
+            and not open_semi_wastes.exists()
+            and job_test.current_machine == None
+        ):
+            on_processes = Assessment.objects.filter(
+                job_test=job_test, type="ON-PROCESS"
+            )
+            for op in on_processes:
+                op.status = "COMPLETED"
+                op.save()
+
+            job_test.status = "FINISHED"
+            job_test.save()
     return redirect("job:test_detail", id=job_test.id)
 
 

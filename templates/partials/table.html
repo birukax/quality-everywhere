@@ -2,13 +2,20 @@
 {% block content %}
   {% load static %}
   <div class="mt-6 w-full">
-    <div class="gap-4 ml-2 mb-2">
+    <div class="gap-4 ml-2 mb-2 flex">
       {% block buttons %}{% endblock %}
     </div>
     <div class="relative shadow-md sm:rounded-lg overflow-x-auto">
       <table class="w-full text-sm sm:text-base text-left text-gray-600 table-auto">
         {% block table %}{% endblock %}
       </table>
+      {% if page %}
+        {% include "partials/pagination.html" %}
+      {% else %}
+        <div class="w-full">
+          <p class="ml-2 sm:ml-8 md:ml-14 py-2">There's nothing here.</p>
+        </div>
+      {% endif %}
     </div>
   </div>
 {% endblock content %}
