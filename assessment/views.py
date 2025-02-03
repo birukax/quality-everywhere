@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.forms import modelformset_factory, formset_factory
+from django.core.paginator import Paginator
 from django.db.models import Sum
 from .models import (
     Test,
@@ -41,7 +42,13 @@ def first_off_list(request, status):
         )
     else:
         assessments = Assessment.objects.filter(type="FIRST-OFF", status=status)
-    context = {"assessments": assessments}
+    paginator = Paginator(assessments, 20)
+    page_number = request.GET.get("page")
+    page = paginator.get_page(page_number)
+
+    context = {
+        "page": page,
+    }
     return render(request, "first_off/list.html", context)
 
 
