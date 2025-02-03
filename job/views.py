@@ -22,7 +22,7 @@ def list(request):
     page = paginated.get_page(page_number)
     context = {
         "page": page,
-        "job_filter": job_filter,
+        "filter": job_filter,
     }
     return render(request, "job/list.html", context)
 
@@ -30,7 +30,16 @@ def list(request):
 @login_required
 def test_list(request):
     job_tests = JobTest.objects.all()
-    context = {"job_tests": job_tests}
+    job_test_filter = JobTestFilter(request.GET, queryset=job_tests)
+    job_tests = job_test_filter.qs
+    paginated = Paginator(job_tests, 20)
+    page_number = request.GET.get("page")
+    page = paginated.get_page(page_number)
+
+    context = {
+        "page": page,
+        "filter": job_test_filter,
+    }
     return render(request, "job/test/list.html", context)
 
 
