@@ -1,9 +1,10 @@
 from django_select2 import forms as s2forms
-from assessment.models import Assessment, Test, Conformity, Waste, SemiWaste, Viscosity
+from assessment.models import Test, Conformity
 from job.models import Job, JobTest
 from product.models import Product, Artwork
 from misc.models import ColorStandard, Color, Customer, RawMaterial, Shift
 from machine.models import Machine, Route
+from django.contrib.auth.models import User
 
 
 class ArtworkWidget(s2forms.ModelSelect2Widget):
@@ -50,6 +51,14 @@ class JobWidget(s2forms.ModelSelect2Widget):
     ]
 
 
+class JobTestWidget(s2forms.ModelSelect2Widget):
+    queryset = JobTest.objects.all()
+    search_fields = [
+        "job__no__icontains",
+        "id__contains",
+    ]
+
+
 class MachineWidget(s2forms.ModelSelect2Widget):
     queryset = Machine.objects.all()
     search_fields = [
@@ -92,4 +101,11 @@ class TestWidget(s2forms.ModelSelect2Widget):
     queryset = Test.objects.all()
     search_fields = [
         "name__icontains",
+    ]
+
+
+class UserWidget(s2forms.ModelSelect2Widget):
+    queryset = User.objects.all()
+    search_fields = [
+        "username__icontains",
     ]

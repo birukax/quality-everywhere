@@ -54,7 +54,6 @@ class Job(models.Model):
 
 
 class JobTest(models.Model):
-
     status = models.CharField(max_length=100, choices=STATUS, default="READY")
     job = models.ForeignKey(
         "job.Job", on_delete=models.CASCADE, related_name="job_tests"

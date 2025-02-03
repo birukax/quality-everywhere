@@ -1,6 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.core.paginator import Paginator
 from assessment.models import Assessment
 from .models import AssessmentApproval
+from .filters import AssessmentApprovalFilter
 
 
 def approvals(request):
@@ -30,7 +32,18 @@ def assessment_list(request, type):
     assessments = AssessmentApproval.objects.filter(
         status="PENDING", assessment__type=type
     )
-    context = {"assessments": assessments}
+    assessment_approval_filter = AssessmentApprovalFilter(
+        request.GET, queryset=assessments
+    )
+    assessments = assessment_approval_filter.qs
+    paginated = Paginator(assessments, 15)
+    page_number = request.GET.get("page")
+    page = paginated.get_page(page_number)
+
+    context = {
+        "page": page,
+        "filter": assessment_approval_filter,
+    }
     return render(request, "approval/assessment/list.html", context)
 
 

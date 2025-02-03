@@ -1,8 +1,11 @@
 {% extends "partials/table.html" %}
+{% block buttons %}
+    {% include 'approval/assessment/filter.html' %}
+{% endblock buttons %}
 {% block table %}
     <thead class="text-xs sm:text-sm text-gray-700 uppercase bg-gray-50">
         <tr>
-            <th scope="col" class="px-4 py-3">Product Name</th>
+            <th scope="col" class="px-4 py-3">Job Test</th>
             <th scope="col" class="px-4 py-3">Machine</th>
             <th scope="col" class="px-4 py-3">Shift</th>
             <th scope="col" class="px-4 py-3">Inspected by</th>
@@ -10,7 +13,7 @@
         </tr>
     </thead>
     <tbody>
-        {% for ass in assessments %}
+        {% for ass in page %}
             <tr class="odd:bg-white items-center odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b">
                 <th scope="row" class="px-4 py-3 font-medium text-gray-900 ">
                     <p>{{ ass.assessment.job_test }}</p>

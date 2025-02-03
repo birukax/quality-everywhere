@@ -1,4 +1,7 @@
 {% extends "partials/table.html" %}
+{% block buttons %}
+    {% include 'on_process/filter.html' %}
+{% endblock buttons %}
 {% block table %}
     <thead class="text-xs sm:text-sm text-gray-700 uppercase bg-gray-50">
         <tr>
@@ -10,7 +13,7 @@
         </tr>
     </thead>
     <tbody>
-        {% for a in assessments %}
+        {% for a in page %}
             <tr class="odd:bg-white  even:bg-gray-50  border-b">
                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 ">{{ a.job_test }}</th>
                 <td class="px-6 py-4">{{ a.machine }}</td>

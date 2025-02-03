@@ -1,12 +1,22 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.core.paginator import Paginator
 from .models import Product, Artwork
 from .tasks import product_get
 from .forms import AddArtworkForm, EditArtworkForm
+from .filters import ArtworkFilter, ProductFilter
 
 
 def list(request):
     products = Product.objects.all()
-    context = {"products": products}
+    product_filter = ProductFilter(request.GET, queryset=products)
+    products = product_filter.qs
+    paginated = Paginator(products, 20)
+    page_number = request.GET.get("page")
+    page = paginated.get_page(page_number)
+    context = {
+        "page": page,
+        "filter": product_filter,
+    }
     return render(request, "product/list.html", context)
 
 
@@ -27,7 +37,16 @@ def get(request):
 
 def artwork_list(request):
     artworks = Artwork.objects.all()
-    context = {"artworks": artworks}
+
+    artwork_filter = ArtworkFilter(request.GET, queryset=artworks)
+    artworks = artwork_filter.qs
+    paginated = Paginator(artworks, 20)
+    page_number = request.GET.get("page")
+    page = paginated.get_page(page_number)
+    context = {
+        "page": page,
+        "filter": artwork_filter,
+    }
     return render(request, "product/artwork/list.html", context)
 
 

@@ -17,7 +17,7 @@ from misc.models import ColorStandard, Color
 from job.models import JobTest
 from approval.models import AssessmentApproval
 from .tasks import test_create, test_edit, conformity_create, conformity_edit
-from django import forms
+from .filters import AssessmentFilter
 from .forms import (
     CreateTestForm,
     EditTestForm,
@@ -42,12 +42,15 @@ def first_off_list(request, status):
         )
     else:
         assessments = Assessment.objects.filter(type="FIRST-OFF", status=status)
+    assessment_filter = AssessmentFilter(request.GET, queryset=assessments)
+    assessments = assessment_filter.qs
     paginator = Paginator(assessments, 20)
     page_number = request.GET.get("page")
     page = paginator.get_page(page_number)
 
     context = {
         "page": page,
+        "filter": assessment_filter,
     }
     return render(request, "first_off/list.html", context)
 
@@ -60,7 +63,17 @@ def on_process_list(request, status):
         )
     else:
         assessments = Assessment.objects.filter(type="ON-PROCESS", status=status)
-    context = {"assessments": assessments}
+
+    assessment_filter = AssessmentFilter(request.GET, queryset=assessments)
+    assessments = assessment_filter.qs
+    paginator = Paginator(assessments, 20)
+    page_number = request.GET.get("page")
+    page = paginator.get_page(page_number)
+
+    context = {
+        "page": page,
+        "filter": assessment_filter,
+    }
     return render(request, "on_process/list.html", context)
 
 

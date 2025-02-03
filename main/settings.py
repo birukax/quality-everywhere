@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "compressor",
     "django.contrib.humanize",
     "django_select2",
+    "django_filters",
     "misc",
     "machine",
     "job",
