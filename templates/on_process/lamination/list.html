@@ -1,0 +1,113 @@
+<!-- Modal toggle -->
+<button data-modal-target="lamination-detail"
+        data-modal-toggle="lamination-detail"
+        class="block text-white bg-gray-500 hover:bg-gray-600 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-3 py-1.5 text-center "
+        type="button">Lamination Detail</button>
+<!-- Main modal -->
+<div id="lamination-detail"
+     tabindex="-1"
+     aria-hidden="true"
+     class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-full max-w-lg max-h-full">
+        <!-- Modal content -->
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <!-- Modal header -->
+            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Lamination Detail</h3>
+                <button type="button"
+                        class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                        data-modal-toggle="lamination-detail">
+                    <svg class="w-3 h-3"
+                         aria-hidden="true"
+                         xmlns="http://www.w3.org/2000/svg"
+                         fill="none"
+                         viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                    </svg>
+                    <span class="sr-only">Close modal</span>
+                </button>
+            </div>
+            <!-- Modal body -->
+            <div class="p-2 md:p-3">
+                <ul class="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
+                    <li class="pb-3 sm:pb-4">
+                        <div class="flex items-center justify-between">
+                            <div class="inline-flex  items-center text-base font-semibold text-gray-900 ">Ply Structure</div>
+                            <div class="flex-row text-right">
+                                <p class="text-base font-semibold truncate ">{{ lamination.ply_structure }}</p>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="pb-3 sm:pb-4">
+                        <div class="flex items-center justify-between">
+                            <div class="inline-flex  items-center text-base font-semibold text-gray-900 ">Mechanism</div>
+                            <div class="flex-row text-right">
+                                <p class="text-base font-semibold truncate ">{{ lamination.mechanism }}</p>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="pb-3 sm:pb-4">
+                        <div class="flex items-center justify-between">
+                            <div class="inline-flex  items-center text-base font-semibold text-gray-900 ">Supplier</div>
+                            <div class="flex-row text-right">
+                                <p class="text-base font-semibold truncate ">{{ lamination.supplier }}</p>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="pb-3 sm:pb-4">
+                        <div class="flex items-center justify-between">
+                            <div class="inline-flex  items-center text-base font-semibold text-gray-900 ">Mixing Ratio(Adhesive:Hardner)</div>
+                            <div class="flex-row text-right">
+                                <p class="text-base font-semibold truncate ">{{ lamination.mixing_ratio }}</p>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="pb-3 sm:pb-4">
+                        <div class="flex items-center justify-between">
+                            <div class="inline-flex  items-center text-base font-semibold text-gray-900 ">Adhesive</div>
+                            <div class="flex-row text-right">
+                                <p class="text-base font-semibold truncate ">{{ lamination.adhesive }}</p>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="pb-3 sm:pb-4">
+                        <div class="flex items-center justify-between">
+                            <div class="inline-flex  items-center text-base font-semibold text-gray-900 ">A. Batch No.</div>
+                            <div class="flex-row text-right">
+                                <p class="text-base font-semibold truncate ">{{ lamination.adhesive_batch_no }}</p>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="pb-3 sm:pb-4">
+                        <div class="flex items-center justify-between">
+                            <div class="inline-flex  items-center text-base font-semibold text-gray-900 ">Hardner</div>
+                            <div class="flex-row text-right">
+                                <p class="text-base font-semibold truncate ">{{ lamination.hardner }}</p>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="pb-3 sm:pb-4">
+                        <div class="flex items-center justify-between">
+                            <div class="inline-flex  items-center text-base font-semibold text-gray-900 ">H. Batch No.</div>
+                            <div class="flex-row text-right">
+                                <p class="text-base font-semibold truncate ">{{ lamination.hardner_batch_no }}</p>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <table class="w-full table table-auto ">
+                    <tr class="text-left uppercase text-sm">
+                        <th class="py-1 px-2 ">Substrate</th>
+                        <th class="py-1 px-2 ">Batch No.</th>
+                    </tr>
+                    {% for s in lamination.substrates.all %}
+                        <tr class="text-left items-start border-y">
+                            <td class="px-2 py-1 ">{{ s.raw_material.name }}</td>
+                            <td class="px-2 py-1 ">{{ s.batch_no }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

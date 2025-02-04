@@ -35,4 +35,7 @@ urlpatterns = [
         "semi-waste/update/<int:id>", views.update_semi_waste, name="update_semi_waste"
     ),
     path("viscosity/save/<int:id>", views.save_viscosity, name="save_viscosity"),
+    path(
+        "substrate/update/<int:id>", views.update_substrates, name="update_substrates"
+    ),
 ]

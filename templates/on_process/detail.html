@@ -19,6 +19,14 @@
                             <div>{% include 'on_process/viscosity/list.html' %}</div>
                         </div>
                     {% endif %}
+                    {% if assessment.machine.type == 'LAMINATION' %}
+                        <div class="flex flex-wrap gap-2 justify-end">
+                            {% if assessment.status == 'OPEN' or assessment.status == 'REJECTED' %}
+                                <div>{% include 'on_process/lamination/update.html' %}</div>
+                            {% endif %}
+                            <div>{% include 'on_process/lamination/list.html' %}</div>
+                        </div>
+                    {% endif %}
                     <div class="flex flex-wrap gap-2 justify-end">
                         {% if assessment.status == 'OPEN' or assessment.status == 'REJECTED' %}
                             <div>{% include 'on_process/conformity/create.html' %}</div>

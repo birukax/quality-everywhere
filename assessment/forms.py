@@ -8,6 +8,8 @@ from .models import (
     Waste,
     SemiWaste,
     Viscosity,
+    Lamination,
+    Substrate,
 )
 
 
@@ -171,3 +173,35 @@ class CreateViscosityForm(forms.Form):
         label="Viscosity Value",
         widget=forms.NumberInput(attrs={"style": "width: 7rem"}),
     )
+
+
+class CreateLaminationForm(forms.ModelForm):
+    class Meta:
+        model = Lamination
+        fields = (
+            "ply_structure",
+            "mechanism",
+            "mixing_ratio",
+            "supplier",
+            "adhesive",
+            "adhesive_batch_no",
+            "hardner",
+            "hardner_batch_no",
+        )
+
+    ply_structure = forms.IntegerField(
+        initial=2,
+        max_value=4,
+        min_value=2,
+        required=True,
+        widget=forms.NumberInput(attrs={"style": "width: 11rem"}),
+    )
+
+
+class LaminationSubstratesForm(forms.ModelForm):
+    class Meta:
+        model = Substrate
+        fields = (
+            "raw_material",
+            "batch_no",
+        )

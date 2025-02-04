@@ -16,6 +16,8 @@ from .models import (
     Waste,
     SemiWaste,
     Viscosity,
+    Lamination,
+    Substrate,
 )
 from .filters import (
     AssessmentFilter,
@@ -37,6 +39,8 @@ from .forms import (
     SampleForm,
     CreateViscosityForm,
     UpdateSemiWasteForm,
+    CreateLaminationForm,
+    LaminationSubstratesForm,
 )
 
 
@@ -67,7 +71,6 @@ def on_process_list(request, status):
         )
     else:
         assessments = Assessment.objects.filter(type="ON-PROCESS", status=status)
-
     assessment_filter = AssessmentFilter(request.GET, queryset=assessments)
     assessments = assessment_filter.qs
     page = get_page(request, model=assessments)
@@ -113,6 +116,7 @@ def on_process_detail(request, id):
     assessment = get_object_or_404(Assessment, id=id)
     edit_assessment_form = EditAssessmentForm(instance=assessment)
     color_standard = ColorStandard.objects.get(id=assessment.job_test.color_standard.id)
+    lamination = Lamination.objects.filter(assessment=assessment).first()
     colors = [
         {
             "color_id": color.id,
@@ -131,8 +135,16 @@ def on_process_detail(request, id):
     sample_form = SampleForm()
     viscosities_formset = formset_factory(form=CreateViscosityForm, extra=0)
     formset = viscosities_formset(initial=colors)
+    lamination_substrates_formset = modelformset_factory(
+        Substrate, form=LaminationSubstratesForm, extra=0
+    )
+    substrates_formset = lamination_substrates_formset(
+        queryset=Substrate.objects.filter(lamination=lamination)
+    )
     context = {
         "assessment": assessment,
+        "lamination": lamination,
+        "substrates_formset": substrates_formset,
         "color_standard": color_standard,
         "edit_assessment_form": edit_assessment_form,
         "create_waste_form": create_waste_form,
@@ -187,7 +199,8 @@ def create_on_process(request, id):
     job_test = JobTest.objects.get(id=id)
     if request.method == "POST":
         form = CreateAssessmentForm(request.POST)
-        if form.is_valid():
+        lamination_form = CreateLaminationForm(request.POST)
+        if form.is_valid() and lamination_form.is_valid():
             machine = job_test.current_machine
             assessment = Assessment(
                 job_test=job_test,
@@ -195,14 +208,25 @@ def create_on_process(request, id):
                 machine=machine,
                 type="ON-PROCESS",
             )
+
             if machine.tests:
                 assessment.save()
+                lamination = lamination_form.save(commit=False)
+                lamination.assessment = assessment
+                lamination.save()
+                ply_structure = lamination_form.cleaned_data["ply_structure"]
+                for p in range(0, ply_structure):
+                    substrate = Substrate(lamination=lamination)
+                    substrate.save()
                 assessment.job_test.status = "ON-PROCESS CREATED"
                 assessment.job_test.save()
                 return redirect("assessment:on_process_detail", id=assessment.id)
     else:
         form = CreateAssessmentForm()
+        lamination_form = CreateLaminationForm()
+
     context["form"] = form
+    context["lamination_form"] = lamination_form
     context["job_test"] = job_test
     return render(request, "on_process/create.html", context)
 
@@ -272,6 +296,21 @@ def save_viscosity(request, id):
                         created_by=request.user,
                     )
                     viscosity.save()
+        else:
+            print(formset.errors)
+    return redirect("assessment:on_process_detail", id=assessment.id)
+
+
+@login_required
+def update_substrates(request, id):
+    assessment = Assessment.objects.get(id=id)
+    if request.method == "POST":
+        substrates_formset = modelformset_factory(
+            Substrate, form=LaminationSubstratesForm, extra=0
+        )
+        formset = substrates_formset(request.POST)
+        if formset.is_valid():
+            formset.save()
         else:
             print(formset.errors)
     return redirect("assessment:on_process_detail", id=assessment.id)

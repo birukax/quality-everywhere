@@ -20,7 +20,6 @@ class ArtworkFilter(django_filters.FilterSet):
     )
 
     product = django_filters.CharFilter(
-        field_name="product",
         lookup_expr="exact",
         label="Product",
         widget=ProductWidget(),
@@ -33,7 +32,6 @@ class ProductFilter(django_filters.FilterSet):
         fields = ("id",)
 
     id = django_filters.CharFilter(
-        field_name="product",
         lookup_expr="exact",
         label="Product",
         widget=ProductWidget(),

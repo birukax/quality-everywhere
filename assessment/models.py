@@ -2,8 +2,8 @@ from django.db import models
 import datetime
 from django.contrib.auth.models import User
 from django.urls import reverse
-import django.utils
 import django.utils.timezone
+from .validators import validate_ratio_format
 
 
 class Assessment(models.Model):
@@ -17,7 +17,7 @@ class Assessment(models.Model):
         ("FIRST-OFF", "FIRST-OFF"),
         ("ON-PROCESS", "ON-PROCESS"),
     )
-    job_test = models.ForeignKey("job.JobTest", on_delete=models.CASCADE)
+    job_test = models.ForeignKey("job.JobTest", on_delete=models.RESTRICT)
     type = models.CharField(
         max_length=20,
         choices=TYPE,
@@ -26,12 +26,7 @@ class Assessment(models.Model):
     )
     date = models.DateField(default=datetime.datetime.now)
     time = models.TimeField(default=datetime.datetime.now)
-    shift = models.ForeignKey(
-        "misc.Shift",
-        on_delete=models.CASCADE,
-        null=True,
-        blank=True,
-    )
+    shift = models.ForeignKey("misc.Shift", on_delete=models.RESTRICT)
     machine = models.ForeignKey(
         "machine.Machine", on_delete=models.CASCADE, null=True, blank=True
     )
@@ -184,33 +179,22 @@ class Lamination(models.Model):
     mechanism = models.CharField(
         max_length=30,
         choices=[("SOLVENTLESS", "SOLVENTLESS"), ("SOLVENT-BASED", "SOLVENT-BASED")],
-        null=True,
     )
-    mixing_ratio = models.CharField(null=True, max_length=20)
+    mixing_ratio = models.CharField(max_length=20, validators=[validate_ratio_format])
     adhesive = models.CharField(
         max_length=50,
-        null=True,
-        blank=True,
     )
     adhesive_batch_no = models.CharField(
         max_length=30,
-        null=True,
-        blank=True,
     )
     hardner = models.CharField(
         max_length=50,
-        null=True,
-        blank=True,
     )
     hardner_batch_no = models.CharField(
         max_length=30,
-        null=True,
-        blank=True,
     )
     supplier = models.CharField(
         max_length=50,
-        null=True,
-        blank=True,
     )
 
 
@@ -223,6 +207,8 @@ class Substrate(models.Model):
     raw_material = models.ForeignKey(
         "misc.RawMaterial",
         on_delete=models.CASCADE,
+        null=True,
+        blank=True,
     )
     batch_no = models.CharField(
         max_length=30,
