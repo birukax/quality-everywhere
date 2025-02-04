@@ -1,18 +1,15 @@
 import django_filters
 from django_select2 import forms as s2forms
-from .models import Assessment, SemiWaste, Test, Conformity
+from .models import Assessment, Waste, SemiWaste, Test, Conformity
 from django import forms
 from main.custom_widgets import (
-    JobWidget,
     JobTestWidget,
-    CustomerWidget,
-    ProductWidget,
     MachineWidget,
-    RouteWidget,
-    ColorStandardWidget,
-    RawMaterialWidget,
     UserWidget,
     ShiftWidget,
+    SemiWasteWidget,
+    TestWidget,
+    ConformityWidget,
 )
 
 
@@ -35,12 +32,7 @@ class AssessmentFilter(django_filters.FilterSet):
     )
     date = django_filters.DateFromToRangeFilter(
         label="Date Range",
-        widget=django_filters.widgets.DateRangeWidget(
-            attrs={
-                "type": "date",
-                "placeholder": "YYYY/MM/DD",
-            }
-        ),
+        widget=django_filters.widgets.DateRangeWidget(attrs={"type": "date"}),
     )
     shift = django_filters.CharFilter(
         label="Shift",
@@ -56,4 +48,75 @@ class AssessmentFilter(django_filters.FilterSet):
         label="Inspected By",
         lookup_expr="exact",
         widget=UserWidget(),
+    )
+
+
+class SemiWasteFilter(django_filters.FilterSet):
+    class Meta:
+        model = SemiWaste
+        fields = (
+            "id",
+            "job_test",
+            "status",
+        )
+
+    id = django_filters.CharFilter(
+        label="Tag No.",
+        lookup_expr="exact",
+        widget=SemiWasteWidget(),
+    )
+    job_test = django_filters.CharFilter(
+        label="Job Test",
+        lookup_expr="exact",
+        widget=JobTestWidget(),
+    )
+
+
+class WasteFilter(django_filters.FilterSet):
+    class Meta:
+        model = Waste
+        fields = (
+            "assessment__job_test",
+            "machine",
+            "shift",
+        )
+
+    assessment__job_test = django_filters.CharFilter(
+        label="Job Test",
+        lookup_expr="exact",
+        widget=JobTestWidget(),
+    )
+    machine = django_filters.CharFilter(
+        label="Machine",
+        lookup_expr="exact",
+        widget=MachineWidget(),
+    )
+    shift = django_filters.CharFilter(
+        label="Shift",
+        lookup_expr="exact",
+        widget=ShiftWidget(),
+    )
+
+
+class TestFilter(django_filters.FilterSet):
+    class Meta:
+        model = Test
+        fields = ["id"]
+
+    id = django_filters.CharFilter(
+        label="Test Name",
+        lookup_expr="exact",
+        widget=TestWidget(),
+    )
+
+
+class ConformityFilter(django_filters.FilterSet):
+    class Meta:
+        model = Conformity
+        fields = ["id"]
+
+    id = django_filters.CharFilter(
+        label="Conformity",
+        lookup_expr="exact",
+        widget=ConformityWidget(),
     )

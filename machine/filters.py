@@ -8,13 +8,12 @@ class MachineFilter(django_filters.FilterSet):
     class Meta:
         model = Machine
         fields = (
-            "name",
+            "id",
             "type",
             "viscosity_test",
         )
 
-    name = django_filters.CharFilter(
-        field_name="name",
+    id = django_filters.CharFilter(
         lookup_expr="icontains",
         label="Machine Name",
         widget=MachineWidget(),
@@ -26,12 +25,11 @@ class RouteFilter(django_filters.FilterSet):
     class Meta:
         model = Route
         fields = (
-            "name",
+            "id",
             "active",
         )
 
-    name = django_filters.CharFilter(
-        field_name="name",
+    id = django_filters.CharFilter(
         lookup_expr="icontains",
         label="Route Name",
         widget=RouteWidget(),

@@ -1,5 +1,5 @@
 from django_select2 import forms as s2forms
-from assessment.models import Test, Conformity
+from assessment.models import Test, Conformity, SemiWaste
 from job.models import Job, JobTest
 from product.models import Product, Artwork
 from misc.models import ColorStandard, Color, Customer, RawMaterial, Shift
@@ -54,8 +54,8 @@ class JobWidget(s2forms.ModelSelect2Widget):
 class JobTestWidget(s2forms.ModelSelect2Widget):
     queryset = JobTest.objects.all()
     search_fields = [
+        "id__icontains",
         "job__no__icontains",
-        "id__contains",
     ]
 
 
@@ -89,6 +89,13 @@ class RawMaterialWidget(s2forms.ModelSelect2Widget):
     ]
 
 
+class SemiWasteWidget(s2forms.ModelSelect2Widget):
+    queryset = SemiWaste.objects.all()
+    search_fields = [
+        "tag_no__icontains",
+    ]
+
+
 class ShiftWidget(s2forms.ModelSelect2Widget):
     queryset = Shift.objects.all()
     search_fields = [
@@ -98,7 +105,7 @@ class ShiftWidget(s2forms.ModelSelect2Widget):
 
 
 class TestWidget(s2forms.ModelSelect2Widget):
-    queryset = Test.objects.all()
+    model = Test
     search_fields = [
         "name__icontains",
     ]

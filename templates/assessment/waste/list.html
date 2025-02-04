@@ -1,17 +1,18 @@
 {% extends "partials/table.html" %}
 {% block buttons %}
+    {% include 'partials/filter.html' %}
 {% endblock buttons %}
 {% block table %}
     <thead class="text-xs sm:text-sm text-gray-700 uppercase bg-gray-50">
         <tr>
-            <th scope="col" class="px-2 py-2 md:px-6 md:py-3 ">Job</th>
+            <th scope="col" class="px-2 py-2 md:px-6 md:py-3 ">Job Test</th>
             <th scope="col" class="px-2 py-2 md:px-6 md:py-3 ">Machine</th>
             <th scope="col" class="px-2 py-2 md:px-6 md:py-3 ">Shift</th>
             <th scope="col" class="px-2 py-2 md:px-6 md:py-3 ">Quantity</th>
         </tr>
     </thead>
     <tbody>
-        {% for w in wastes %}
+        {% for w in page %}
             <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b">
                 <td class=" px-2 py-2 md:px-6 md:py-3 capitalize">
                     <a href="{{ w.assessment.get_absolute_url }}" class="hover:underline">{{ w.assessment.job_test }}</a>

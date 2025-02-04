@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.core.paginator import Paginator
+from main.tasks import get_page
 from .models import Product, Artwork
 from .tasks import product_get
 from .forms import AddArtworkForm, EditArtworkForm
@@ -10,9 +10,8 @@ def list(request):
     products = Product.objects.all()
     product_filter = ProductFilter(request.GET, queryset=products)
     products = product_filter.qs
-    paginated = Paginator(products, 20)
-    page_number = request.GET.get("page")
-    page = paginated.get_page(page_number)
+    page = get_page(request, model=products)
+
     context = {
         "page": page,
         "filter": product_filter,
@@ -40,9 +39,8 @@ def artwork_list(request):
 
     artwork_filter = ArtworkFilter(request.GET, queryset=artworks)
     artworks = artwork_filter.qs
-    paginated = Paginator(artworks, 20)
-    page_number = request.GET.get("page")
-    page = paginated.get_page(page_number)
+    page = get_page(request, model=artworks)
+
     context = {
         "page": page,
         "filter": artwork_filter,

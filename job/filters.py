@@ -15,15 +15,14 @@ class JobFilter(django_filters.FilterSet):
     class Meta:
         model = Job
         fields = (
-            "no",
+            "id",
             "product",
             "customer",
             "route",
             "color_standard",
         )
 
-    no = django_filters.CharFilter(
-        field_name="no",
+    id = django_filters.CharFilter(
         lookup_expr="exact",
         label="Job",
         widget=JobWidget(),

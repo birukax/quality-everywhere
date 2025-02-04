@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.forms import modelformset_factory
-from django.core.paginator import Paginator
+from main.tasks import get_page
 from .models import Machine, Route, MachineRoute
 from .filters import MachineFilter, RouteFilter
 from .forms import (
@@ -19,9 +19,7 @@ def list(request):
         queryset=machines,
     )
     machines = machine_filter.qs
-    paginated = Paginator(machines, 15)
-    page_number = request.GET.get("page")
-    page = paginated.get_page(page_number)
+    page = get_page(request, model=machines)
 
     context = {
         "page": page,
@@ -68,9 +66,8 @@ def route_list(request):
         queryset=routes,
     )
     routes = route_filter.qs
-    paginated = Paginator(routes, 15)
-    page_number = request.GET.get("page")
-    page = paginated.get_page(page_number)
+    page = get_page(request, model=routes)
+
     create_route_form = CreateRouteForm()
     context = {
         "page": page,

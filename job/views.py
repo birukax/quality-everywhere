@@ -1,12 +1,12 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-from django.core.paginator import Paginator
 from .models import Job, JobTest
 from product.models import Artwork
 from machine.models import Route, MachineRoute
 from assessment.models import SemiWaste, Assessment
 from .tasks import job_get
+from main.tasks import get_page
 from .forms import EditJobForm, CreateJobTestForm
 from .filters import JobFilter, JobTestFilter
 from assessment.forms import CreateSemiWasteForm
@@ -17,9 +17,8 @@ def list(request):
     jobs = Job.objects.all()
     job_filter = JobFilter(request.GET, queryset=jobs)
     jobs = job_filter.qs
-    paginated = Paginator(jobs, 20)
-    page_number = request.GET.get("page")
-    page = paginated.get_page(page_number)
+    page = get_page(request, model=jobs)
+
     context = {
         "page": page,
         "filter": job_filter,
@@ -32,9 +31,7 @@ def test_list(request):
     job_tests = JobTest.objects.all()
     job_test_filter = JobTestFilter(request.GET, queryset=job_tests)
     job_tests = job_test_filter.qs
-    paginated = Paginator(job_tests, 20)
-    page_number = request.GET.get("page")
-    page = paginated.get_page(page_number)
+    page = get_page(request, model=job_tests)
 
     context = {
         "page": page,

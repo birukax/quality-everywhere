@@ -8,13 +8,12 @@ class ArtworkFilter(django_filters.FilterSet):
     class Meta:
         model = Artwork
         fields = (
-            "code",
+            "id",
             "product",
             "approved",
         )
 
-    code = django_filters.CharFilter(
-        field_name="code",
+    id = django_filters.CharFilter(
         lookup_expr="icontains",
         label="Artwork Code",
         widget=ArtworkWidget(),
@@ -31,12 +30,9 @@ class ArtworkFilter(django_filters.FilterSet):
 class ProductFilter(django_filters.FilterSet):
     class Meta:
         model = Product
-        fields = (
-            "no",
-            "name",
-        )
+        fields = ("id",)
 
-    product = django_filters.CharFilter(
+    id = django_filters.CharFilter(
         field_name="product",
         lookup_expr="exact",
         label="Product",

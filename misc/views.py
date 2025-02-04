@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Color, ColorStandard, Customer, RawMaterial, Shift
+from main.tasks import get_page
 from .tasks import (
     customer_get,
     raw_material_create,
@@ -10,6 +11,13 @@ from .tasks import (
     color_edit,
     color_standard_create,
     color_standard_edit,
+)
+from .filters import (
+    CustomerFilter,
+    ColorFilter,
+    ColorStandardFilter,
+    RawMaterialFilter,
+    ShiftFilter,
 )
 from .forms import (
     CreateRawMaterialForm,
@@ -25,7 +33,14 @@ from .forms import (
 
 def customer_list(request):
     customers = Customer.objects.all()
-    context = {"customers": customers}
+    customer_filter = CustomerFilter(request.GET, queryset=customers)
+    customers = customer_filter.qs
+    page = get_page(request, model=customers)
+
+    context = {
+        "page": page,
+        "filter": customer_filter,
+    }
     return render(request, "misc/customer/list.html", context)
 
 
@@ -36,7 +51,13 @@ def get_customers(request):
 
 def raw_material_list(request):
     raw_materials = RawMaterial.objects.all()
-    context = {"raw_materials": raw_materials}
+    raw_material_filter = RawMaterialFilter(request.GET, queryset=raw_materials)
+    raw_materials = raw_material_filter.qs
+    page = get_page(request, model=raw_materials)
+    context = {
+        "page": page,
+        "filter": raw_material_filter,
+    }
     return render(request, "misc/raw_material/list.html", context)
 
 
@@ -63,7 +84,13 @@ def edit_raw_material(request, id):
 
 def shift_list(request):
     shifts = Shift.objects.all()
-    context = {"shifts": shifts}
+    shift_filter = ShiftFilter(request.GET, queryset=shifts)
+    shifts = shift_filter.qs
+    page = get_page(request, model=shifts)
+    context = {
+        "page": page,
+        "filter": shift_filter,
+    }
     return render(request, "misc/shift/list.html", context)
 
 
@@ -90,7 +117,13 @@ def edit_shift(request, id):
 
 def color_list(request):
     colors = Color.objects.all()
-    context = {"colors": colors}
+    color_filter = ColorFilter(request.GET, queryset=colors)
+    colors = color_filter.qs
+    page = get_page(request, model=colors)
+    context = {
+        "page": page,
+        "filter": color_filter,
+    }
     return render(request, "misc/color/list.html", context)
 
 
@@ -117,7 +150,13 @@ def edit_color(request, id):
 
 def color_standard_list(request):
     color_standards = ColorStandard.objects.all()
-    context = {"color_standards": color_standards}
+    color_standard_filter = ColorStandardFilter(request.GET, queryset=color_standards)
+    color_standards = color_standard_filter.qs
+    page = get_page(request, model=color_standards)
+    context = {
+        "page": page,
+        "filter": color_standard_filter,
+    }
     return render(request, "misc/color_standard/list.html", context)
 
 

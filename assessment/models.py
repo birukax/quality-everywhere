@@ -141,7 +141,7 @@ class SemiWaste(models.Model):
         verbose_name_plural = "semi_wastes"
 
     def __str__(self):
-        return f"{self.job_test.job.no} - {self.tag_no}"
+        return f"{self.tag_no}"
 
 
 class Viscosity(models.Model):

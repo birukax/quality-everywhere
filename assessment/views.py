@@ -1,8 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.forms import modelformset_factory, formset_factory
-from django.core.paginator import Paginator
 from django.db.models import Sum
+from misc.models import ColorStandard, Color
+from job.models import JobTest
+from approval.models import AssessmentApproval
+from main.tasks import get_page
+from .tasks import test_create, test_edit, conformity_create, conformity_edit
 from .models import (
     Test,
     Conformity,
@@ -13,11 +17,13 @@ from .models import (
     SemiWaste,
     Viscosity,
 )
-from misc.models import ColorStandard, Color
-from job.models import JobTest
-from approval.models import AssessmentApproval
-from .tasks import test_create, test_edit, conformity_create, conformity_edit
-from .filters import AssessmentFilter
+from .filters import (
+    AssessmentFilter,
+    SemiWasteFilter,
+    WasteFilter,
+    ConformityFilter,
+    TestFilter,
+)
 from .forms import (
     CreateTestForm,
     EditTestForm,
@@ -44,9 +50,7 @@ def first_off_list(request, status):
         assessments = Assessment.objects.filter(type="FIRST-OFF", status=status)
     assessment_filter = AssessmentFilter(request.GET, queryset=assessments)
     assessments = assessment_filter.qs
-    paginator = Paginator(assessments, 20)
-    page_number = request.GET.get("page")
-    page = paginator.get_page(page_number)
+    page = get_page(request, model=assessments)
 
     context = {
         "page": page,
@@ -66,9 +70,7 @@ def on_process_list(request, status):
 
     assessment_filter = AssessmentFilter(request.GET, queryset=assessments)
     assessments = assessment_filter.qs
-    paginator = Paginator(assessments, 20)
-    page_number = request.GET.get("page")
-    page = paginator.get_page(page_number)
+    page = get_page(request, model=assessments)
 
     context = {
         "page": page,
@@ -292,7 +294,17 @@ def create_waste(request, id):
 @login_required
 def test_list(request):
     tests = Test.objects.all()
-    context = {"tests": tests}
+    test_filter = TestFilter(
+        request.GET,
+        queryset=tests,
+    )
+    tests = test_filter.qs
+    page = get_page(request, model=tests)
+
+    context = {
+        "page": page,
+        "filter": test_filter,
+    }
     return render(request, "assessment/test/list.html", context)
 
 
@@ -322,7 +334,14 @@ def edit_test(request, id):
 @login_required
 def conformity_list(request):
     conformities = Conformity.objects.all()
-    context = {"conformities": conformities}
+    conformity_filter = ConformityFilter(request.GET, queryset=conformities)
+    conformities = conformity_filter.qs
+    page = get_page(request, model=conformities)
+
+    context = {
+        "page": page,
+        "filter": conformity_filter,
+    }
     return render(request, "assessment/conformity/list.html", context)
 
 
@@ -352,14 +371,33 @@ def edit_conformity(request, id):
 @login_required
 def waste_list(request):
     wastes = Waste.objects.all()
-    context = {"wastes": wastes}
+    waste_filter = WasteFilter(
+        request.GET,
+        queryset=wastes,
+    )
+    wastes = waste_filter.qs
+    page = get_page(request, model=wastes)
+    context = {
+        "page": page,
+        "filter": waste_filter,
+    }
     return render(request, "assessment/waste/list.html", context)
 
 
 @login_required
 def semi_waste_list(request):
     semi_wastes = SemiWaste.objects.all()
-    context = {"semi_wastes": semi_wastes}
+    semi_waste_filter = SemiWasteFilter(
+        request.GET,
+        queryset=semi_wastes,
+    )
+    semi_wastes = semi_waste_filter.qs
+    page = get_page(request, model=semi_wastes)
+
+    context = {
+        "page": page,
+        "filter": semi_waste_filter,
+    }
     return render(request, "assessment/semi_waste/list.html", context)
 
 
