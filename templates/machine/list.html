@@ -4,6 +4,7 @@
        class="text-white inline-flex items-center bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-3 py-1.5 text-center">
         Create
     </a>
+    {% include 'partials/filter.html' %}
 {% endblock buttons %}
 {% block table %}
     <thead class="text-xs sm:text-sm text-gray-700 uppercase bg-gray-50">
@@ -17,7 +18,7 @@
         </tr>
     </thead>
     <tbody>
-        {% for m in machines %}
+        {% for m in page %}
             <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b">
                 <th scope="row" class="px-5 py-3 font-medium text-gray-900 ">
                     <p>{{ m.name }}</p>

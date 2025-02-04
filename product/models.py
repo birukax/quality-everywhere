@@ -51,7 +51,7 @@ class Artwork(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.file.name
+        return f"{self.code} ({self.product.name})"
 
     class Meta:
         ordering = ["-id"]
