@@ -18,9 +18,17 @@ class CreateIssueForm(forms.ModelForm):
     class Meta:
         model = Issue
         fields = ("issue_type", "location", "description")
+        widgets = {
+            "issue_type": forms.Select(attrs={"class": "w-full h-12"}),
+            "location": forms.Select(attrs={"class": "w-full h-12"}),
+            "description": forms.Textarea(attrs={"class": "w-full h-12"}),
+        }
 
 
 class CreateRemarkForm(forms.ModelForm):
     class Meta:
         model = Remark
         fields = ("text",)
+        widgets = {
+            "text": forms.Textarea(attrs={"class": "w-full h-12"}),
+        }

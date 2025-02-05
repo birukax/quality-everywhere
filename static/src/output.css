@@ -1148,6 +1148,11 @@ input:checked + .toggle-bg {
   margin-right: auto;
 }
 
+.my-2 {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
 .my-4 {
   margin-top: 1rem;
   margin-bottom: 1rem;
@@ -1191,6 +1196,10 @@ input:checked + .toggle-bg {
 
 .ms-3 {
   margin-inline-start: 0.75rem;
+}
+
+.ms-5 {
+  margin-inline-start: 1.25rem;
 }
 
 .ms-auto {
@@ -1733,6 +1742,46 @@ input:checked + .toggle-bg {
   background-color: rgb(249 250 251 / var(--tw-bg-opacity, 1)) !important;
 }
 
+.bg-ACCEPTED {
+  --tw-bg-opacity: 1;
+  background-color: rgb(17 138 178 / var(--tw-bg-opacity, 1));
+}
+
+.bg-CANCELLED {
+  --tw-bg-opacity: 1;
+  background-color: rgb(173 40 49 / var(--tw-bg-opacity, 1));
+}
+
+.bg-COMPLETED {
+  --tw-bg-opacity: 1;
+  background-color: rgb(0 128 0 / var(--tw-bg-opacity, 1));
+}
+
+.bg-CREATED {
+  --tw-bg-opacity: 1;
+  background-color: rgb(6 214 160 / var(--tw-bg-opacity, 1));
+}
+
+.bg-IN-PROGRESS {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 209 102 / var(--tw-bg-opacity, 1));
+}
+
+.bg-INCOMPLETE {
+  --tw-bg-opacity: 1;
+  background-color: rgb(214 40 40 / var(--tw-bg-opacity, 1));
+}
+
+.bg-PENDING {
+  --tw-bg-opacity: 1;
+  background-color: rgb(252 163 17 / var(--tw-bg-opacity, 1));
+}
+
+.bg-REJECTED {
+  --tw-bg-opacity: 1;
+  background-color: rgb(173 40 49 / var(--tw-bg-opacity, 1));
+}
+
 .bg-blue-700 {
   --tw-bg-opacity: 1;
   background-color: rgb(26 86 219 / var(--tw-bg-opacity, 1));
@@ -1984,6 +2033,10 @@ input:checked + .toggle-bg {
   text-transform: uppercase;
 }
 
+.lowercase {
+  text-transform: lowercase;
+}
+
 .capitalize {
   text-transform: capitalize;
 }
@@ -2002,6 +2055,10 @@ input:checked + .toggle-bg {
 
 .tracking-tight {
   letter-spacing: -0.025em;
+}
+
+.tracking-wider {
+  letter-spacing: 0.05em;
 }
 
 .text-blue-600 {
@@ -2153,6 +2210,14 @@ input:checked + .toggle-bg {
 
 .ease-out {
   transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+}
+
+.first-letter\:uppercase::first-letter {
+  text-transform: uppercase;
+}
+
+.first-letter\:capitalize::first-letter {
+  text-transform: capitalize;
 }
 
 .odd\:bg-white:nth-child(odd) {
@@ -2441,6 +2506,10 @@ input:checked + .toggle-bg {
 }
 
 @media (min-width: 640px) {
+  .sm\:col-span-2 {
+    grid-column: span 2 / span 2;
+  }
+
   .sm\:ml-64 {
     margin-left: 16rem;
   }

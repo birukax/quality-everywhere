@@ -7,17 +7,33 @@ class Location(models.Model):
     name = models.CharField(max_length=100, unique=True)
     active = models.BooleanField(default=True)
 
+    class Meta:
+        ordering = ["name"]
+
+    def __str__(self):
+        return f"{self.name}"
+
 
 class IssueType(models.Model):
     name = models.CharField(max_length=100, unique=True)
     active = models.BooleanField(default=True)
 
+    class Meta:
+        ordering = ["name"]
+
+    def __str__(self):
+        return f"{self.name}"
+
 
 class Issue(models.Model):
     STATUS = (
         ("CREATED", "CREATED"),
-        ("PENDING", "PENDING"),
+        ("CANCELLED", "CANCELLED"),
+        ("ACCEPTED", "ACCEPTED"),
         ("REJECTED", "REJECTED"),
+        ("IN-PROGRESS", "IN-PROGRESS"),
+        ("PENDING", "PENDING"),
+        ("INCOMPLETE", "INCOMPLETE"),
         ("COMPLETED", "COMPLETED"),
     )
     TYPE = (
@@ -53,6 +69,9 @@ class Issue(models.Model):
     def __str__(self):
         return f"{self.issue_type} - {self.location}"
 
+    class Meta:
+        ordering = ["created_at"]
+
 
 class Remark(models.Model):
     issue = models.ForeignKey(Issue, on_delete=models.RESTRICT, related_name="remarks")
@@ -62,3 +81,9 @@ class Remark(models.Model):
     created_by = models.ForeignKey(
         User, on_delete=models.RESTRICT, related_name="remarks"
     )
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"{self.issue}"

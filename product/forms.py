@@ -7,7 +7,7 @@ class AddArtworkForm(forms.ModelForm):
         model = Artwork
         fields = ("file", "code", "approved", "remark")
         widgets = {
-            "remark": forms.Textarea(attrs={"rows": "3"}),
+            "remark": forms.Textarea(attrs={"class": "w-full h-12"}),
         }
 
 

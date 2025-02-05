@@ -73,7 +73,7 @@ class OnProcessConformitiesForm(forms.ModelForm):
             "conformity": forms.Select(attrs={"style": "width: 10rem"}),
             "time": forms.TimeInput(attrs={"type": "time"}),
             "sample_no": forms.TextInput(attrs={"style": "width: 10rem"}),
-            "action": forms.Textarea(attrs={"rows": 3, "cols": 36}),
+            "action": forms.Textarea(attrs={"class": "w-full h-12 grow"}),
         }
 
 
@@ -114,7 +114,7 @@ class CreateSemiWasteForm(forms.ModelForm):
         widgets = {
             "tag_no": forms.TextInput(attrs={"style": "width: 12rem"}),
             "quantity": forms.NumberInput(attrs={"style": "width: 12rem"}),
-            "remark": forms.Textarea(attrs={"rows": 3, "cols": 30}),
+            "remark": forms.Textarea(attrs={"class": "w-full h-12"}),
         }
 
 
@@ -125,7 +125,7 @@ class UpdateSemiWasteForm(forms.ModelForm):
 
         widgets = {
             "approved_quantity": forms.NumberInput(attrs={"style": "width: 10rem"}),
-            "comment": forms.Textarea(attrs={"rows": 3, "cols": 30}),
+            "comment": forms.Textarea(attrs={"class": "w-full h-12"}),
             "quantity": forms.HiddenInput(),
         }
 
