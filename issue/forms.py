@@ -5,13 +5,13 @@ from .models import Location, IssueType, Issue, Remark
 class CreateLocationForm(forms.ModelForm):
     class Meta:
         model = Location
-        field = ("name",)
+        fields = ("name",)
 
 
 class CreateIssueTypeForm(forms.ModelForm):
     class Meta:
         model = IssueType
-        field = ("name",)
+        fields = ("name",)
 
 
 class CreateIssueForm(forms.ModelForm):

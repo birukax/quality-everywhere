@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from django.contrib.auth.models import User
 
 
@@ -45,6 +46,9 @@ class Issue(models.Model):
     created_by = models.ForeignKey(
         User, on_delete=models.RESTRICT, related_name="issues"
     )
+
+    def get_absolute_url(self):
+        return reverse("issue:detail", args={self.id})
 
     def __str__(self):
         return f"{self.issue_type} - {self.location}"

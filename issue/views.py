@@ -21,6 +21,15 @@ def list(request):
 
 
 @login_required
+def detail(request, id):
+    issue = get_object_or_404(Issue, id=id)
+    context = {
+        "issue": issue,
+    }
+    return render(request, "issue/detail.html", context)
+
+
+@login_required
 def create(request):
     if request.method == "POST":
         form = CreateIssueForm(request.POST)
