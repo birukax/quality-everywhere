@@ -2,9 +2,9 @@
 {% block content %}
     <div class="mx-auto ">
         <div class="w-full p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6">
-            <div class="flex justify-between">
-                <h5 class="mb-3 text-base font-semibold text-gray-800 md:text-xl ">Issue Detail</h5>
-                <div class="flex gap-4">
+            <h5 class="mb-3 text-base font-semibold text-gray-800 md:text-xl tracking-wider uppercase ">Issue Detail</h5>
+            <div class="flex place-content-end">
+                <div class="flex flex-wrap gap-4  ">
                     {% if issue.status == 'CREATED' %}
                         <div>{% include 'issue/action/form.html' with id=issue.id action='ACCEPT' %}</div>
                         <div>{% include 'issue/action/form.html' with id=issue.id action='REJECT' %}</div>
@@ -26,7 +26,7 @@
                     <li class=" rounded-lg">
                         <a class="flex items-center p-3 text-sm md:text-base font-bold text-gray-900 ">
                             <span class="flex-1 ms-3 whitespace-nowrap">Status</span>
-                            <span class="inline-flex items-center justify-center px-3 py-1 ms-3 text-xs md:text-sm font-semibold text-gray-700 {% if status == 'CREATED' %}bg-CREATED {% elif status == 'CANCELLED' %}bg-CANCELLED {% elif status == 'ACCEPTED' %}bg-ACCEPTED {% elif status == 'REJECTED' %}bg-REJECTED{% elif status == 'IN-PROGRESS' %}bg-IN-PROGRESS{% elif status == 'PENDING' %}bg-PENDING{% elif status == 'INCOMPLETE' %}bg-INCOMPLETE{% elif status == 'COMPLETED' %}bg-COMPLETED {% endif %}text-white rounded">{{ issue.status }}</span>
+                            <span class="inline-flex items-center justify-center px-4 py-1.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 {% if status == 'CREATED' %}bg-CREATED {% elif status == 'CANCELLED' %}bg-CANCELLED {% elif status == 'ACCEPTED' %}bg-ACCEPTED {% elif status == 'REJECTED' %}bg-REJECTED{% elif status == 'IN-PROGRESS' %}bg-IN-PROGRESS{% elif status == 'PENDING' %}bg-PENDING{% elif status == 'INCOMPLETE' %}bg-INCOMPLETE{% elif status == 'COMPLETED' %}bg-COMPLETED {% endif %}text-white rounded">{{ issue.status }}</span>
                         </a>
                         <a class="flex items-center p-3 text-sm md:text-base font-bold text-gray-900 ">
                             <span class="flex-1 ms-3 whitespace-nowrap">Remark</span>
@@ -71,7 +71,7 @@
                 {% if issue.status == 'OPEN' or issue.status == 'REJECTED' %}
                     {% if can_submit %}
                         <a href="{% url 'approval:create_issue_approval' issue.id %}"
-                           class="text-white inline-flex items-center bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-3 py-1.5 text-center">
+                           class="text-white inline-flex items-center bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg uppercase text-xs tracking-widest  px-4 py-1.5 text-center">
                             Submit
                         </a>
                     {% endif %}

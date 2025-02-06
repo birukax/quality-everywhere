@@ -1,7 +1,7 @@
 <!-- Modal toggle -->
 <button data-modal-target="{{ action }}-modal"
         data-modal-toggle="{{ action }}-modal"
-        class="block lowercase first-letter:capitalize whitespace-nowrap text-white {% if action == 'ACCEPT' %}bg-ACCEPTED {% elif action == 'CANCEL' %}bg-CANCELLED {% elif action == 'REJECT' %}bg-REJECTED{% elif action == 'START' %}bg-IN-PROGRESS{% elif action == 'CLOSE' %}bg-PENDING{% elif action == 'REJECT' and request.user == issue.created_by %}bg-INCOMPLETE{% elif action == 'APPROVE' and request.user == issue.created_by %}bg-COMPLETED{% endif %} focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg  px-4 py-1 text-center "
+        class="block lowercase first-letter:capitalize whitespace-nowrap text-white {% if action == 'ACCEPT' %}bg-ACCEPTED {% elif action == 'CANCEL' %}bg-CANCELLED {% elif action == 'REJECT' %}bg-REJECTED{% elif action == 'START' %}bg-IN-PROGRESS text-black{% elif action == 'CLOSE' %}bg-PENDING{% elif action == 'REJECT' and request.user == issue.created_by %}bg-INCOMPLETE{% elif action == 'APPROVE' and request.user == issue.created_by %}bg-COMPLETED{% endif %} focus:ring-4 focus:outline-none focus:ring-gray-300 rounded-lg uppercase  text-sm tracking-wider  px-4 py-1.5 text-center "
         type="button">{{ action }}</button>
 <!-- Main modal -->
 <div id="{{ action }}-modal"
@@ -53,7 +53,7 @@
                 </div>
                 <div class="text-lg font-semibold flex gap-6 text-cyan-900 items-center">
                     <button type="submit"
-                            class="text-white   inline-flex items-center {% if action == 'ACCEPT' %}bg-ACCEPTED {% elif action == 'CANCEL' %}bg-CANCELLED {% elif action == 'REJECT' %}bg-REJECTED{% elif action == 'START' %}bg-IN-PROGRESS{% elif action == 'CLOSE' %}bg-PENDING{% elif action == 'REJECT' and request.user == issue.created_by %}bg-INCOMPLETE{% elif action == 'APPROVE' and request.user == issue.created_by %}bg-COMPLETED{% endif %} focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-1 text-center">
+                            class="text-white   inline-flex items-center {% if action == 'ACCEPT' %}bg-ACCEPTED {% elif action == 'CANCEL' %}bg-CANCELLED {% elif action == 'REJECT' %}bg-REJECTED{% elif action == 'START' %}bg-IN-PROGRESS text-black{% elif action == 'CLOSE' %}bg-PENDING{% elif action == 'REJECT' and request.user == issue.created_by %}bg-INCOMPLETE{% elif action == 'APPROVE' and request.user == issue.created_by %}bg-COMPLETED{% endif %} focus:ring-4 focus:outline-none focus:ring-gray-300 rounded-lg uppercase  text-sm tracking-wider  px-4 py-1.5 text-center">
                         <p class="lowercase first-letter:uppercase">{{ action }}</p>
                     </button>
                 </div>

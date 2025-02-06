@@ -1,7 +1,7 @@
 <!-- Modal toggle -->
 <button data-modal-target="on-process-approval-detail-{{ ass.id }}"
         data-modal-toggle="on-process-approval-detail-{{ ass.id }}"
-        class="block text-white bg-gray-700 hover:bg-gray-800 focus:ring-1 focus:outline-none focus:ring-gray-300 font-medium rounded-md text-sm px-4 py-1 text-center "
+        class="block text-white bg-gray-700 hover:bg-gray-800 focus:ring-1 focus:outline-none focus:ring-gray-300 font-medium rounded-md uppercase text-xs tracking-widest  px-4 py-1.5 text-center "
         type="button">Detail</button>
 <!-- Main modal -->
 <div id="on-process-approval-detail-{{ ass.id }}"
@@ -30,7 +30,7 @@
             <!-- Modal body -->
             <div class="flex gap-4 ml-2 mt-2">
                 <a href="{% url 'approval:approve_assessment' ass.id %}"
-                   class="inline-flex items-center px-3 py-1 text-sm font-medium text-center text-white rounded-md bg-gray-700 hover:bg-gray-800 focus:ring-2 focus:outline-none focus:ring-gray-300 ">
+                   class="inline-flex items-center uppercase text-xs tracking-widest  px-4 py-1.5 font-medium text-center text-white rounded-md bg-gray-700 hover:bg-gray-800 focus:ring-2 focus:outline-none focus:ring-gray-300 ">
                     Approve
                     <svg class="w-4 h-4 ml-1 text-white"
                          aria-hidden="true"
@@ -43,7 +43,7 @@
                     </svg>
                 </a>
                 <a href="{% url 'approval:reject_assessment' ass.id %}"
-                   class="inline-flex text-gray-800 items-center px-3 py-1 text-sm font-medium text-center rounded-md bg-gray-200 hover:bg-gray-300 focus:ring-2 focus:outline-none focus:ring-gray-300 ">
+                   class="inline-flex text-gray-800 items-center uppercase text-xs tracking-widest  px-4 py-1.5 font-medium text-center rounded-md bg-gray-200 hover:bg-gray-300 focus:ring-2 focus:outline-none focus:ring-gray-300 ">
                     Reject
                     <svg class="w-4 h-4 ml-1"
                          aria-hidden="true"

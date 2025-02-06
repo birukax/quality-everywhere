@@ -1,7 +1,7 @@
 <!-- Modal toggle -->
 <button data-modal-target="color_standard-detail-{{ cs.id }}"
         data-modal-toggle="color_standard-detail-{{ cs.id }}"
-        class="block text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-3 py-1 text-center "
+        class="block text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg uppercase text-xs tracking-widest  px-4 py-1.5 text-center "
         type="button">Detail</button>
 <!-- Main modal -->
 <div id="color_standard-detail-{{ cs.id }}"
@@ -51,7 +51,7 @@
                 </ul>
                 <div class="text-right">
                     <a href="{% url 'misc:edit_color_standard' cs.id %}"
-                       class="text-white inline-flex items-center bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-3 py-1 text-center">
+                       class="text-white inline-flex items-center bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg uppercase text-xs tracking-widest  px-4 py-1.5 text-center">
                         Edit
                     </a>
                 </div>
