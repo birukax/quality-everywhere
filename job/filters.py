@@ -2,6 +2,7 @@ import django_filters
 from .models import Job, JobTest
 from main.custom_widgets import (
     JobWidget,
+    JobTestWidget,
     CustomerWidget,
     ProductWidget,
     MachineWidget,
@@ -53,14 +54,20 @@ class JobTestFilter(django_filters.FilterSet):
     class Meta:
         model = JobTest
         fields = (
-            "status",
+            "id",
             "job",
+            "status",
             "current_machine",
             "raw_material",
             "route",
             "color_standard",
         )
 
+    id = django_filters.CharFilter(
+        lookup_expr="exact",
+        label="Test",
+        widget=JobTestWidget(),
+    )
     job = django_filters.CharFilter(
         field_name="job",
         lookup_expr="exact",

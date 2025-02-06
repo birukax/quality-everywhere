@@ -55,7 +55,6 @@ class JobTestWidget(s2forms.ModelSelect2Widget):
     queryset = JobTest.objects.all()
     search_fields = [
         "id__icontains",
-        "job__no__icontains",
     ]
 
 

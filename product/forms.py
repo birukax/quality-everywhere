@@ -5,9 +5,12 @@ from .models import Artwork
 class AddArtworkForm(forms.ModelForm):
     class Meta:
         model = Artwork
-        fields = ("file", "code", "approved", "remark")
+        fields = ("file", "approved", "code", "remark")
         widgets = {
-            "remark": forms.Textarea(attrs={"class": "w-full h-12"}),
+            "file": forms.FileInput(attrs={"class": "w-full text-center h-8"}),
+            "code": forms.TextInput(attrs={"class": "w-full text-center h-8"}),
+            "approved": forms.CheckboxInput(attrs={"class": "w-4 h-4"}),
+            "remark": forms.Textarea(attrs={"class": "w-full", "rows": "3"}),
         }
 
 

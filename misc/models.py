@@ -10,7 +10,7 @@ class Customer(models.Model):
         return self.name
 
     class Meta:
-        ordering = ["-id"]
+        ordering = ["name"]
 
 
 class ColorStandard(models.Model):
@@ -21,6 +21,9 @@ class ColorStandard(models.Model):
         related_name="color_standards",
     )
 
+    class Meta:
+        ordering = ["name"]
+
     def __str__(self):
         return self.name
 
@@ -30,6 +33,9 @@ class Color(models.Model):
     viscosity = models.FloatField(default=0)
     code = models.CharField(max_length=100, unique=True)
 
+    class Meta:
+        ordering = ["name"]
+
     def __str__(self):
         return f"{self.name}-{self.code}"
 
@@ -38,6 +44,9 @@ class RawMaterial(models.Model):
     no = models.CharField(max_length=100)
     name = models.CharField(max_length=100)
 
+    class Meta:
+        ordering = ["name"]
+
     def __str__(self):
         return self.name
 
@@ -45,6 +54,9 @@ class RawMaterial(models.Model):
 class Shift(models.Model):
     code = models.CharField(max_length=100)
     name = models.CharField(max_length=100)
+
+    class Meta:
+        ordering = ["name"]
 
     def __str__(self):
         return self.name

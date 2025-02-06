@@ -6,7 +6,9 @@
               action="{% url 'product:add_artwork' product.id %}"
               enctype="multipart/form-data">
             {% csrf_token %}
-            <p class="text-xl font-semibold">{{ product }}</p>
+            <p class="text-xl font-semibold">
+                <span class="font-normal">Add Artwork -></span> {{ product }}
+            </p>
             <div class="grid grid-cols-1 gap-2 mb-4">
                 <p class="text-red-700 text-sm">
                     {% if form.non_field_errors %}{{ form.non_field_errors|join:", " }}{% endif %}

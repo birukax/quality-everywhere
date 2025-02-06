@@ -3,7 +3,7 @@ import datetime
 from django.contrib.auth.models import User
 from django.urls import reverse
 import django.utils.timezone
-from .validators import validate_ratio_format
+from main.validators import validate_ratio_format
 
 
 class Assessment(models.Model):
@@ -250,7 +250,7 @@ class OnProcess(models.Model):
         null=True,
         blank=True,
     )
-    date = models.DateField(default=datetime.datetime.today)
+    date = models.DateField(default=datetime.datetime.now)
     time = models.TimeField(default=datetime.datetime.now)
     sample_no = models.CharField(
         max_length=30,

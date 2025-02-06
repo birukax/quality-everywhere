@@ -8,15 +8,18 @@
         <meta name="description"
               content="{% block meta_description %}{% endblock %}">
         <meta name="keywords" content="{% block meta_keywords %}{% endblock %}">
-        <title>
-            {% block title %}{% endblock %}
-        </title>
+        <title>Quality Everywhere</title>
         {% compress css %}
             <link rel="stylesheet" href="{% static 'src/output.css' %}">
         {% endcompress %}
     </head>
     <body>
         <div class="container mx-auto max-w-xl mt-2 md:mt-6">
+            <div class="place-content-center p-2 sm:p-4">
+                <p class="  text-lg font-semibold text-gray-800 md:text-xl tracking-wider uppercase">
+                    {% block title %}{% endblock %}
+                </p>
+            </div>
             {% block form %}{% endblock %}
         </div>
         <script src="{% static 'flowbite/dist/flowbite.min.js' %}"></script>

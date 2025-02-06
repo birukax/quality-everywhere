@@ -22,24 +22,34 @@ class CreateAssessmentForm(forms.ModelForm):
             "shift",
         )
         widgets = {
-            "date": forms.DateInput(attrs={"type": "date"}),
-            "time": forms.TimeInput(attrs={"type": "time"}),
+            "date": forms.DateInput(
+                attrs={
+                    "type": "date",
+                    "class": "w-full items-center text-center h-auto",
+                }
+            ),
+            "time": forms.TimeInput(
+                attrs={
+                    "type": "time",
+                    "class": "w-full items-center text-center h-auto",
+                }
+            ),
+            "shift": forms.Select(
+                attrs={"class": "w-full items-center text-center h-auto"}
+            ),
         }
 
 
 class EditAssessmentForm(forms.ModelForm):
     class Meta:
         model = Assessment
-        fields = (
-            # "date",
-            # "time",
-            "shift",
-        )
+        fields = ("shift",)
 
-        # widgets = {
-        #     "date": forms.DateInput(attrs={"type": "date"}),
-        #     "time": forms.TimeInput(attrs={"type": "time"}),
-        # }
+        widgets = {
+            "shift": forms.Select(
+                attrs={"class": "w-full items-center text-center h-auto"}
+            )
+        }
 
 
 class FirstOffTestsFrom(forms.ModelForm):
@@ -69,11 +79,34 @@ class OnProcessConformitiesForm(forms.ModelForm):
         )
 
         widgets = {
-            "date": forms.TimeInput(attrs={"type": "date"}),
-            "conformity": forms.Select(attrs={"style": "width: 10rem"}),
-            "time": forms.TimeInput(attrs={"type": "time"}),
-            "sample_no": forms.TextInput(attrs={"style": "width: 10rem"}),
-            "action": forms.Textarea(attrs={"class": "w-full h-12 grow"}),
+            "date": forms.DateInput(
+                attrs={
+                    "type": "date",
+                    "class": "w-full items-center text-center h-auto",
+                }
+            ),
+            "conformity": forms.Select(
+                attrs={
+                    "class": "w-full items-center text-center h-auto",
+                }
+            ),
+            "time": forms.TimeInput(
+                attrs={
+                    "type": "time",
+                    "class": "w-full items-center text-center h-auto",
+                }
+            ),
+            "sample_no": forms.TextInput(
+                attrs={
+                    "class": "w-full items-center text-center h-auto",
+                }
+            ),
+            "action": forms.Textarea(
+                attrs={
+                    "class": "w-full",
+                    "rows": "3",
+                }
+            ),
         }
 
 
@@ -112,9 +145,22 @@ class CreateSemiWasteForm(forms.ModelForm):
         model = SemiWaste
         fields = ("tag_no", "quantity", "remark")
         widgets = {
-            "tag_no": forms.TextInput(attrs={"style": "width: 12rem"}),
-            "quantity": forms.NumberInput(attrs={"style": "width: 12rem"}),
-            "remark": forms.Textarea(attrs={"class": "w-full h-12"}),
+            "tag_no": forms.TextInput(
+                attrs={
+                    "class": "w-full items-center text-center h-auto",
+                }
+            ),
+            "quantity": forms.NumberInput(
+                attrs={
+                    "class": "w-full items-center text-center h-auto",
+                }
+            ),
+            "remark": forms.Textarea(
+                attrs={
+                    "class": "w-full ",
+                    "rows": "3",
+                }
+            ),
         }
 
 
@@ -153,7 +199,11 @@ class SampleForm(forms.ModelForm):
 
     sample_no = forms.CharField(
         required=True,
-        widget=forms.TextInput(attrs={"style": "width: 12rem"}),
+        widget=forms.TextInput(
+            attrs={
+                "class": "w-full items-center text-center h-auto",
+            }
+        ),
     )
 
 
@@ -188,13 +238,54 @@ class CreateLaminationForm(forms.ModelForm):
             "hardner",
             "hardner_batch_no",
         )
+        widgets = {
+            "mechanism": forms.Select(
+                attrs={
+                    "class": "w-full items-center text-center h-auto",
+                }
+            ),
+            "mixing_ratio": forms.Select(
+                attrs={
+                    "class": "w-full items-center text-center h-auto",
+                }
+            ),
+            "supplier": forms.Select(
+                attrs={
+                    "class": "w-full items-center text-center h-auto",
+                }
+            ),
+            "adhesive": forms.Select(
+                attrs={
+                    "class": "w-full items-center text-center h-auto",
+                }
+            ),
+            "adhesive_batch_no": forms.TextInput(
+                attrs={
+                    "class": "w-full items-center text-center h-auto",
+                }
+            ),
+            "hardner": forms.Select(
+                attrs={
+                    "class": "w-full items-center text-center h-auto",
+                }
+            ),
+            "hardner_batch_no": forms.TextInput(
+                attrs={
+                    "class": "w-full items-center text-center h-auto",
+                }
+            ),
+        }
 
     ply_structure = forms.IntegerField(
         initial=2,
         max_value=4,
         min_value=2,
         required=True,
-        widget=forms.NumberInput(attrs={"style": "width: 11rem"}),
+        widget=forms.NumberInput(
+            attrs={
+                "class": "w-full items-center text-center h-auto",
+            }
+        ),
     )
 
 

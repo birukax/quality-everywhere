@@ -1,10 +1,12 @@
 {% extends 'form.html' %}
+{% block title %}Create First-Off{% endblock %}
 {% block form %}
     <div class=" bg-gray-50 max-w-lg mx-auto">
         <form class="p-2 md:p-5 "
               method="post"
               action="{% url 'assessment:create_first_off' job_test.id %}">
             {% csrf_token %}
+            <p class="py-2  text-base  text-gray-700 tracking-wider uppercase">{{ job_test }}</p>
             <div class="flex-col gap-2 mb-4 mx-auto">
                 <p class="text-red-700 text-sm">
                     {% if form.non_field_errors %}{{ form.non_field_errors|join:", " }}{% endif %}
@@ -12,7 +14,7 @@
                 <div class="grid sm:grid-cols-2 gap-2 mb-4">
                     {% for field in form %}
                         <div class="flex-col justify-between gap-2 mb-4">
-                            <div class="font-bold mb-2">{{ field.label_tag }}</div>
+                            <div class="font-semibold mb-2">{{ field.label_tag }}</div>
                             <div class="flex gap-12">{{ field }}</div>
                             <p class="text-red-700 text-sm">
                                 {% if field.errors %}{{ field.errors|join:", " }}{% endif %}

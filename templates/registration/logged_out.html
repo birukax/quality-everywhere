@@ -1,8 +1,10 @@
 {% extends "auth.html" %}
 {% block content %}
-    <div class=" p-16 rounded-lg font-bold bg-white text-dark mx-auto w-fit mt-4">
-        <p>Logged out!</p>
-        <a href="{% url 'login' %}"
-           class="text-xl font-bold text-sky-900 hover:underline">Click here to login again.</a>
+    <div class="mx-auto ring-8 ring-gray-900 max-w-sm rounded-xl">
+        <div class=" p-16 rounded-lg font-bold bg-white text-dark mx-auto w-fit mt-4">
+            <p>Logged out!</p>
+            <a href="{% url 'login' %}"
+               class="text-xl font-bold text-sky-900 hover:underline">Click here to login again.</a>
+        </div>
     </div>
 {% endblock content %}

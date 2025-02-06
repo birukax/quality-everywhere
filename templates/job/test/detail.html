@@ -1,18 +1,20 @@
 {% extends 'base.html' %}
+{% block title %}Job Test Detail{% endblock %}
 {% load humanize %}
 {% block content %}
     <div class="mx-auto ">
         <div class="w-full p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6">
+            <div>
+                <p class="text-base md:text-xl font-bold text-gray-600 ">{{ job_test.job.no }}</p>
+            </div>
             <div class="flex justify-between">
-                <div>
-                    <h5 class="mb-3 text-base font-semibold text-gray-800 md:text-xl dark:text-white">Job Test Detail</h5>
-                    <p class="text-base md:text-xl font-bold text-gray-600 ">{{ job_test.job.no }}</p>
-                </div>
                 <div class="flex gap-4">
                     {% if job_test.status == 'COMPLETED' %}
                         <div>{% include 'job/test/semi_waste/create.html' %}</div>
                     {% endif %}
-                    <div>{% include 'job/test/semi_waste/list.html' %}</div>
+                    {% if job_test.semi_wastes.exists %}
+                        <div>{% include 'job/test/semi_waste/list.html' %}</div>
+                    {% endif %}
                 </div>
             </div>
             <ul class="my-4 space-y-3">
@@ -83,7 +85,7 @@
                 {% endif %}
             </div>
             {% if job_test.artwork %}
-                <div class="mt-4 w-fit  items-center mx-auto">
+                <div class="pt-4 w-fit  items-center mx-auto">
                     <img src="{{ job_test.artwork.file.url }}"
                          alt="Artwork"
                          height=""

@@ -94,7 +94,7 @@ def first_off_detail(request, id):
     formset = test_formset(queryset=tests)
     passed = tests.filter(value=True)
     failed = tests.filter(value=False)
-    if passed.count() == 0 and failed.count() == 0:
+    if tests.filter(value="").exists():
         can_submit = False
     context = {
         "assessment": assessment,
@@ -200,6 +200,20 @@ def create_on_process(request, id):
     if request.method == "POST":
         form = CreateAssessmentForm(request.POST)
         lamination_form = CreateLaminationForm(request.POST)
+        if form.is_valid() and job_test.current_machine.type is not "LAMINATION":
+            machine = job_test.current_machine
+            assessment = Assessment(
+                job_test=job_test,
+                shift=form.cleaned_data["shift"],
+                machine=machine,
+                type="ON-PROCESS",
+            )
+            if machine.tests:
+                assessment.save()
+                assessment.job_test.status = "ON-PROCESS CREATED"
+                assessment.job_test.save()
+                return redirect("assessment:on_process_detail", id=assessment.id)
+
         if form.is_valid() and lamination_form.is_valid():
             machine = job_test.current_machine
             assessment = Assessment(

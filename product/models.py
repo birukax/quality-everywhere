@@ -1,6 +1,6 @@
 from django.urls import reverse
 from django.db import models
-from .validators import validate_artwork, validate_code
+from main.validators import validate_artwork, validate_code
 import os
 
 
@@ -31,9 +31,7 @@ class Artwork(models.Model):
         Product, on_delete=models.RESTRICT, related_name="artworks"
     )
     code = models.CharField(
-        max_length=200,
-        null=True,
-        blank=True,
+        max_length=20,
         validators=[validate_code],
     )
     approved = models.BooleanField(default=False)
