@@ -2,7 +2,7 @@
 {% load humanize %}
 <button data-modal-target="semi-waste-detail-{{ sw.id }}"
         data-modal-toggle="semi-waste-detail-{{ sw.id }}"
-        class="block text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg capitalize text-xs tracking-widest  px-4 py-1.5 text-center "
+        class="block text-white bg-gray-700 hover:bg-gray-800 focus:ring-2 focus:outline-none focus:ring-gray-300 font-medium rounded-lg capitalize text-xs tracking-widest  px-4 py-1.5 text-center "
         type="button">Detail</button>
 <!-- Main modal -->
 <div id="semi-waste-detail-{{ sw.id }}"
@@ -115,7 +115,7 @@
                 {% if sw.status != "COMPLETED" %}
                     <div class="text-right">
                         <a href="{% url 'assessment:update_semi_waste' sw.id %}"
-                           class="text-white inline-flex items-center bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg capitalize text-xs tracking-widest  px-4 py-1.5 text-center">
+                           class="text-white inline-flex items-center bg-gray-700 hover:bg-gray-800 focus:ring-2 focus:outline-none focus:ring-gray-300 font-medium rounded-lg capitalize text-xs tracking-widest  px-4 py-1.5 text-center">
                             Update
                         </a>
                     </div>
