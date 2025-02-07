@@ -8,13 +8,18 @@ class CreateMachineForm(forms.ModelForm):
         model = Machine
         fields = ("name", "type", "viscosity_test", "tests", "conformities")
         widgets = {
-            "name": forms.TextInput(attrs={"style": "width: 10rem"}),
+            "name": forms.TextInput(attrs={"class": "w-full text-center h-auto"}),
+            "type": forms.Select(attrs={"class": "w-full text-center h-auto"}),
             "viscosity_test": forms.Select(
-                attrs={"style": "width: 7rem"},
+                attrs={"class": "w-full text-center h-auto"},
                 choices=(((False, "No"), (True, "Yes"))),
             ),
-            "tests": forms.CheckboxSelectMultiple(attrs={"class": "space-y-2"}),
-            "conformities": forms.CheckboxSelectMultiple(attrs={"class": "space-y-2"}),
+            "tests": forms.CheckboxSelectMultiple(
+                attrs={"class": "space-y-2  text-blue-600"}
+            ),
+            "conformities": forms.CheckboxSelectMultiple(
+                attrs={"class": "space-y-2 text-sky-600"}
+            ),
         }
 
 
@@ -23,13 +28,18 @@ class EditMachineForm(forms.ModelForm):
         model = Machine
         fields = ("name", "type", "viscosity_test", "tests", "conformities")
         widgets = {
-            "name": forms.TextInput(attrs={"style": "width: 10rem"}),
+            "name": forms.TextInput(attrs={"class": "w-full text-center h-auto"}),
+            "type": forms.Select(attrs={"class": "w-full text-center h-auto"}),
             "viscosity_test": forms.Select(
-                attrs={"style": "width: 7rem"},
+                attrs={"class": "w-full text-center h-auto"},
                 choices=(((False, "No"), (True, "Yes"))),
             ),
-            "tests": forms.CheckboxSelectMultiple(attrs={"class": "space-y-2"}),
-            "conformities": forms.CheckboxSelectMultiple(attrs={"class": "space-y-2"}),
+            "tests": forms.CheckboxSelectMultiple(
+                attrs={"class": "space-y-2  text-blue-600"}
+            ),
+            "conformities": forms.CheckboxSelectMultiple(
+                attrs={"class": "space-y-2 text-sky-600"}
+            ),
         }
 
 
@@ -37,6 +47,9 @@ class CreateRouteForm(forms.ModelForm):
     class Meta:
         model = Route
         fields = ("name",)
+        widgets = {
+            "name": forms.TextInput(attrs={"class": "w-full text-center h-auto"}),
+        }
 
     machines = forms.IntegerField()
 

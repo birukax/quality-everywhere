@@ -26,6 +26,7 @@ class Machine(models.Model):
         constraints = [
             models.UniqueConstraint(Lower("name"), name="unique_case_insensitive_name")
         ]
+        ordering = ["name"]
 
     def __str__(self):
         return self.name
@@ -34,6 +35,9 @@ class Machine(models.Model):
 class Route(models.Model):
     name = models.CharField(max_length=100, unique=True)
     active = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ["name"]
 
     def __str__(self):
         return self.name
@@ -50,9 +54,6 @@ class MachineRoute(models.Model):
         Route, on_delete=models.CASCADE, related_name="route_machines"
     )
     order = models.IntegerField()
-
-    # class Meta:
-    #     unique_together = ("machine", "route")
 
     def __str__(self):
         return f"{self.route.name} - {self.order}"

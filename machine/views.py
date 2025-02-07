@@ -1,3 +1,4 @@
+from django import forms
 from django.shortcuts import render, get_object_or_404, redirect
 from django.forms import modelformset_factory
 from main.tasks import get_page
@@ -110,6 +111,9 @@ def update_machine_route(request, id):
     route_formset = modelformset_factory(
         MachineRoute,
         fields=("machine",),
+        widgets={
+            "machine": forms.Select(attrs={"class": "w-full text-center h-auto"}),
+        },
         formset=BaseMachineRouteFormset,
         extra=0,
     )

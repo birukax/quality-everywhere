@@ -1,14 +1,13 @@
 {% extends 'form.html' %}
+{% block title %}Add Artwork{% endblock %}
 {% block form %}
-    <div class=" bg-gray-50">
+    <div class=" bg-gray-50 w-full">
         <form class="p-4 md:p-5 "
               method="post"
               action="{% url 'product:add_artwork' product.id %}"
               enctype="multipart/form-data">
             {% csrf_token %}
-            <p class="text-xl font-semibold">
-                <span class="font-normal">Add Artwork -></span> {{ product }}
-            </p>
+            <p class="py-2  text-base  text-gray-700 tracking-wider uppercase">{{ product }}</p>
             <div class="grid grid-cols-1 gap-2 mb-4">
                 <p class="text-red-700 text-sm">
                     {% if form.non_field_errors %}{{ form.non_field_errors|join:", " }}{% endif %}

@@ -80,8 +80,11 @@ def add_artwork(request, id):
 def edit_artwork(request, id):
     artwork = get_object_or_404(Artwork, id=id)
     if request.method == "POST":
-        artwork.file = request.FILES["file"]
-        artwork.save()
-        return redirect("product:detail", id=artwork.product.id)
-    context = {"artwork": artwork}
+        form = EditArtworkForm(request.POST, instance=artwork)
+        if form.is_valid():
+            form.save()
+            return redirect("product:artwork_list")
+    else:
+        form = EditArtworkForm(instance=artwork)
+    context = {"artwork": artwork, "form": form}
     return render(request, "product/artwork/edit.html", context)
