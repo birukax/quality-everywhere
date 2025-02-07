@@ -205,8 +205,17 @@ class UpdateSemiWasteForm(forms.ModelForm):
         fields = ("quantity", "approved_quantity", "comment")
 
         widgets = {
-            "approved_quantity": forms.NumberInput(attrs={"style": "width: 10rem"}),
-            "comment": forms.Textarea(attrs={"class": "w-full h-12"}),
+            "approved_quantity": forms.NumberInput(
+                attrs={
+                    "class": "w-full items-center text-center h-auto",
+                }
+            ),
+            "comment": forms.Textarea(
+                attrs={
+                    "class": "w-full ",
+                    "rows": "3",
+                }
+            ),
             "quantity": forms.HiddenInput(),
         }
 

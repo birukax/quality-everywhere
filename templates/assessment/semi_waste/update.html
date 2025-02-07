@@ -1,5 +1,6 @@
 {% extends 'form.html' %}
 {% load humanize %}
+{% block title %}Approve Semi-Waste{% endblock %}
 {% block form %}
     <div class=" bg-gray-50">
         <form class="p-4 md:p-5 "
@@ -7,8 +8,16 @@
               action="{% url 'assessment:update_semi_waste' semi_waste.id %}">
             {% csrf_token %}
             <div class="flex gap-2 mb-4 mx-auto">
-                <div class="flex-col  ">Total Quantity (Pcs):</div>
-                <div class="flex-col font-normal">{{ form.instance.quantity|intcomma }}</div>
+                <div class="flex-col  font-semibold tracking-wide">Tag No.:</div>
+                <div class="flex-col font-normal">
+                    <p class="  text-base  text-gray-700 tracking-wider uppercase">{{ form.instance.tag_no }}</p>
+                </div>
+            </div>
+            <div class="flex gap-2 mb-4 mx-auto">
+                <div class="flex-col  font-semibold tracking-wide">Total Quantity (Pcs):</div>
+                <div class="flex-col font-normal">
+                    <p class="  text-base  text-gray-700 tracking-wider uppercase">{{ form.instance.quantity|intcomma }}</p>
+                </div>
             </div>
             <p class="text-red-700 text-sm">
                 {% if form.non_field_errors %}{{ form.non_field_errors|join:", " }}{% endif %}

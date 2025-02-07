@@ -2,7 +2,7 @@
 {% load humanize %}
 <button data-modal-target="semi-waste-detail-{{ sw.id }}"
         data-modal-toggle="semi-waste-detail-{{ sw.id }}"
-        class="block text-white bg-gray-700 hover:bg-gray-800 focus:ring-2 focus:outline-none focus:ring-gray-300 font-medium rounded-lg capitalize text-xs tracking-widest  px-4 py-1.5 text-center "
+        class="block text-white bg-gray-700 hover:bg-gray-800 focus:ring-2 focus:outline-none focus:ring-gray-300 font-medium rounded-lg uppercase text-xs tracking-widest  px-4 py-1.5 text-center "
         type="button">Detail</button>
 <!-- Main modal -->
 <div id="semi-waste-detail-{{ sw.id }}"
@@ -96,7 +96,7 @@
                         </div>
                     </li>
                     <li class="pb-3 sm:pb-4">
-                        <div class="flex items-center justify-between">
+                        <div class="flex-col items-center justify-between">
                             <div class="inline-flex  items-center text-base font-semibold text-gray-900 ">Remark</div>
                             <div class="flex-row text-right">
                                 <p class="text-sm font-medium text-gray-900 truncate ">{{ sw.remark }}</p>
@@ -104,10 +104,10 @@
                         </div>
                     </li>
                     <li class="pb-3 sm:pb-4">
-                        <div class="flex items-center justify-between">
+                        <div class="flex-col items-center justify-between">
                             <div class="inline-flex  items-center text-base font-semibold text-gray-900 ">Comment</div>
                             <div class="flex-row text-right">
-                                <p class="text-sm font-medium text-gray-900 truncate ">{{ sw.comment }}</p>
+                                <p class="text-sm font-medium text-gray-900  ">{{ sw.comment }}</p>
                             </div>
                         </div>
                     </li>
@@ -116,7 +116,7 @@
                     <div class="text-right">
                         <a href="{% url 'assessment:update_semi_waste' sw.id %}"
                            class="text-white inline-flex items-center bg-gray-700 hover:bg-gray-800 focus:ring-2 focus:outline-none focus:ring-gray-300 font-medium rounded-lg capitalize text-xs tracking-widest  px-4 py-1.5 text-center">
-                            Update
+                            Approve
                         </a>
                     </div>
                 {% endif %}
