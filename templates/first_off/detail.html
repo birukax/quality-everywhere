@@ -5,15 +5,25 @@
         <div class="w-full space-y-4 p-2 bg-white border border-gray-200 rounded-lg shadow sm:p-4">
             <p class="text-base md:text-lg font-semibold uppercase text-gray-600 ">{{ assessment.job_test.job }}</p>
             <div class="flex justify-between">
-                <div class="flex gap-4">
+                <div class="flex flex-wrap gap-4">
                     {% if assessment.status == 'OPEN' or assessment.status == 'REJECTED' %}
-                        {% include 'first_off/edit.html' %}
+                        <div>{% include 'first_off/edit.html' %}</div>
                         {% if can_submit %}
-                            <a href="{% url 'approval:create_assessment_approval' assessment.id %}"
-                               class="text-white inline-flex items-center bg-gray-700 hover:bg-gray-800 focus:ring-2 focus:outline-none focus:ring-gray-300 font-medium rounded-lg uppercase text-xs tracking-widest  px-4 py-1.5 text-center">
-                                Submit
-                            </a>
+                            <div>
+                                <a href="{% url 'approval:create_assessment_approval' assessment.id %}"
+                                   class="text-white inline-flex items-center bg-gray-700 hover:bg-gray-800 focus:ring-2 focus:outline-none focus:ring-gray-300 font-medium rounded-lg uppercase text-xs tracking-widest  px-4 py-1.5 text-center">
+                                    Submit
+                                </a>
+                            </div>
                         {% endif %}
+                    {% endif %}
+                    {% if assessment.machine.type == 'LAMINATION' %}
+                        <div class="flex flex-wrap gap-2">
+                            {% if assessment.status == 'OPEN' or assessment.status == 'REJECTED' %}
+                                <div>{% include 'first_off/lamination/update.html' %}</div>
+                            {% endif %}
+                            <div>{% include 'first_off/lamination/list.html' %}</div>
+                        </div>
                     {% endif %}
                     {% if assessment.status == 'OPEN' or assessment.status == 'REJECTED' %}
                         <div>{% include 'first_off/test/edit.html' %}</div>

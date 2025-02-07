@@ -114,30 +114,65 @@ class CreateTestForm(forms.ModelForm):
     class Meta:
         model = Test
         fields = ["name"]
+        widgets = {
+            "name": forms.NumberInput(
+                attrs={
+                    "class": "w-full items-center text-center h-auto",
+                }
+            ),
+        }
 
 
 class EditTestForm(forms.ModelForm):
     class Meta:
         model = Test
         fields = ["name"]
+        widgets = {
+            "name": forms.NumberInput(
+                attrs={
+                    "class": "w-full items-center text-center h-auto",
+                }
+            ),
+        }
 
 
 class CreateConformityForm(forms.ModelForm):
     class Meta:
         model = Conformity
         fields = ["name"]
+        widgets = {
+            "name": forms.NumberInput(
+                attrs={
+                    "class": "w-full items-center text-center h-auto",
+                }
+            ),
+        }
 
 
 class EditConformityForm(forms.ModelForm):
     class Meta:
         model = Conformity
         fields = ["name"]
+        widgets = {
+            "name": forms.NumberInput(
+                attrs={
+                    "class": "w-full items-center text-center h-auto",
+                }
+            ),
+        }
 
 
 class CreateWasteForm(forms.ModelForm):
     class Meta:
         model = Waste
         fields = ["quantity"]
+        widgets = {
+            "quantity": forms.NumberInput(
+                attrs={
+                    "class": "w-full items-center text-center h-auto",
+                }
+            ),
+        }
 
 
 class CreateSemiWasteForm(forms.ModelForm):
@@ -221,7 +256,9 @@ class CreateViscosityForm(forms.Form):
         max_digits=10,
         decimal_places=2,
         label="Viscosity Value",
-        widget=forms.NumberInput(attrs={"style": "width: 7rem"}),
+        widget=forms.NumberInput(
+            attrs={"class": "w-full items-center text-center h-auto"}
+        ),
     )
 
 
@@ -244,17 +281,17 @@ class CreateLaminationForm(forms.ModelForm):
                     "class": "w-full items-center text-center h-auto",
                 }
             ),
-            "mixing_ratio": forms.Select(
+            "mixing_ratio": forms.TextInput(
                 attrs={
                     "class": "w-full items-center text-center h-auto",
                 }
             ),
-            "supplier": forms.Select(
+            "supplier": forms.TextInput(
                 attrs={
                     "class": "w-full items-center text-center h-auto",
                 }
             ),
-            "adhesive": forms.Select(
+            "adhesive": forms.TextInput(
                 attrs={
                     "class": "w-full items-center text-center h-auto",
                 }
@@ -264,7 +301,7 @@ class CreateLaminationForm(forms.ModelForm):
                     "class": "w-full items-center text-center h-auto",
                 }
             ),
-            "hardner": forms.Select(
+            "hardner": forms.TextInput(
                 attrs={
                     "class": "w-full items-center text-center h-auto",
                 }

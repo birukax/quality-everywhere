@@ -40,7 +40,7 @@
                     <div class="grid sm:grid-cols-2 md:grid-cols-4 gap-2 mb-2">
                         {% for field in form %}
                             <div class="flex-col gap-2 mb-4 {% if field.name == 'action' %}sm:col-span-2 md:col-span-4{% endif %}">
-                                <div class="font-bold mb-2">{{ field.label_tag }}</div>
+                                <div class=" mb-2">{{ field.label_tag }}</div>
                                 <div>{{ field }}</div>
                                 <p class="text-red-700 text-sm">
                                     {% if field.errors %}{{ field.errors|join:", " }}{% endif %}

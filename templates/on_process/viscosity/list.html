@@ -30,18 +30,18 @@
             <!-- Modal body -->
             <div class="p-2 md:p-3">
                 <table class="w-full table table-auto ">
-                    <tr class="text-left uppercase text-sm">
-                        <th class="py-1 px-2 ">Sample No</th>
-                        <th class="py-1 px-2 ">Color</th>
-                        <th class="py-1 px-2 ">Value</th>
-                        <th class="py-1 px-2 ">Created By</th>
+                    <tr class="text-left uppercase text-sm place-content-start">
+                        <th class="py-2 px-1 font-semibold  ">Sample</th>
+                        <th class="py-2 px-1 font-semibold  ">Color</th>
+                        <th class="py-2 px-1 font-semibold  ">Value</th>
+                        <th class="py-2 px-1 font-semibold  ">User</th>
                     </tr>
                     {% for v in viscosities %}
                         <tr class="text-left items-start border-y">
-                            <td class="px-2 py-1 ">{{ v.sample_no }}</td>
-                            <td class="px-2 py-1 ">{{ v.color.name }}({{ v.color.viscosity }})</td>
-                            <td class="px-2 py-1 ">{{ v.value }}</td>
-                            <td class="px-2 py-1 ">{{ v.created_by }}</td>
+                            <td class="px-1 py-2 ">{{ v.sample_no }}</td>
+                            <td class="px-1 py-2 ">{{ v.color.name }} ({{ v.color.viscosity }})</td>
+                            <td class="px-1 py-2 ">{{ v.value }}</td>
+                            <td class="px-1 py-2 ">{{ v.created_by }}</td>
                         </tr>
                     {% endfor %}
                 </table>

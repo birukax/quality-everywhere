@@ -1,33 +1,31 @@
 {% extends 'base.html' %}
+{% block title %}On-Process Detail{% endblock %}
 {% block content %}
     <div class="mx-auto ">
-        <div class="w-full p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6">
-            <div class="flex justify-between gap-2">
-                <h5 class="mb-3 text-base font-semibold text-gray-800 md:text-xl ">On Process Detail</h5>
-                <div class="flex flex-wrap gap-2 justify-end ">
-                    <div class="flex flex-wrap gap-2 justify-end">
+        <div class="w-full space-y-4 p-2 bg-white border border-gray-200 rounded-lg shadow sm:p-4">
+            <p class="text-base md:text-lg font-semibold uppercase text-gray-600 ">{{ assessment.job_test.job }}</p>
+            <div class="flex">
+                <div class="flex flex-wrap gap-4">
+                    <div class="flex gap-4">
+                        {% if assessment.status == 'OPEN' or assessment.status == 'REJECTED' %}
+                            {% include 'on_process/edit.html' %}
+                        {% endif %}
+                    </div>
+                    <div class="flex flex-wrap gap-2">
                         {% if assessment.status == 'OPEN' or assessment.status == 'REJECTED' %}
                             <div>{% include 'on_process/waste/create.html' %}</div>
                         {% endif %}
                         <div>{% include 'on_process/waste/list.html' %}</div>
                     </div>
                     {% if assessment.machine.viscosity_test %}
-                        <div class="flex flex-wrap gap-2 justify-end">
+                        <div class="flex flex-wrap gap-2">
                             {% if assessment.status == 'OPEN' or assessment.status == 'REJECTED' %}
                                 <div>{% include 'on_process/viscosity/create.html' %}</div>
                             {% endif %}
                             <div>{% include 'on_process/viscosity/list.html' %}</div>
                         </div>
                     {% endif %}
-                    {% if assessment.machine.type == 'LAMINATION' %}
-                        <div class="flex flex-wrap gap-2 justify-end">
-                            {% if assessment.status == 'OPEN' or assessment.status == 'REJECTED' %}
-                                <div>{% include 'on_process/lamination/update.html' %}</div>
-                            {% endif %}
-                            <div>{% include 'on_process/lamination/list.html' %}</div>
-                        </div>
-                    {% endif %}
-                    <div class="flex flex-wrap gap-2 justify-end">
+                    <div class="flex flex-wrap gap-2">
                         {% if assessment.status == 'OPEN' or assessment.status == 'REJECTED' %}
                             <div>{% include 'on_process/conformity/create.html' %}</div>
                         {% endif %}
@@ -35,7 +33,6 @@
                     </div>
                 </div>
             </div>
-            <p class="text-base md:text-xl font-bold text-gray-600 ">{{ assessment.job_test.job }}</p>
             <ul class="my-4 space-y-3">
                 <li>
                     <a class="flex items-center p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
@@ -76,11 +73,6 @@
                     {% endfor %}
                 </li>
             </ul>
-            <div class="flex gap-4">
-                {% if assessment.status == 'OPEN' or assessment.status == 'REJECTED' %}
-                    {% include 'on_process/edit.html' %}
-                {% endif %}
-            </div>
             {% if assessment.job.artwork %}
                 <div class="mt-4 w-full h-96">
                     <img src="{{ assessment.job.artwork.url }}"
