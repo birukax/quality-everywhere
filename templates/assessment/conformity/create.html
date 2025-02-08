@@ -1,4 +1,5 @@
 {% extends 'form.html' %}
+{% block title %}Create Conformity{% endblock %}
 {% block form %}
     <div class=" bg-gray-50">
         <form class="p-4 md:p-5 "
@@ -13,7 +14,7 @@
             </div>
             <div class="flex gap-4">
                 <button type="submit"
-                        class="text-white inline-flex items-center bg-gray-700 hover:bg-gray-800 focus:ring-2 focus:outline-none focus:ring-gray-300  rounded-lg capitalize text-xs tracking-widest  px-4 py-1.5 text-center">
+                        class="text-white inline-flex items-center bg-gray-700 hover:bg-gray-800 focus:ring-2 focus:outline-none focus:ring-gray-300  rounded-lg uppercase text-xs tracking-widest  px-4 py-1.5 text-center">
                     Create
                 </button>
                 <a href="{% url 'assessment:conformity_list' %}"

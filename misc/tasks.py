@@ -11,6 +11,7 @@ from .forms import (
     CreateColorForm,
     EditColorForm,
     CreateColorStandardForm,
+    BaseColorFormset,
     EditColorStandardForm,
 )
 
@@ -92,8 +93,15 @@ def color_edit(request, id):
 def color_standard_create(request):
     if request.method == "POST":
         form = CreateColorStandardForm(request.POST)
-        if form.is_valid():
-            form.save()
+        formset = BaseColorFormset(request.POST)
+        if form.is_valid() and formset.is_valid():
+            color_standard = form.save()
+
+            colors = []
+            for color_form in formset:
+                if color_form.cleaned_data.get("color"):
+                    colors.append(color_form.cleaned_data["color"])
+            color_standard.colors.set(colors)
 
 
 def color_standard_edit(request, id):

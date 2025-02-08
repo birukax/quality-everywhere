@@ -1,10 +1,17 @@
 {% extends 'form.html' %}
+{% block title %}Edit Test{% endblock %}
 {% block form %}
     <div class=" bg-gray-50">
         <form class="p-4 md:p-5 "
               method="post"
               action="{% url 'assessment:edit_test' test.id %}">
             {% csrf_token %}
+            <div class="flex gap-2 mb-4 mx-auto">
+                <div class="flex-col  font-semibold tracking-wider">Test:</div>
+                <div class="flex-col font-normal">
+                    <p class="  text-base  text-gray-700 tracking-wider uppercase">{{ test.name }}</p>
+                </div>
+            </div>
             <div class="flex-col gap-2 mb-4 mx-auto">
                 {% for field in form %}
                     {{ field.label_tag }}

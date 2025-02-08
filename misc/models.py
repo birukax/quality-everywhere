@@ -3,8 +3,8 @@ from django.urls import reverse
 
 
 class Customer(models.Model):
-    no = models.CharField(max_length=100)
-    name = models.CharField(max_length=100)
+    no = models.CharField(max_length=100, unique=True)
+    name = models.CharField(max_length=100, unique=True)
 
     def __str__(self):
         return self.name
@@ -29,7 +29,7 @@ class ColorStandard(models.Model):
 
 
 class Color(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
     viscosity = models.FloatField(default=0)
     code = models.CharField(max_length=100, unique=True)
 
@@ -41,8 +41,8 @@ class Color(models.Model):
 
 
 class RawMaterial(models.Model):
-    no = models.CharField(max_length=100)
-    name = models.CharField(max_length=100)
+    no = models.CharField(max_length=100, unique=True)
+    name = models.CharField(max_length=100, unique=True)
 
     class Meta:
         ordering = ["name"]
@@ -52,8 +52,8 @@ class RawMaterial(models.Model):
 
 
 class Shift(models.Model):
-    code = models.CharField(max_length=100)
-    name = models.CharField(max_length=100)
+    code = models.CharField(max_length=100, unique=True)
+    name = models.CharField(max_length=100, unique=True)
 
     class Meta:
         ordering = ["name"]

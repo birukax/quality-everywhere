@@ -11,6 +11,15 @@
                     <div class="flex-col ">{{ field }}</div>
                 {% endfor %}
             </div>
+            {{ formset.management_form }}
+            {% for color_form in formset %}
+                <div class="flex-col gap-2 mb-4 mx-auto">
+                    {% for field in color_form %}
+                        {{ field.label_tag }}
+                        <div class="flex-col ">{{ field }}</div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
             <div class="flex gap-4">
                 <button type="submit"
                         class="text-white inline-flex items-center bg-gray-700 hover:bg-gray-800 focus:ring-2 focus:outline-none focus:ring-gray-300 font-medium rounded-lg uppercase text-xs tracking-widest  px-4 py-1.5 text-center">

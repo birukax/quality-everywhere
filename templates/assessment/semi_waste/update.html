@@ -8,13 +8,13 @@
               action="{% url 'assessment:update_semi_waste' semi_waste.id %}">
             {% csrf_token %}
             <div class="flex gap-2 mb-4 mx-auto">
-                <div class="flex-col  font-semibold tracking-wide">Tag No.:</div>
+                <div class="flex-col  font-semibold tracking-wider">Tag No.:</div>
                 <div class="flex-col font-normal">
                     <p class="  text-base  text-gray-700 tracking-wider uppercase">{{ form.instance.tag_no }}</p>
                 </div>
             </div>
             <div class="flex gap-2 mb-4 mx-auto">
-                <div class="flex-col  font-semibold tracking-wide">Total Quantity (Pcs):</div>
+                <div class="flex-col  font-semibold tracking-wider">Total Quantity (Pcs):</div>
                 <div class="flex-col font-normal">
                     <p class="  text-base  text-gray-700 tracking-wider uppercase">{{ form.instance.quantity|intcomma }}</p>
                 </div>

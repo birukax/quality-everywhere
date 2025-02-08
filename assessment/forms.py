@@ -115,7 +115,7 @@ class CreateTestForm(forms.ModelForm):
         model = Test
         fields = ["name"]
         widgets = {
-            "name": forms.NumberInput(
+            "name": forms.TextInput(
                 attrs={
                     "class": "w-full items-center text-center h-auto",
                 }
@@ -128,7 +128,7 @@ class EditTestForm(forms.ModelForm):
         model = Test
         fields = ["name"]
         widgets = {
-            "name": forms.NumberInput(
+            "name": forms.TextInput(
                 attrs={
                     "class": "w-full items-center text-center h-auto",
                 }
@@ -141,7 +141,7 @@ class CreateConformityForm(forms.ModelForm):
         model = Conformity
         fields = ["name"]
         widgets = {
-            "name": forms.NumberInput(
+            "name": forms.TextInput(
                 attrs={
                     "class": "w-full items-center text-center h-auto",
                 }
@@ -154,7 +154,7 @@ class EditConformityForm(forms.ModelForm):
         model = Conformity
         fields = ["name"]
         widgets = {
-            "name": forms.NumberInput(
+            "name": forms.TextInput(
                 attrs={
                     "class": "w-full items-center text-center h-auto",
                 }

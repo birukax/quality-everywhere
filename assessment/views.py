@@ -385,12 +385,11 @@ def create_test(request):
 
 @login_required
 def edit_test(request, id):
+    test = get_object_or_404(Test, id=id)
     if request.method == "GET":
-        test = get_object_or_404(Test, id=id)
         form = EditTestForm(instance=test)
         context = {"form": form, "test": test}
         return render(request, "assessment/test/edit.html", context)
-
     test_edit(request, id)
     return redirect("assessment:test_list")
 

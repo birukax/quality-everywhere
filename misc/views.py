@@ -27,6 +27,7 @@ from .forms import (
     CreateColorForm,
     EditColorForm,
     CreateColorStandardForm,
+    BaseColorFormset,
     EditColorStandardForm,
 )
 
@@ -163,7 +164,11 @@ def color_standard_list(request):
 def create_color_standard(request):
     if request.method == "GET":
         form = CreateColorStandardForm()
-        context = {"form": form}
+        formset = BaseColorFormset()
+        context = {
+            "form": form,
+            "formset": formset,
+        }
         return render(request, "misc/color_standard/create.html", context)
 
     color_standard_create(request)
