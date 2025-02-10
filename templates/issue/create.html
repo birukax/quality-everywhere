@@ -1,7 +1,7 @@
 {% extends 'form.html' %}
+{% block title %}Create Issue{% endblock %}
 {% block form %}
     <div class=" bg-gray-50 max-w-lg mx-auto">
-        <div class="font-semibold my-2 ms-5 text-lg tracking-wider">Create Issue</div>
         <form class="p-2 md:p-5 " method="post" action="{% url 'issue:create' %}">
             {% csrf_token %}
             <div class="flex-col gap-2 mb-4 mx-auto px-2">
@@ -10,9 +10,9 @@
                 </p>
                 <div class="grid sm:grid-cols-2 gap-2 mb-4">
                     {% for field in form %}
-                        <div class="flex-col justify-between gap-2 mb-4 {% if field.name == 'description' %}sm:col-span-2{% endif %}">
+                        <div class="flex-col justify-between gap-2 mb-4 ">
                             <div class=" mb-2">{{ field.label_tag }}</div>
-                            <div class="flex gap-12">{{ field }}</div>
+                            <div class="flex ">{{ field }}</div>
                             <p class="text-red-700 text-sm">
                                 {% if field.errors %}{{ field.errors|join:", " }}{% endif %}
                             </p>
@@ -22,11 +22,11 @@
             </div>
             <div class="flex gap-4">
                 <button type="submit"
-                        class="text-white inline-flex items-center bg-gray-700 hover:bg-gray-800 focus:ring-2 focus:outline-none focus:ring-gray-300 font-medium rounded-lg px-4 py-1 text-center">
+                        class="text-white inline-flex items-center bg-gray-700 hover:bg-gray-800 focus:ring-2 focus:outline-none focus:ring-gray-300 font-medium rounded-lg uppercase text-xs tracking-widest  px-4 py-1.5 text-center">
                     Create
                 </button>
                 <a href="{% url 'issue:list' %}"
-                   class=" inline-flex items-center bg-gray-200 hover:bg-gray-300 focus:ring-2 focus:outline-none focus:ring-gray-400 font-medium rounded-lg px-4 py-1 text-center">
+                   class=" inline-flex items-center bg-gray-200 hover:bg-gray-300 focus:ring-2 focus:outline-none focus:ring-gray-400 font-medium rounded-lg uppercase text-xs tracking-widest  px-4 py-1.5 text-center">
                     Cancel
                 </a>
             </div>

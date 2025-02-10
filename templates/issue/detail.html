@@ -1,8 +1,11 @@
 {% extends 'base.html' %}
+{% block title %}Issue Detail{% endblock %}
 {% block content %}
     <div class="mx-auto ">
-        <div class="w-full p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6">
-            <h5 class="mb-3 text-base font-semibold text-gray-800 md:text-xl tracking-wider uppercase ">Issue Detail</h5>
+        <div class="w-full space-y-4 p-2 bg-white border border-gray-200 rounded-lg shadow sm:p-4">
+            <p class="text-base md:text-lg font-semibold uppercase text-gray-600 ">
+                {{ issue.issue_type.name }} - {{ issue.location.name }}
+            </p>
             <div class="flex place-content-end">
                 <div class="flex flex-wrap gap-4  ">
                     {% if issue.status == 'CREATED' %}
@@ -24,45 +27,53 @@
             <ul class="my-4 space-y-3">
                 {% with status=issue.status %}
                     <li class=" rounded-lg">
-                        <a class="flex items-center p-3 text-sm md:text-base font-bold text-gray-900 ">
-                            <span class="flex-1 ms-3 whitespace-nowrap">Status</span>
-                            <span class="inline-flex items-center justify-center px-4 py-1.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 {% if status == 'CREATED' %}bg-CREATED {% elif status == 'CANCELLED' %}bg-CANCELLED {% elif status == 'ACCEPTED' %}bg-ACCEPTED {% elif status == 'REJECTED' %}bg-REJECTED{% elif status == 'IN-PROGRESS' %}bg-IN-PROGRESS{% elif status == 'PENDING' %}bg-PENDING{% elif status == 'INCOMPLETE' %}bg-INCOMPLETE{% elif status == 'COMPLETED' %}bg-COMPLETED {% endif %}text-white rounded">{{ issue.status }}</span>
+                        <a class="grid sm:grid-cols-2 items-center p-3 text-sm md:text-base font-bold text-gray-900 bg-gray-50 hover:bg-gray-100 group hover:shadow">
+                            <div class="flex-1 mb-2 sm:mb-0 ms-3 whitespace-nowrap">Status</div>
+                            <div class="inline-flex items-center justify-center px-4 py-1.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 {% if status == 'CREATED' %} bg-CREATED {% elif status == 'CANCELLED' %} bg-CANCELLED {% elif status == 'ACCEPTED' %} bg-ACCEPTED {% elif status == 'REJECTED' %} bg-REJECTED {% elif status == 'IN-PROGRESS' %} bg-IN-PROGRESS {% elif status == 'PENDING' %} bg-PENDING {% elif status == 'INCOMPLETE' %} bg-INCOMPLETE {% elif status == 'COMPLETED' %} bg-COMPLETED {% endif %}text-white rounded">
+                                {{ issue.status }}
+                            </div>
                         </a>
-                        <a class="flex items-center p-3 text-sm md:text-base font-bold text-gray-900 ">
-                            <span class="flex-1 ms-3 whitespace-nowrap">Remark</span>
-                            <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-100 rounded">{{ issue.remarks.first.text }}</span>
+                        <a class="grid sm:grid-cols-2 items-center p-3 text-sm md:text-base font-bold text-gray-900 bg-gray-50 hover:bg-gray-100 group hover:shadow">
+                            <div class="flex-1 mb-2 sm:mb-0 ms-3 whitespace-nowrap">Remark</div>
+                            <div class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-100 rounded">
+                                {{ issue.remarks.first.text }}
+                            </div>
                         </a>
                     </li>
                 {% endwith %}
-                <li class="grid grid-cols-1 sm:grid-cols-2">
-                    <a class="flex items-center p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
-                        <span class="flex-1 ms-3 whitespace-nowrap">Date</span>
-                        <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ issue.created_at.date }}</span>
-                    </a>
-                    <a class="flex items-center p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
-                        <span class="flex-1 ms-3 whitespace-nowrap">Time</span>
-                        <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ issue.created_at.time }}</span>
-                    </a>
-                </li>
+                {% if issue.status == 'COMPLETED' %}
+                    <li>
+                        <a class="grid sm:grid-cols-2 items-center p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
+                            <span class="flex-1 mb-2 sm:mb-0 ms-3 whitespace-nowrap">Completed @</span>
+                            <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ issue.remarks.first.created_at }}</span>
+                        </a>
+                    </li>
+                {% endif %}
                 <li>
-                    <a class="flex items-center p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
-                        <span class="flex-1 ms-3 whitespace-nowrap">Location</span>
+                    <a class="grid sm:grid-cols-2 items-center p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
+                        <span class="flex-1 mb-2 sm:mb-0 ms-3 whitespace-nowrap">Location</span>
                         <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ issue.location.name }}</span>
                     </a>
                 </li>
                 <li>
-                    <a class="flex items-center p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
-                        <span class="flex-1 ms-3 whitespace-nowrap">Created By</span>
+                    <a class="grid sm:grid-cols-2 items-center p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
+                        <span class="flex-1 mb-2 sm:mb-0 ms-3 whitespace-nowrap">Issue Type</span>
+                        <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ issue.issue_type.name }}</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="grid sm:grid-cols-2 items-center p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
+                        <span class="flex-1 mb-2 sm:mb-0 ms-3 whitespace-nowrap">Created By</span>
                         <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ issue.created_by.username }}</span>
                     </a>
-                    <a class="flex items-center p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
-                        <span class="flex-1 ms-3 whitespace-nowrap">Created At</span>
+                    <a class="grid sm:grid-cols-2 items-center p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
+                        <span class="flex-1 mb-2 sm:mb-0 ms-3 whitespace-nowrap">Created @</span>
                         <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ issue.created_at }}</span>
                     </a>
                 </li>
                 <li>
-                    <a class="flex items-center p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
-                        <span class="flex-1 ms-3 whitespace-nowrap">Description</span>
+                    <a class="grid sm:grid-cols-2 items-center p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
+                        <span class="flex-1 mb-2 sm:mb-0 ms-3 whitespace-nowrap">Description</span>
                         <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ issue.description }}</span>
                     </a>
                 </li>

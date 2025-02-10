@@ -67,7 +67,7 @@ class Issue(models.Model):
         return reverse("issue:detail", args={self.id})
 
     def __str__(self):
-        return f"{self.issue_type} - {self.location}"
+        return f"{self.issue_type} - {self.location} - {self.status}"
 
     class Meta:
         ordering = ["created_at"]
@@ -86,4 +86,4 @@ class Remark(models.Model):
         ordering = ["-created_at"]
 
     def __str__(self):
-        return f"{self.issue}"
+        return f"{self.issue} - {self.action}"

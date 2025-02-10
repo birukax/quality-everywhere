@@ -19,9 +19,18 @@ class CreateIssueForm(forms.ModelForm):
         model = Issue
         fields = ("issue_type", "location", "description")
         widgets = {
-            "issue_type": forms.Select(attrs={"class": "w-full h-12"}),
-            "location": forms.Select(attrs={"class": "w-full h-12"}),
-            "description": forms.Textarea(attrs={"class": "w-full h-12"}),
+            "issue_type": forms.Select(
+                attrs={"class": "w-full items-center text-center h-auto"}
+            ),
+            "location": forms.Select(
+                attrs={"class": "w-full items-center text-center h-auto"}
+            ),
+            "description": forms.Textarea(
+                attrs={
+                    "class": "w-full",
+                    "rows": "3",
+                }
+            ),
         }
 
 
@@ -30,5 +39,10 @@ class CreateRemarkForm(forms.ModelForm):
         model = Remark
         fields = ("text",)
         widgets = {
-            "text": forms.Textarea(attrs={"class": "w-full h-12"}),
+            "text": forms.Textarea(
+                attrs={
+                    "class": "w-full",
+                    "rows": "3",
+                }
+            ),
         }

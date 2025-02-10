@@ -1,14 +1,14 @@
 <!-- Modal toggle -->
 <button data-modal-target="remark-history"
         data-modal-toggle="remark-history"
-        class="block text-white bg-gray-700 hover:bg-gray-800 focus:ring-2 focus:outline-none focus:ring-gray-300  rounded-lg   text-sm tracking-wider  px-4 py-1.5 text-center "
+        class="block text-white bg-gray-700 hover:bg-gray-800 focus:ring-2 focus:outline-none focus:ring-gray-300  rounded-lg   uppercase text-xs tracking-widest  px-4 py-1.5 text-center "
         type="button">Remarks</button>
 <!-- Main modal -->
 <div id="remark-history"
      tabindex="-1"
      aria-hidden="true"
      class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-    <div class="relative p-4 w-full max-w-lg max-h-full">
+    <div class="relative p-4 w-full max-w-2xl max-h-full">
         <!-- Modal content -->
         <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
             <!-- Modal header -->
@@ -28,28 +28,23 @@
                 </button>
             </div>
             <!-- Modal body -->
-            <div class="p-2 md:p-3">
-                <table class="w-full table table-auto ">
-                    <tr class="text-left uppercase text-sm">
-                        <th class="py-1 px-2 font-normal  ">Remark Detail</th>
-                        <th class="py-1 px-2 font-normal  text-blue-700">Text</th>
-                    </tr>
-                    {% for r in issue.remarks.all %}
-                        <tr class="text-left align-top border-y">
-                            <td class="px-2 py-1 ">
-                                <div class="grid gap-3 grid-cols-2">
-                                    <p class="font-semibold">Action:</p>
-                                    <p class="text-gray-700 whitespace-normal lg:whitespace-nowrap lowercase first-letter:capitalize">{{ r.action }}</p>
-                                </div>
-                                <div class="grid gap-3 grid-cols-2">
-                                    <p class="font-semibold whitespace-nowrap">By:</p>
-                                    <p class="text-gray-700">{{ r.created_by.username }}</p>
-                                </div>
-                            </td>
-                            <td class="px-2 py-1 text-blue-700">{{ r.text }}</td>
-                        </tr>
-                    {% endfor %}
-                </table>
+            <div class="p-2 md:p-3 divide-y-2">
+                {% for r in issue.remarks.all %}
+                    <div class="grid grid-cols-2 font-normal my-2">
+                        <div class="flex-col gap-1 sm:flex">
+                            <div class="font-semibold tracking-wider uppercase text-xs">Action:</div>
+                            <div class="ms-2 text-sm">{{ r.action }}</div>
+                        </div>
+                        <div class="flex-col gap-1 sm:flex">
+                            <div class="font-semibold tracking-wider uppercase text-xs">By:</div>
+                            <div class="ms-2 text-sm">{{ r.created_by.username }}</div>
+                        </div>
+                        <div class="flex-col gap-1 sm:flex col-span-2">
+                            <div class="font-semibold tracking-wider uppercase text-xs">Text:</div>
+                            <div class="ms-2 text-sm">{{ r.text }}</div>
+                        </div>
+                    </div>
+                {% endfor %}
             </div>
         </div>
     </div>
