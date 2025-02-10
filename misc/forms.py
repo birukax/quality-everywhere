@@ -1,5 +1,6 @@
 from django import forms
-from django.forms import formset_factory
+from django_select2 import forms as s2forms
+from django.forms import formset_factory, inlineformset_factory
 from .models import RawMaterial, Shift, Color, ColorStandard
 from main.custom_widgets import ColorWidget
 
@@ -31,41 +32,40 @@ class EditShiftForm(forms.ModelForm):
 class CreateColorStandardForm(forms.ModelForm):
     class Meta:
         model = ColorStandard
-        fields = ["name"]
+        fields = ("name", "colors")
+        widgets = {
+            "name": forms.TextInput(attrs={"class": "w-full text-center h-auto"}),
+        }
 
-
-class ColorSelectForm(forms.Form):
-    color = forms.ModelChoiceField(
+    colors = forms.ModelMultipleChoiceField(
         queryset=Color.objects.all(),
-        required=False,
+        widget=s2forms.ModelSelect2MultipleWidget(
+            queryset=Color.objects.all(),
+            search_fields=[
+                "name__icontains",
+                "code__icontains",
+            ],
+            attrs={"class": "w-full text-center h-auto"},
+        ),
     )
-
-
-ColorFormSet = formset_factory(ColorSelectForm, extra=8, max_num=8, min_num=8)
-
-
-class BaseColorFormset(ColorFormSet):
-    def clean(self):
-        if any(self.errors):
-            return
-        colors = []
-        for form in self.forms:
-            color = form.cleaned_data.get("color")
-            if color:
-                if color in colors:
-                    raise forms.ValidationError("Colors must be unique")
-                colors.append(color)
-        if not colors:
-            raise forms.ValidationError("At least on color must be selected")
 
 
 class EditColorStandardForm(forms.ModelForm):
     class Meta:
         model = ColorStandard
-        fields = ["name", "colors"]
-        widgets = {
-            "colors": forms.CheckboxSelectMultiple(attrs={"class": "space-y-2"}),
-        }
+        fields = ["colors"]
+
+    colors = forms.ModelMultipleChoiceField(
+        queryset=Color.objects.all(),
+        widget=s2forms.ModelSelect2MultipleWidget(
+            queryset=Color.objects.all(),
+            search_fields=[
+                "name__icontains",
+                "code__icontains",
+            ],
+            attrs={"class": "w-full text-center h-auto"},
+        ),
+    )
 
 
 class CreateColorForm(forms.ModelForm):

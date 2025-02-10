@@ -9,7 +9,6 @@ from .tasks import (
     shift_edit,
     color_create,
     color_edit,
-    color_standard_create,
     color_standard_edit,
 )
 from .filters import (
@@ -27,7 +26,6 @@ from .forms import (
     CreateColorForm,
     EditColorForm,
     CreateColorStandardForm,
-    BaseColorFormset,
     EditColorStandardForm,
 )
 
@@ -162,25 +160,34 @@ def color_standard_list(request):
 
 
 def create_color_standard(request):
-    if request.method == "GET":
-        form = CreateColorStandardForm()
-        formset = BaseColorFormset()
-        context = {
-            "form": form,
-            "formset": formset,
-        }
-        return render(request, "misc/color_standard/create.html", context)
+    if request.method == "POST":
 
-    color_standard_create(request)
-    return redirect("misc:color_standard_list")
+        form = CreateColorStandardForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data.get("name")
+            color_standard = ColorStandard(name=name)
+            color_standard.save()
+            color_standard.colors.set(form.cleaned_data.get("colors"))
+            color_standard.save()
+            return redirect("misc:color_standard_list")
+    else:
+        form = CreateColorStandardForm()
+    context = {
+        "form": form,
+    }
+    return render(request, "misc/color_standard/create.html", context)
 
 
 def edit_color_standard(request, id):
-    if request.method == "GET":
-        color_standard = get_object_or_404(ColorStandard, id=id)
+    color_standard = get_object_or_404(ColorStandard, id=id)
+    if request.method == "POST":
+        form = EditColorStandardForm(request.POST)
+        if form.is_valid():
+            colors = form.cleaned_data.get("colors")
+            color_standard.colors.set(colors)
+            color_standard.save()
+            return redirect("misc:color_standard_list")
+    else:
         form = EditColorStandardForm(instance=color_standard)
-        context = {"form": form, "color_standard": color_standard}
-        return render(request, "misc/color_standard/edit.html", context)
-
-    color_standard_edit(request, id)
-    return redirect("misc:color_standard_list")
+    context = {"form": form, "color_standard": color_standard}
+    return render(request, "misc/color_standard/edit.html", context)

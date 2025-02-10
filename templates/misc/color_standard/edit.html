@@ -1,15 +1,32 @@
 {% extends 'form.html' %}
+{% block title %}Edit Color Standard{% endblock %}
 {% block form %}
     <div class=" bg-gray-50">
         <form class="p-4 md:p-5 "
               method="post"
               action="{% url 'misc:edit_color_standard' color_standard.id %}">
             {% csrf_token %}
+            <div class="flex gap-2 mb-4 mx-auto">
+                <div class="flex-col  font-semibold tracking-wider">Name:</div>
+                <div class="flex-col font-normal">
+                    <p class="  text-base  text-gray-700 tracking-wider uppercase">{{ color_standard.name }}</p>
+                </div>
+            </div>
             <div class="flex-col gap-2 mb-4 mx-auto">
-                {% for field in form %}
-                    {{ field.label_tag }}
-                    <div class="flex-col ">{{ field }}</div>
-                {% endfor %}
+                <p class="text-red-700 text-sm">
+                    {% if form.non_field_errors %}{{ form.non_field_errors|join:", " }}{% endif %}
+                </p>
+                <div class="grid  gap-2 mb-4">
+                    {% for field in form %}
+                        <div class="flex-col mb-3">
+                            <div class=" mb-2 ">{{ field.label_tag }}</div>
+                            <div class="flex">{{ field }}</div>
+                            <p class="text-red-700 text-sm">
+                                {% if field.errors %}{{ field.errors|join:", " }}{% endif %}
+                            </p>
+                        </div>
+                    {% endfor %}
+                </div>
             </div>
             <div class="flex gap-4">
                 <button type="submit"

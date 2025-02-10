@@ -1,4 +1,5 @@
 from django import forms
+from django_select2 import forms as s2forms
 from .models import Machine, Route, MachineRoute
 from assessment.models import Test, Conformity
 
@@ -14,33 +15,68 @@ class CreateMachineForm(forms.ModelForm):
                 attrs={"class": "w-full text-center h-auto"},
                 choices=(((False, "No"), (True, "Yes"))),
             ),
-            "tests": forms.CheckboxSelectMultiple(
-                attrs={"class": "space-y-2  text-blue-600"}
-            ),
-            "conformities": forms.CheckboxSelectMultiple(
-                attrs={"class": "space-y-2 text-sky-600"}
-            ),
         }
+
+    tests = forms.ModelMultipleChoiceField(
+        queryset=Test.objects.all(),
+        widget=s2forms.ModelSelect2MultipleWidget(
+            queryset=Test.objects.all(),
+            search_fields=[
+                "name__icontains",
+                "code__icontains",
+            ],
+            attrs={"class": "w-full text-center h-auto"},
+        ),
+    )
+
+    conformities = forms.ModelMultipleChoiceField(
+        queryset=Conformity.objects.all(),
+        widget=s2forms.ModelSelect2MultipleWidget(
+            queryset=Conformity.objects.all(),
+            search_fields=[
+                "name__icontains",
+                "code__icontains",
+            ],
+            attrs={"class": "w-full text-center h-auto"},
+        ),
+    )
 
 
 class EditMachineForm(forms.ModelForm):
     class Meta:
         model = Machine
-        fields = ("name", "type", "viscosity_test", "tests", "conformities")
+        fields = ("type", "viscosity_test", "tests", "conformities")
         widgets = {
-            "name": forms.TextInput(attrs={"class": "w-full text-center h-auto"}),
             "type": forms.Select(attrs={"class": "w-full text-center h-auto"}),
             "viscosity_test": forms.Select(
                 attrs={"class": "w-full text-center h-auto"},
                 choices=(((False, "No"), (True, "Yes"))),
             ),
-            "tests": forms.CheckboxSelectMultiple(
-                attrs={"class": "space-y-2  text-blue-600"}
-            ),
-            "conformities": forms.CheckboxSelectMultiple(
-                attrs={"class": "space-y-2 text-sky-600"}
-            ),
         }
+
+    tests = forms.ModelMultipleChoiceField(
+        queryset=Test.objects.all(),
+        widget=s2forms.ModelSelect2MultipleWidget(
+            queryset=Test.objects.all(),
+            search_fields=[
+                "name__icontains",
+                "code__icontains",
+            ],
+            attrs={"class": "w-full text-center h-auto"},
+        ),
+    )
+
+    conformities = forms.ModelMultipleChoiceField(
+        queryset=Conformity.objects.all(),
+        widget=s2forms.ModelSelect2MultipleWidget(
+            queryset=Conformity.objects.all(),
+            search_fields=[
+                "name__icontains",
+                "code__icontains",
+            ],
+            attrs={"class": "w-full text-center h-auto"},
+        ),
+    )
 
 
 class CreateRouteForm(forms.ModelForm):

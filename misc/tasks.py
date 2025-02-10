@@ -1,4 +1,5 @@
 import requests
+from django.shortcuts import redirect
 from .models import Customer, RawMaterial, Shift, Color, ColorStandard
 from decouple import config
 from requests_ntlm import HttpNtlmAuth
@@ -11,7 +12,6 @@ from .forms import (
     CreateColorForm,
     EditColorForm,
     CreateColorStandardForm,
-    BaseColorFormset,
     EditColorStandardForm,
 )
 
@@ -88,20 +88,6 @@ def color_edit(request, id):
             color.code = form.cleaned_data["code"]
             color.viscosity = form.cleaned_data["viscosity"]
             color.save()
-
-
-def color_standard_create(request):
-    if request.method == "POST":
-        form = CreateColorStandardForm(request.POST)
-        formset = BaseColorFormset(request.POST)
-        if form.is_valid() and formset.is_valid():
-            color_standard = form.save()
-
-            colors = []
-            for color_form in formset:
-                if color_form.cleaned_data.get("color"):
-                    colors.append(color_form.cleaned_data["color"])
-            color_standard.colors.set(colors)
 
 
 def color_standard_edit(request, id):
