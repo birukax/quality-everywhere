@@ -22,11 +22,11 @@
                 <th scope="row" class="px-3 sm:px-6 py-3 font-medium text-gray-900 ">
                     <p>{{ p.name }}</p>
                 </th>
-                <td class="px-1 sm:px-4 py-3 tracking-wide capitalize text-center">
+                <td class=" tracking-wide capitalize text-center">
                     {% if p.have_issues %}
-                        <p class="bg-red-700 rounded-lg text-sm text-white py-1.5 px-2">{{ p.issues_count }} Issues</p>
+                        <div class="bg-red-500 rounded-md text-center text-sm text-white py-1.5 px-2">{{ p.issues_count }} Issues</div>
                     {% else %}
-                        <p class="bg-green-700 rounded-lg text-sm text-white py-1.5 px-2">No Issue</p>
+                        <div class="bg-green-500 rounded-md text-center text-sm text-white py-1.5 px-2">No Issue</div>
                     {% endif %}
                 </td>
                 <td class="px-3 sm:px-6 py-3 capitalize hidden md:table-cell">{{ p.active }}</td>
