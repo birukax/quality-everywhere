@@ -10,8 +10,9 @@
 {% block table %}
     <thead class="text-xs sm:text-sm text-gray-700 uppercase bg-gray-50">
         <tr>
-            <th scope="col" class="px-3 sm:px-6 py-3">Location Name</th>
-            <th scope="col" class="px-3 sm:px-6 py-3">Active</th>
+            <th scope="col" class="px-3 sm:px-6 py-3">Name</th>
+            <th scope="col" class="px-3 sm:px-6 py-3 text-center">Status</th>
+            <th scope="col" class="px-3 sm:px-6 py-3 hidden md:table-cell">Active</th>
             <th scope="col" class="px-3 sm:px-6 py-3 text-right">Action</th>
         </tr>
     </thead>
@@ -21,7 +22,14 @@
                 <th scope="row" class="px-3 sm:px-6 py-3 font-medium text-gray-900 ">
                     <p>{{ p.name }}</p>
                 </th>
-                <td class="px-3 sm:px-6 py-3 capitalize">{{ p.active }}</td>
+                <td class="px-1 sm:px-4 py-3 tracking-wide capitalize text-center">
+                    {% if p.have_issues %}
+                        <p class="bg-red-700 rounded-lg text-sm text-white py-1.5 px-2">{{ p.issues_count }} Issues</p>
+                    {% else %}
+                        <p class="bg-green-700 rounded-lg text-sm text-white py-1.5 px-2">No Issue</p>
+                    {% endif %}
+                </td>
+                <td class="px-3 sm:px-6 py-3 capitalize hidden md:table-cell">{{ p.active }}</td>
                 <td class="px-3 sm:px-6 py-3 flex justify-end">{% include 'issue/location/detail.html' %}</td>
             </tr>
         {% endfor %}

@@ -8,7 +8,7 @@ class Location(models.Model):
     active = models.BooleanField(default=True)
 
     class Meta:
-        ordering = ["name"]
+        ordering = ["-name"]
 
     def __str__(self):
         return f"{self.name}"

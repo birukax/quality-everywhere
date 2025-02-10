@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.db.models import OuterRef, Exists, Q, Count
 from main.tasks import get_page
 from .models import Location, IssueType, Issue, Remark
 from .forms import (
@@ -90,8 +91,19 @@ def update_status(request, id, action):
 
 
 def location_list(request):
-    locations = Location.objects.all()
+    locations = Location.objects.annotate(
+        have_issues=Exists(
+            Issue.objects.filter(~Q(status="COMPLETED"), location__id=OuterRef("id"))
+        ),
+        issues_count=Count(
+            "issues",
+            filter=~Q(issues__status="COMPLETED"),
+            issues__location__id=OuterRef("id"),
+        ),
+    )
+
     page = get_page(request, model=locations)
+
     context = {
         "page": page,
     }
