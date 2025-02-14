@@ -28,7 +28,7 @@
                 </button>
             </div>
             <!-- Modal body -->
-            <form class="p-4 md:p-5"
+            <form class="p-2 md:p-4"
                   method="post"
                   action="{% url 'assessment:save_test' assessment.id %}">
                 {% csrf_token %}
@@ -48,7 +48,7 @@
                                 <div class="whitespace-nowrap font-semibold mb-2">{{ form.instance.test }}</div>
                                 <div class="flex gap-2">
                                     {% for field in form %}
-                                        <div class="flex items-center">{{ field }}</div>
+                                        <div class="flex items-center whitespace-nowrap text-sm tracking-wider">{{ field }}</div>
                                         <p class="text-red-700 text-sm">
                                             {% if field.errors %}{{ field.errors|join:", " }}{% endif %}
                                         </p>

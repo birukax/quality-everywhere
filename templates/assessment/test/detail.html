@@ -39,6 +39,20 @@
                         </div>
                     </li>
                     <li class="pb-3 sm:pb-4">
+                        <div class="flex items-center justify-between">
+                            <div class="inline-flex  items-center text-base font-semibold text-gray-900 ">Critical</div>
+                            <div class="flex-row text-right">
+                                <p class="text-sm font-medium text-gray-900 truncate ">
+                                    {% if t.critial %}
+                                        Yes
+                                    {% else %}
+                                        No
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="pb-3 sm:pb-4">
                         <div class="text-left font-semibold text-lg text-gray-700 mb-2">Machines</div>
                         <div class="grid justify-items-stretch grid-cols-2">
                             {% for machine in t.machines.all %}

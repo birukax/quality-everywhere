@@ -32,7 +32,7 @@
                 <ul class="max-w-xl divide-y divide-gray-200 dark:divide-gray-700">
                     <li class="py-3 sm:py-4">
                         <div class="flex items-center justify-between">
-                            <div class="inline-flex  items-center text-base font-semibold text-gray-900 ">Job</div>
+                            <div class="inline-flex  items-center text-base font-semibold text-gray-900 ">Job Test</div>
                             <div class="flex-row text-right">
                                 <p class="text-base font-medium text-gray-900">{{ ass.assessment.job_test }}</p>
                             </div>
@@ -77,10 +77,12 @@
                                 <tr class="text-left ">
                                     <td class="px-2 py-1 ">{{ t.test.name }}</td>
                                     <td class="px-2 py-1">
-                                        {% if t.value %}
-                                            <p class="text-base font-base text-green-700">Passed</p>
+                                        {% if t.value == 'PASS' %}
+                                            <p class="text-base font-semibold text-green-700 truncate ">Passed</p>
+                                        {% elif t.value == 'FAIL' %}
+                                            <p class="text-base font-semibold text-red-700 truncate ">Failed</p>
                                         {% else %}
-                                            <p class="text-base font-base text-red-700">Failed</p>
+                                            <p class="text-base font-semibold text-gray-700 truncate ">N/A</p>
                                         {% endif %}
                                     </td>
                                     <td class="px-2 py-1">{{ t.remark }}</td>

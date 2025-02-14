@@ -6,14 +6,20 @@
               method="post"
               action="{% url 'assessment:create_test' %}">
             {% csrf_token %}
+            <div class="flex gap-2 mb-4 mx-auto">
+                <div class="flex-col  font-semibold tracking-wider">Test:</div>
+                <div class="flex-col font-normal">
+                    <p class="  text-base  text-gray-700 tracking-wider uppercase">{{ test.name }}</p>
+                </div>
+            </div>
             <div class="flex-col gap-2 mb-4 mx-auto">
                 <p class="text-red-700 text-sm">
                     {% if form.non_field_errors %}{{ form.non_field_errors|join:", " }}{% endif %}
                 </p>
-                <div class="grid sm:grid-cols-3 gap-2 mb-4">
+                <div class="grid sm:grid-cols-2 gap-2 mb-4">
                     {% for field in form %}
                         <div class="flex-col mb-3">
-                            <div class="font-bold mb-2 ">{{ field.label_tag }}</div>
+                            <div class=" mb-2 ">{{ field.label_tag }}</div>
                             <div class="flex gap-6">{{ field }}</div>
                             <p class="text-red-700 text-sm">
                                 {% if field.errors %}{{ field.errors|join:", " }}{% endif %}

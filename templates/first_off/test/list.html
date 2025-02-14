@@ -35,10 +35,12 @@
                             <div class="flex items-center justify-between">
                                 <div class="inline-flex  items-center text-base  text-gray-900 ">{{ test.test.name }}</div>
                                 <div class="flex-row text-right">
-                                    {% if test.value %}
+                                    {% if test.value == 'PASS' %}
                                         <p class="text-base font-semibold text-green-700 truncate ">Passed</p>
-                                    {% else %}
+                                    {% elif test.value == 'FAIL' %}
                                         <p class="text-base font-semibold text-red-700 truncate ">Failed</p>
+                                    {% else %}
+                                        <p class="text-base font-semibold text-gray-700 truncate ">N/A</p>
                                     {% endif %}
                                     {% if test.remark == None %}
                                         <p class="text-sm text-gray-600 truncate ">No Remark</p>

@@ -11,29 +11,30 @@ from .models import (
     Lamination,
     Substrate,
 )
+from misc.models import RawMaterial
 
 
 class CreateAssessmentForm(forms.ModelForm):
     class Meta:
         model = Assessment
         fields = (
-            "date",
-            "time",
+            # "date",
+            # "time",
             "shift",
         )
         widgets = {
-            "date": forms.DateInput(
-                attrs={
-                    "type": "date",
-                    "class": "w-full items-center text-center h-auto",
-                }
-            ),
-            "time": forms.TimeInput(
-                attrs={
-                    "type": "time",
-                    "class": "w-full items-center text-center h-auto",
-                }
-            ),
+            #     "date": forms.DateInput(
+            #         attrs={
+            #             "type": "date",
+            #             "class": "w-full items-center text-center h-auto",
+            #         }
+            #     ),
+            #     "time": forms.TimeInput(
+            #         attrs={
+            #             "type": "time",
+            #             "class": "w-full items-center text-center h-auto",
+            #         }
+            #     ),
             "shift": forms.Select(
                 attrs={"class": "w-full items-center text-center h-auto"}
             ),
@@ -61,8 +62,12 @@ class FirstOffTestsFrom(forms.ModelForm):
         )
         widgets = {
             "value": forms.RadioSelect(
-                attrs={"class": "flex gap-2"},
-                choices=[(True, "Pass"), (False, "Fail")],
+                attrs={"class": "flex text-sm tracking-wider gap-2"},
+            ),
+            "remark": forms.TextInput(
+                attrs={
+                    "class": "w-full items-center text-center h-auto",
+                }
             ),
         }
 
@@ -73,26 +78,12 @@ class OnProcessConformitiesForm(forms.ModelForm):
         fields = (
             "conformity",
             "sample_no",
-            "date",
-            "time",
             "action",
         )
 
         widgets = {
-            "date": forms.DateInput(
-                attrs={
-                    "type": "date",
-                    "class": "w-full items-center text-center h-auto",
-                }
-            ),
             "conformity": forms.Select(
                 attrs={
-                    "class": "w-full items-center text-center h-auto",
-                }
-            ),
-            "time": forms.TimeInput(
-                attrs={
-                    "type": "time",
                     "class": "w-full items-center text-center h-auto",
                 }
             ),
@@ -113,12 +104,16 @@ class OnProcessConformitiesForm(forms.ModelForm):
 class CreateTestForm(forms.ModelForm):
     class Meta:
         model = Test
-        fields = ["name"]
+        fields = ("name", "critical")
         widgets = {
             "name": forms.TextInput(
                 attrs={
                     "class": "w-full items-center text-center h-auto",
                 }
+            ),
+            "critical": forms.Select(
+                attrs={"class": "w-full text-center h-auto"},
+                choices=(((False, "No"), (True, "Yes"))),
             ),
         }
 
@@ -126,12 +121,16 @@ class CreateTestForm(forms.ModelForm):
 class EditTestForm(forms.ModelForm):
     class Meta:
         model = Test
-        fields = ["name"]
+        fields = ("name", "critical")
         widgets = {
             "name": forms.TextInput(
                 attrs={
                     "class": "w-full items-center text-center h-auto",
                 }
+            ),
+            "critical": forms.Select(
+                attrs={"class": "w-full text-center h-auto"},
+                choices=(((False, "No"), (True, "Yes"))),
             ),
         }
 
@@ -276,7 +275,7 @@ class CreateLaminationForm(forms.ModelForm):
         model = Lamination
         fields = (
             "ply_structure",
-            "mechanism",
+            "type",
             "mixing_ratio",
             "supplier",
             "adhesive",
@@ -285,7 +284,7 @@ class CreateLaminationForm(forms.ModelForm):
             "hardner_batch_no",
         )
         widgets = {
-            "mechanism": forms.Select(
+            "type": forms.Select(
                 attrs={
                     "class": "w-full items-center text-center h-auto",
                 }
@@ -342,3 +341,35 @@ class LaminationSubstratesForm(forms.ModelForm):
             "raw_material",
             "batch_no",
         )
+        widgets = {
+            "raw_material": forms.Select(
+                attrs={
+                    "class": "w-full items-center text-center h-auto",
+                }
+            ),
+            "batch_no": forms.TextInput(
+                attrs={
+                    "class": "w-full items-center text-center h-auto",
+                }
+            ),
+        }
+
+
+class BaseLaminationSubstrateFormset(forms.BaseModelFormSet):
+    def clean(self):
+        if any(self.errors):
+            return
+        raw_materials = []
+        duplicates = False
+
+        for form in self.forms:
+            if form.cleaned_data:
+                raw_material = form.cleaned_data["raw_material"]
+                if raw_material in raw_materials or Substrate.objects.filter(
+                    lamination=form.instance.lamination, raw_material=raw_material
+                ):
+                    duplicates = True
+                    form.add_error(
+                        "raw_material", "Duplicate raw materials are not allowed."
+                    )
+                raw_materials.append(raw_material)

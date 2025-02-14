@@ -16,15 +16,14 @@ def create_assessment_approval(request, id):
     assessment = get_object_or_404(Assessment, id=id)
     if assessment.type == "FIRST-OFF":
         if not assessment.status in ("PENDING", "COMPLETED"):
-            approvers = ["OPERATOR", "SUPERVISOR"]
-            for a in approvers:
-                app = AssessmentApproval(assessment=assessment, approver=a)
-                app.save()
+            # approvers = ["OPERATOR", "SUPERVISOR"]
+            # for a in approvers:
+            app = AssessmentApproval(assessment=assessment)
+            app.save()
             assessment.status = "PENDING"
             assessment.inspected_by = request.user
             assessment.save()
-        return redirect("assessment:first_off_detail", id=assessment.id)
-    return redirect("assessment:on_process_detail", id=assessment.id)
+    return redirect("assessment:first_off_detail", id=assessment.id)
 
 
 def assessment_list(request, type):
@@ -50,20 +49,20 @@ def approve_assessment(request, id):
     assessment.status = "APPROVED"
     assessment.by = request.user
     assessment.save()
-    not_approved = AssessmentApproval.objects.filter(
-        assessment__id=assessment.assessment.id, status="PENDING"
-    )
-    if not not_approved.exists():
-        assessment.assessment.status = "COMPLETED"
+    # not_approved = AssessmentApproval.objects.filter(
+    #     assessment__id=assessment.assessment.id, status="PENDING"
+    # )
+    # if not not_approved.exists():
+    assessment.assessment.status = "COMPLETED"
+    type = assessment.assessment.type
+    if type == "FIRST-OFF":
+        assessment.assessment.job_test.status = "FIRST-OFF COMPLETED"
+        assessment.assessment.job_test.save()
         assessment.assessment.save()
-        type = assessment.assessment.type
-        if type == "FIRST-OFF":
-            assessment.assessment.job_test.status = "FIRST-OFF COMPLETED"
-            assessment.assessment.job_test.save()
         # elif type == "ON-PROCESS":
         #     assessment.assessment.job_test.status = "ON-PROCESS COMPLETED"
         #     assessment.assessment.job_test.save()
-        assessment.assessment.job_test.save()
+        # assessment.assessment.job_test.save()
     return redirect("approval:assessment_list", type=assessment.assessment.type)
 
 
@@ -72,14 +71,14 @@ def reject_assessment(request, id):
     assessment.status = "REJECTED"
     assessment.by = request.user
     assessment.save()
-    not_approved = AssessmentApproval.objects.filter(
-        assessment__id=assessment.assessment.id, status="PENDING"
-    )
-    if not_approved.exists():
-        for a in not_approved:
-            a.status = "CANCELED"
-            a.by = request.user
-            a.save()
+    # not_approved = AssessmentApproval.objects.filter(
+    #     assessment__id=assessment.assessment.id, status="PENDING"
+    # )
+    # if not_approved.exists():
+    # for a in not_approved:
+    #     a.status = "CANCELED"
+    #     a.by = request.user
+    #     a.save()
     assessment.assessment.status = "REJECTED"
     assessment.assessment.save()
     return redirect("approval:assessment_list", type=assessment.assessment.type)

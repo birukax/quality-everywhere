@@ -101,12 +101,26 @@ class WasteFilter(django_filters.FilterSet):
 class TestFilter(django_filters.FilterSet):
     class Meta:
         model = Test
-        fields = ["id"]
+        fields = ("id", "critical")
 
     id = django_filters.CharFilter(
         label="Test Name",
         lookup_expr="exact",
         widget=TestWidget(),
+    )
+    critical = django_filters.BooleanFilter(
+        label="Critial",
+        lookup_expr="exact",
+        widget=forms.Select(
+            attrs={
+                "class": "w-full items-center text-center h-auto",
+            },
+            choices=(
+                ("", "---------"),
+                (True, "Yes"),
+                (False, "No"),
+            ),
+        ),
     )
 
 

@@ -60,6 +60,7 @@ class Assessment(models.Model):
 
 class Test(models.Model):
     name = models.CharField(max_length=100, unique=True)
+    critical = models.BooleanField(default=False)
     # type = models.CharField(max_length=100)
 
     class Meta:
@@ -98,6 +99,14 @@ class Waste(models.Model):
         "machine.Machine",
         on_delete=models.CASCADE,
     )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["-updated_at"]
+
+    def __str__(self):
+        return f"{self.shift.name} - {self.assessment}"
 
 
 class SemiWaste(models.Model):
@@ -119,6 +128,7 @@ class SemiWaste(models.Model):
     approved_quantity = models.PositiveIntegerField(default=0)
     rejected_quantity = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     created_by = models.ForeignKey(
         User,
         on_delete=models.RESTRICT,
@@ -159,6 +169,7 @@ class Viscosity(models.Model):
     )
     value = models.FloatField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     created_by = models.ForeignKey(
         User,
         on_delete=models.RESTRICT,
@@ -178,9 +189,9 @@ class Lamination(models.Model):
         on_delete=models.CASCADE,
         related_name="laminations",
     )
-    mechanism = models.CharField(
+    type = models.CharField(
         max_length=30,
-        choices=[("SOLVENTLESS", "SOLVENTLESS"), ("SOLVENT-BASED", "SOLVENT-BASED")],
+        choices=[("SOLVENTLESS", "SOLVENTLESS"), ("SOLVENT-BASE", "SOLVENT-BASE")],
     )
     mixing_ratio = models.CharField(max_length=20, validators=[validate_ratio_format])
     adhesive = models.CharField(
@@ -201,6 +212,7 @@ class Lamination(models.Model):
 
 
 class Substrate(models.Model):
+    no = models.PositiveIntegerField(default=1)
     lamination = models.ForeignKey(
         Lamination,
         on_delete=models.RESTRICT,
@@ -218,8 +230,17 @@ class Substrate(models.Model):
         blank=True,
     )
 
+    class Meta:
+        unique_together = ("lamination", "raw_material")
+        ordering = ["no"]
+
 
 class FirstOff(models.Model):
+    TYPE = (
+        ("PASS", "PASS"),
+        ("FAIL", "FAIL"),
+        ("N/A", "N/A"),
+    )
     assessment = models.ForeignKey(
         Assessment,
         on_delete=models.CASCADE,
@@ -229,12 +250,17 @@ class FirstOff(models.Model):
         Test,
         on_delete=models.CASCADE,
     )
-    value = models.BooleanField(null=True, blank=True)
+    value = models.CharField(choices=TYPE, default="N/A", max_length=20)
     remark = models.CharField(
         max_length=100,
         null=True,
         blank=True,
     )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class meta:
+        ordering = ["-updated_at"]
 
     def __str__(self):
         return f"{self.assessment.machine} - {self.test}"
@@ -252,8 +278,6 @@ class OnProcess(models.Model):
         null=True,
         blank=True,
     )
-    date = models.DateField(default=datetime.datetime.now)
-    time = models.TimeField(default=datetime.datetime.now)
     sample_no = models.CharField(
         max_length=30,
         null=True,
@@ -277,9 +301,11 @@ class OnProcess(models.Model):
         blank=True,
         null=True,
     )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        ordering = ["-time"]
+        ordering = ["-created_at", "-updated_at"]
 
     def __str__(self):
         return f"{self.assessment.machine} - {self.conformity}"

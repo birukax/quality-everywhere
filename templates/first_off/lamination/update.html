@@ -37,23 +37,37 @@
                 <p class="text-red-700 text-sm">
                     {% if substrates_formset.non_form_errors %}{{ substrates_formset.non_form_errors|join:", " }}{% endif %}
                 </p>
+                <div class="underline tracking-wider">Substrate 1</div>
+                <div class="grid grid-cols-2 items-center gap-2 mb-4">
+                    <div class="flex-col ">
+                        <div class="font-semibold">Raw Material:</div>
+                        <div>{{ lamination.substrates.first.raw_material }}</div>
+                    </div>
+                    <div class="flex-col ">
+                        <div class="font-semibold">Batch No.:</div>
+                        <div>{{ lamination.substrates.first.batch_no }}</div>
+                    </div>
+                </div>
                 {% for form in substrates_formset %}
                     <p class="text-red-700 text-sm">
                         {% if form.non_field_errors %}{{ form.non_field_errors|join:", " }}{% endif %}
                     </p>
-                    <div class="flex items-center gap-2 mb-4 justify-between">
+                    <div class="underline tracking-wider">Substrate {{ form.instance.no }}</div>
+                    <div class="grid grid-cols-2 items-center gap-2 mb-4">
                         {{ form.id }}
-                        <div class="flex gap-2">
+                        {% if form.instance.no != 1 %}
                             {% for field in form %}
                                 <div class="flex-col ">
-                                    {% if field.is_hidden == False %}<div class="flex items-center mb-2">{{ field.label_tag }}</div>{% endif %}
+                                    {% if field.is_hidden == False %}
+                                        <div class="flex capitalize font-semibold items-center mb-2">{{ field.label_tag }}</div>
+                                    {% endif %}
                                     <div class="flex items-center">{{ field }}</div>
                                     <p class="text-red-700 text-sm">
                                         {% if field.errors %}{{ field.errors|join:", " }}{% endif %}
                                     </p>
                                 </div>
                             {% endfor %}
-                        </div>
+                        {% endif %}
                     </div>
                 {% endfor %}
                 <button type="submit"

@@ -41,6 +41,7 @@ from .forms import (
     UpdateSemiWasteForm,
     CreateLaminationForm,
     LaminationSubstratesForm,
+    BaseLaminationSubstrateFormset,
 )
 
 
@@ -95,15 +96,19 @@ def first_off_detail(request, id):
     formset = test_formset(queryset=tests)
 
     lamination_substrates_formset = modelformset_factory(
-        Substrate, form=LaminationSubstratesForm, extra=0
+        Substrate,
+        form=LaminationSubstratesForm,
+        extra=0,
+        formset=BaseLaminationSubstrateFormset,
     )
     substrates_formset = lamination_substrates_formset(
-        queryset=Substrate.objects.filter(lamination=lamination)
+        queryset=Substrate.objects.filter(lamination=lamination).exclude(no=1)
     )
-    passed = tests.filter(value=True)
-    failed = tests.filter(value=False)
+    passed = tests.filter(value="PASS")
+    failed = tests.filter(value="FAIL")
+    na = tests.filter(value="N/A")
     if (
-        tests.filter(value="").exists()
+        tests.filter(test__critical=True).exclude(value="PASS").exists()
         or Substrate.objects.filter(
             lamination=lamination, raw_material__isnull=True
         ).exists()
@@ -120,6 +125,7 @@ def first_off_detail(request, id):
         "tests": tests,
         "passed": passed,
         "failed": failed,
+        "na": na,
         "can_submit": can_submit,
     }
 
@@ -176,8 +182,6 @@ def create_first_off(request, id):
             machine = job_test.current_machine
             assessment = Assessment(
                 job_test=job_test,
-                date=form.cleaned_data["date"],
-                time=form.cleaned_data["time"],
                 shift=form.cleaned_data["shift"],
                 machine=machine,
                 type="FIRST-OFF",
@@ -216,6 +220,10 @@ def create_first_off(request, id):
                 ply_structure = lamination_form.cleaned_data["ply_structure"]
                 for p in range(0, ply_structure):
                     substrate = Substrate(lamination=lamination)
+                    substrate.no = p + 1
+                    if p == 0:
+                        substrate.raw_material = job_test.raw_material
+                        substrate.batch_no = job_test.batch_no
                     substrate.save()
                 assessment.job_test.status = "FIRST-OFF CREATED"
                 assessment.job_test.save()
@@ -331,7 +339,10 @@ def update_substrates(request, id):
     assessment = Assessment.objects.get(id=id)
     if request.method == "POST":
         substrates_formset = modelformset_factory(
-            Substrate, form=LaminationSubstratesForm, extra=0
+            Substrate,
+            form=LaminationSubstratesForm,
+            extra=0,
+            formset=BaseLaminationSubstrateFormset,
         )
         formset = substrates_formset(request.POST)
         if formset.is_valid():

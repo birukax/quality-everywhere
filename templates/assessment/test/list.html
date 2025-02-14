@@ -11,6 +11,7 @@
     <thead class="text-xs sm:text-sm text-gray-700 uppercase bg-gray-50">
         <tr>
             <th scope="col" class="px-3 py-3 sm:px-6 sm:py-3">Test Name</th>
+            <th scope="col" class="px-3 py-3 sm:px-6 sm:py-3">Critical</th>
             <th scope="col" class="px-3 py-3 sm:px-6 sm:py-3">Machines</th>
             <th scope="col" class="px-3 py-3 sm:px-6 sm:py-3 text-right">Action</th>
         </tr>
@@ -22,6 +23,7 @@
                     class="px-3 py-3 sm:px-6 sm:py-3 font-medium text-gray-900 ">
                     <p>{{ t.name }}</p>
                 </th>
+                <td class="px-3 py-3 sm:px-6 sm:py-3 capitalize">{{ t.critical }}</td>
                 <td class="px-3 py-3 sm:px-6 sm:py-3 capitalize">{{ t.machines.all.count }}</td>
                 <td class="px-3 py-3 sm:px-6 sm:py-3 flex justify-end">{% include 'assessment/test/detail.html' %}</td>
             </tr>

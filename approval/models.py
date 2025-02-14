@@ -17,9 +17,13 @@ class AssessmentApproval(models.Model):
     )
     status = models.CharField(default="PENDING", choices=STATUS, max_length=20)
     by = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
-    approver = models.CharField(choices=ROLES, max_length=20)
-    # approved_at = models.DateTimeField(auto_now_add=True)
+    approver = models.CharField(default="SUPERVISOR", max_length=20)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     comment = models.TextField(null=True, blank=True)
+
+    class Meta:
+        ordering = ["-created_at", "-updated_at"]
 
     def __str__(self):
         return f"{self.assessment} - {self.approver} - {self.assessment.job_test.id}"
