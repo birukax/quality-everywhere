@@ -10,14 +10,21 @@ from .forms import (
     CreateIssueForm,
     CreateRemarkForm,
 )
+from .filters import IssueFilter, DepartmentFilter, LocationFilter, IssueTypeFilter
 
 
 @login_required
 def list(request):
     issues = Issue.objects.all()
+    issue_filter = IssueFilter(
+        request.GET,
+        queryset=issues,
+    )
+    issues = issue_filter.qs
     page = get_page(request, model=issues)
     context = {
         "page": page,
+        "filter": issue_filter,
     }
     return render(request, "issue/list.html", context)
 
@@ -94,10 +101,16 @@ def update_status(request, id, action):
 
 def department_list(request):
     departments = Department.objects.all()
+    department_filter = DepartmentFilter(
+        request.GET,
+        queryset=departments,
+    )
+    departments = department_filter.qs
     page = get_page(request, model=departments)
 
     context = {
         "page": page,
+        "filter": department_filter,
     }
     return render(request, "issue/department/list.html", context)
 
@@ -108,21 +121,18 @@ def get_departments(request):
 
 
 def location_list(request):
-    locations = Location.objects.annotate(
-        have_issues=Exists(
-            Issue.objects.filter(~Q(status="COMPLETED"), location__id=OuterRef("id"))
-        ),
-        issues_count=Count(
-            "issues",
-            filter=~Q(issues__status="COMPLETED"),
-            issues__location__id=OuterRef("id"),
-        ),
+    locations = Location.objects.all()
+    location_filter = LocationFilter(
+        request.GET,
+        queryset=locations,
     )
+    locations = location_filter.qs
 
     page = get_page(request, model=locations)
 
     context = {
         "page": page,
+        "filter": location_filter,
     }
     return render(request, "issue/location/list.html", context)
 
@@ -148,9 +158,16 @@ def edit_location(request, id):
 
 def issue_type_list(request):
     issue_types = IssueType.objects.all()
+    issue_type_filter = IssueTypeFilter(
+        request.GET,
+        queryset=issue_types,
+    )
+    issue_types = issue_type_filter.qs
+
     page = get_page(request, model=issue_types)
     context = {
         "page": page,
+        "filter": issue_type_filter,
     }
     return render(request, "issue/type/list.html", context)
 

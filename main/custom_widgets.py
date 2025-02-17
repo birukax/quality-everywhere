@@ -4,6 +4,7 @@ from job.models import Job, JobTest
 from product.models import Product, Artwork
 from misc.models import ColorStandard, Color, Customer, RawMaterial, Shift
 from machine.models import Machine, Route
+from issue.models import Department, Location, Issue, IssueType
 from django.contrib.auth.models import User
 
 
@@ -44,6 +45,27 @@ class CustomerWidget(s2forms.ModelSelect2Widget):
     ]
 
 
+class DepartmentWidget(s2forms.ModelSelect2Widget):
+    queryset = Department.objects.filter(active=True)
+    search_fields = [
+        "name__icontains",
+    ]
+
+
+class IssueWidget(s2forms.ModelSelect2Widget):
+    queryset = Issue.objects.all()
+    search_fields = [
+        "id__icontains",
+    ]
+
+
+class IssueTypeWidget(s2forms.ModelSelect2Widget):
+    queryset = IssueType.objects.filter(active=True)
+    search_fields = [
+        "name__icontains",
+    ]
+
+
 class JobWidget(s2forms.ModelSelect2Widget):
     queryset = Job.objects.all()
     search_fields = [
@@ -55,6 +77,13 @@ class JobTestWidget(s2forms.ModelSelect2Widget):
     queryset = JobTest.objects.all()
     search_fields = [
         "id__icontains",
+    ]
+
+
+class LocationWidget(s2forms.ModelSelect2Widget):
+    queryset = Location.objects.filter(active=True)
+    search_fields = [
+        "name__icontains",
     ]
 
 

@@ -7,6 +7,14 @@ class Location(models.Model):
     name = models.CharField(max_length=100, unique=True)
     active = models.BooleanField(default=True)
 
+    @property
+    def have_issues(self):
+        return Issue.objects.filter(location=self).exists()
+
+    @property
+    def active_issues(self):
+        return Issue.objects.filter(location=self).exclude(status="COMPLETED").count()
+
     class Meta:
         ordering = ["name"]
 
