@@ -13,8 +13,6 @@
                         <div>{% include 'issue/action/form.html' with id=issue.id action='REJECT' %}</div>
                         <div>{% include 'issue/action/form.html' with id=issue.id action='CANCEL' %}</div>
                     {% elif issue.status == 'ACCEPTED' or issue.status == 'INCOMPLETE' %}
-                        <div>{% include 'issue/action/form.html' with id=issue.id action='START' %}</div>
-                    {% elif issue.status == 'IN-PROGRESS' %}
                         <div>{% include 'issue/action/form.html' with id=issue.id action='CLOSE' %}</div>
                     {% elif issue.status == 'PENDING' %}
                         <div>{% include 'issue/action/form.html' with id=issue.id action='APPROVE' %}</div>

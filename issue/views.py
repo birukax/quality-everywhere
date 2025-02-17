@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.db.models import OuterRef, Exists, Q, Count
 from main.tasks import get_page
-from .models import Location, IssueType, Issue, Remark
+from .tasks import departments_get
+from .models import Location, IssueType, Issue, Remark, Department
 from .forms import (
     CreateLocationForm,
     CreateIssueTypeForm,
@@ -39,6 +40,7 @@ def create(request):
         if form.is_valid():
             issue = Issue(
                 issue_type=form.cleaned_data["issue_type"],
+                department=form.cleaned_data["department"],
                 location=form.cleaned_data["location"],
                 description=form.cleaned_data["description"],
             )
@@ -69,8 +71,8 @@ def update_status(request, id, action):
             action = "COMPLETED"
         elif action == "CANCEL":
             action = "CANCELLED"
-        elif action == "START":
-            action = "IN-PROGRESS"
+        # elif action == "START":
+        #     action = "IN-PROGRESS"
         elif action == "CLOSE":
             action = "PENDING"
 
@@ -88,6 +90,21 @@ def update_status(request, id, action):
             issue.status = action
             issue.save()
     return redirect("issue:detail", id=id)
+
+
+def department_list(request):
+    departments = Department.objects.all()
+    page = get_page(request, model=departments)
+
+    context = {
+        "page": page,
+    }
+    return render(request, "issue/department/list.html", context)
+
+
+def get_departments(request):
+    departments_get()
+    return redirect("issue:department_list")
 
 
 def location_list(request):

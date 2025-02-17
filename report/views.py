@@ -1,16 +1,36 @@
-import io
+from io import BytesIO
 from django.shortcuts import render
 from django.http import FileResponse
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4, landscape, letter
+from assessment.models import Test
 
 
 def test(request):
-    buffer = io.BytesIO()
 
+    response = FileResponse(
+        generate_pdf(),
+        as_attachment=True,
+        filename="test.pdf",
+    )
+
+    return response
+
+
+def generate_pdf():
+    buffer = BytesIO()
     p = canvas.Canvas(buffer)
-    p.drawString(100, 100, "Hello world.")
+
+    tests = Test.objects.all()
+    p.drawString(100, 750, "Test")
+
+    y = 700
+    for t in tests:
+        p.drawString(100, y, f"Name: {t.name}")
+        p.drawString(100, y - 20, f"Critical: {t.critical}")
+        y -= 30
     p.showPage()
     p.save()
+
     buffer.seek(0)
-    return FileResponse(buffer, as_attachment=True, filename="hello.pdf")
+    return buffer

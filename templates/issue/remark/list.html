@@ -30,16 +30,20 @@
             <!-- Modal body -->
             <div class="p-2 md:p-3 divide-y-2">
                 {% for r in issue.remarks.all %}
-                    <div class="grid grid-cols-2 font-normal my-2">
-                        <div class="flex-col gap-1 sm:flex">
+                    <div class="grid md:grid-cols-2 font-normal my-2 border-y-2">
+                        <div class="flex items-center py-1  gap-1 flex-row">
                             <div class="font-semibold tracking-wider uppercase text-xs">Action:</div>
                             <div class="ms-2 text-sm">{{ r.action }}</div>
                         </div>
-                        <div class="flex-col gap-1 sm:flex">
+                        <div class="flex items-center py-1  gap-1 flex-row">
                             <div class="font-semibold tracking-wider uppercase text-xs">By:</div>
                             <div class="ms-2 text-sm">{{ r.created_by.username }}</div>
                         </div>
-                        <div class="flex-col gap-1 sm:flex col-span-2">
+                        <div class="flex items-center py-1  gap-1 flex-row ">
+                            <div class="font-semibold tracking-wider uppercase text-xs">@:</div>
+                            <div class="ms-2 text-sm">{{ r.created_at }}</div>
+                        </div>
+                        <div class="flex items-center py-1  gap-1 flex-row ">
                             <div class="font-semibold tracking-wider uppercase text-xs">Text:</div>
                             <div class="ms-2 text-sm">{{ r.text }}</div>
                         </div>

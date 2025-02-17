@@ -8,7 +8,19 @@ class Location(models.Model):
     active = models.BooleanField(default=True)
 
     class Meta:
-        ordering = ["-name"]
+        ordering = ["name"]
+
+    def __str__(self):
+        return f"{self.name}"
+
+
+class Department(models.Model):
+    code = models.CharField(max_length=10, unique=True)
+    name = models.CharField(max_length=100, unique=True)
+    active = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ["name"]
 
     def __str__(self):
         return f"{self.name}"
@@ -31,7 +43,7 @@ class Issue(models.Model):
         ("CANCELLED", "CANCELLED"),
         ("ACCEPTED", "ACCEPTED"),
         ("REJECTED", "REJECTED"),
-        ("IN-PROGRESS", "IN-PROGRESS"),
+        # ("IN-PROGRESS", "IN-PROGRESS"),
         ("PENDING", "PENDING"),
         ("INCOMPLETE", "INCOMPLETE"),
         ("COMPLETED", "COMPLETED"),
@@ -56,6 +68,9 @@ class Issue(models.Model):
     )
     location = models.ForeignKey(
         Location, on_delete=models.RESTRICT, related_name="issues"
+    )
+    department = models.ForeignKey(
+        Department, on_delete=models.RESTRICT, related_name="issues"
     )
     description = models.TextField(max_length=200)
     created_at = models.DateTimeField(auto_now_add=True)
