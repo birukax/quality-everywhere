@@ -46,7 +46,8 @@ class CustomerWidget(s2forms.ModelSelect2Widget):
 
 
 class DepartmentWidget(s2forms.ModelSelect2Widget):
-    queryset = Department.objects.filter(active=True)
+    queryset = Department.objects.all()
+    # queryset = Department.objects.filter(active=True)
     search_fields = [
         "name__icontains",
     ]
@@ -60,7 +61,8 @@ class IssueWidget(s2forms.ModelSelect2Widget):
 
 
 class IssueTypeWidget(s2forms.ModelSelect2Widget):
-    queryset = IssueType.objects.filter(active=True)
+    queryset = IssueType.objects.all()
+    # queryset = IssueType.objects.filter(active=True)
     search_fields = [
         "name__icontains",
     ]
@@ -81,7 +83,8 @@ class JobTestWidget(s2forms.ModelSelect2Widget):
 
 
 class LocationWidget(s2forms.ModelSelect2Widget):
-    queryset = Location.objects.filter(active=True)
+    queryset = Location.objects.all()
+    # queryset = Location.objects.filter(active=True)
     search_fields = [
         "name__icontains",
     ]

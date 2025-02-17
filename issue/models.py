@@ -9,7 +9,7 @@ class Location(models.Model):
 
     @property
     def have_issues(self):
-        return Issue.objects.filter(location=self).exists()
+        return Issue.objects.filter(location=self).exclude(status="COMPLETED").exists()
 
     @property
     def active_issues(self):

@@ -28,9 +28,9 @@
                 </button>
             </div>
             <!-- Modal body -->
-            <div class="p-2 md:p-3 divide-y-2">
+            <div class="p-2 md:p-3 ">
                 {% for r in issue.remarks.all %}
-                    <div class="grid md:grid-cols-2 font-normal my-2 border-y-2">
+                    <div class="grid md:grid-cols-2 font-normal py-2 border-y-2">
                         <div class="flex items-center py-1  gap-1 flex-row">
                             <div class="font-semibold tracking-wider uppercase text-xs">Action:</div>
                             <div class="ms-2 text-sm">{{ r.action }}</div>

@@ -4,8 +4,8 @@
     <div class="mx-auto ">
         <div class="w-full space-y-4 p-2 bg-white border border-gray-200 rounded-lg shadow sm:p-4">
             <p class="text-base md:text-lg font-semibold uppercase text-gray-600 ">{{ assessment.job_test.job }}</p>
-            <div class="flex">
-                <div class="flex flex-wrap gap-4">
+            <div class="flex place-content-end">
+                <div class="flex flex-wrap gap-4  ">
                     <div class="flex gap-4">
                         {% if assessment.status == 'OPEN' or assessment.status == 'REJECTED' %}
                             {% include 'on_process/edit.html' %}
@@ -34,39 +34,49 @@
                 </div>
             </div>
             <ul class="my-4 space-y-3">
+                <li class="grid grid-cols-1 sm:grid-cols-2">
+                    <a class="grid sm:grid-cols-2 items-center p-1 sm:p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
+                        <span class="flex-1 ms-3 whitespace-nowrap">Date</span>
+                        <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ assessment.date }}</span>
+                    </a>
+                    <a class="grid sm:grid-cols-2 items-center p-1 sm:p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
+                        <span class="flex-1 ms-3 whitespace-nowrap">Time</span>
+                        <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ assessment.time }}</span>
+                    </a>
+                </li>
                 <li>
-                    <a class="flex items-center p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
+                    <a class="grid sm:grid-cols-2 items-center p-1 sm:p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
                         <span class="flex-1 ms-3 whitespace-nowrap">Machine</span>
                         <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ assessment.machine.name }}</span>
                     </a>
                 </li>
                 <li>
-                    <a class="flex items-center p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
+                    <a class="grid sm:grid-cols-2 items-center p-1 sm:p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
                         <span class="flex-1 ms-3 whitespace-nowrap">Shift</span>
                         <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ assessment.shift.name }}</span>
                     </a>
                 </li>
                 <li>
-                    <a class="flex items-center p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
+                    <a class="grid sm:grid-cols-2 items-center p-1 sm:p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
                         <span class="flex-1 ms-3 whitespace-nowrap">Assessments</span>
                         <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ assessment.on_processes.all.count }}</span>
                     </a>
                 </li>
                 <li>
-                    <a class="flex items-center p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
+                    <a class="grid sm:grid-cols-2 items-center p-1 sm:p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
                         <span class="flex-1 ms-3 whitespace-nowrap">Total Waste</span>
                         <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ total_waste }} KG</span>
                     </a>
                 </li>
                 <li>
-                    <a class="flex items-center p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
+                    <a class="grid sm:grid-cols-2 items-center p-1 sm:p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
                         <span class="flex-1 ms-3 whitespace-nowrap">Status</span>
                         <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ assessment.status }}</span>
                     </a>
                 </li>
-                <li class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 ">
+                <li class="grid grid-cols-1 md:grid-cols-2 ">
                     {% for c in color_standard.colors.all %}
-                        <a class="flex items-stretch p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
+                        <a class="grid sm:grid-cols-2 items-center p-1 sm:p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
                             <span class="flex-1 ms-3 whitespace-nowrap">{{ c.name }}</span>
                             <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ c.code }}</span>
                         </a>

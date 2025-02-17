@@ -43,8 +43,8 @@ class DepartmentFilter(django_filters.FilterSet):
         fields = ["id"]
 
     id = django_filters.CharFilter(
-        lookup_expr="icontains",
-        label="Department Name",
+        lookup_expr="exact",
+        label="Department",
         widget=DepartmentWidget(),
     )
 
@@ -56,8 +56,8 @@ class LocationFilter(django_filters.FilterSet):
         fields = ["id"]
 
     id = django_filters.CharFilter(
-        lookup_expr="icontains",
-        label="Location Name",
+        lookup_expr="exact",
+        label="Location",
         widget=LocationWidget(),
     )
 
@@ -69,7 +69,7 @@ class IssueTypeFilter(django_filters.FilterSet):
         fields = ["id"]
 
     id = django_filters.CharFilter(
-        lookup_expr="icontains",
-        label="Issue Type Name",
+        lookup_expr="exact",
+        label="Issue Type",
         widget=IssueTypeWidget(),
     )
