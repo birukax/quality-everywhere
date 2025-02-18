@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+import os
 from pathlib import Path
 from decouple import config
 
@@ -148,6 +149,9 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 COMPRESS_ROOT = BASE_DIR / "static"
 COMPRESS_ENABLED = True
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]
 STATICFILES_FINDERS = (
     "django.contrib.staticfiles.finders.FileSystemFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
