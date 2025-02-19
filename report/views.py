@@ -11,7 +11,7 @@ from reportlab.lib.units import mm, inch
 from assessment.models import Test
 from reportlab.lib import colors
 from reportlab.pdfbase import pdfmetrics
-from reportlab.lib.enums import TA_JUSTIFY
+from reportlab.lib.enums import TA_JUSTIFY, TA_CENTER
 from reportlab.platypus import (
     SimpleDocTemplate,
     Paragraph,
@@ -21,10 +21,13 @@ from reportlab.platypus import (
     PageTemplate,
     NextPageTemplate,
     PageBreak,
+    Table,
+    TableStyle,
 )
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.rl_config import defaultPageSize
 from reportlab.lib.units import inch
+from reportlab.lib.sequencer import getSequencer
 
 
 def test(request):
@@ -272,7 +275,7 @@ def generate_pdf():
         flowables.append(Spacer(1, 12))
 
         ptext = """<font size=12> We would like to welcome you tu our subscriber
-        base for {magName} Magazine! you will receive {issueNum} issues at
+        base for {magName} Magazine! you will receive {issueNum} issues at <br/>
         the excellent introductory price of ${subPrice}. Please respond by
         {limitedDate} to start receiving your subscription and get the
         following free gift: {freeGift}.</font>
@@ -431,10 +434,186 @@ def generate_pdf():
         story.append(Paragraph("Now we're back in portrait mode again", normal))
         doc.build(story)
 
+    def paragraph_para_markup():
+        doc = SimpleDocTemplate(buffer, pagesize=letter)
+        styles = getSampleStyleSheet()
+        styles.add(ParagraphStyle(name="Centered", alignment=TA_CENTER))
+
+        flowables = []
+        text = "<para align=center>Hello, I'm a paragraph</para>"
+        para = Paragraph(text, style=styles["Centered"])
+        flowables.append(para)
+        doc.build(flowables)
+
+    def intra_tags():
+        doc = SimpleDocTemplate(buffer, pagesize=letter)
+        styles = getSampleStyleSheet()
+
+        flowables = []
+        text = """
+        This <b>text</b> is important,
+        not <strong>strong</strong>.<br/><br/>
+        A book title should be in <i>italics</i><br/><br/>
+        You can also <u>underline</u> your text.<br/><br/>
+        Bad text should be <strike>Struk-through</strike>!<br/><br/>
+        You can link to <a href="https://www.google.com" color="green">Google</a>
+        like this.
+        """
+        para = Paragraph(text, style=styles["Normal"])
+        flowables.append(para)
+        doc.build(flowables)
+
+    def paragraph_spacing():
+        doc = SimpleDocTemplate(buffer, pagesize=letter)
+        styles = getSampleStyleSheet()
+        styles["Normal"].spaceBefore = 5
+        styles["Normal"].spaceAfter = 50
+
+        flowables = []
+
+        text = """
+        This <b>text</b> is important,
+        not <strong>strong</strong>.
+        """
+        para = Paragraph(text, style=styles["Normal"])
+        flowables.append(para)
+
+        text = "A book title should be in <i>italics</i>"
+        para = Paragraph(text, style=styles["Normal"])
+        flowables.append(para)
+
+        text = "You can also <u>underline</u> your text."
+        para = Paragraph(text, style=styles["Normal"])
+        flowables.append(para)
+
+        text = "Bad text should be <strike>struk-through</strike>!"
+        para = Paragraph(text, style=styles["Normal"])
+        flowables.append(para)
+
+        text = """
+        You can link to <a href='https://www.google.com' color='red'>Google</a>
+        like this.
+        """
+        para = Paragraph(text, style=styles["Normal"])
+        flowables.append(para)
+
+        doc.build(flowables)
+
+    def paragraph_fonts():
+        doc = SimpleDocTemplate(buffer, pagesize=letter)
+        styles = getSampleStyleSheet()
+
+        flowables = []
+
+        ptext = (
+            "<font name=helvetica size=12>Welcome to Reportlab! " "(helvetica)</font>"
+        )
+        para = Paragraph(ptext, style=styles["Normal"])
+        flowables.append(para)
+
+        ptext = "<font face=courier size=24>Welcome to Reportlab! (courier)</font>"
+        para = Paragraph(ptext, style=styles["Normal"])
+        flowables.append(para)
+
+        ptext = "<font face=times-roman size=48>Welcome to <font color=green> Reportlab!</font> (times-roman)</font>"
+        para = Paragraph(ptext, style=styles["Normal"])
+        flowables.append(para)
+
+        doc.build(flowables)
+
+    def paragraph_numbering():
+        doc = SimpleDocTemplate(buffer, pagesize=letter)
+        styles = getSampleStyleSheet()
+        flowables = []
+
+        for item in range(1, 4):
+            ptext = '<seq id="test"> things(s)'
+            para = Paragraph(ptext, style=styles["Normal"])
+            flowables.append(para)
+
+        seq = getSequencer()
+        seq.setFormat("Section", "1")
+        seq.setFormat("FigureNo", "A")
+
+        for item in range(4, 8):
+            text = 'Fig. <seq template="%(Section+)s-%(FigureNo+)s"/>'
+            para = Paragraph(text, style=styles["Normal"])
+            flowables.append(para)
+
+        doc.build(flowables)
+
+    def simple_table():
+        doc = SimpleDocTemplate(buffer, pagesize=letter)
+        story = []
+        data = [
+            ["col_{}".format(x) for x in range(1, 9)],
+            [str(x) for x in range(1, 7)],
+            ["a", "b", "c", "d", "e"],
+        ]
+        tbl = Table(data)
+        story.append(tbl)
+        doc.build(story)
+
+    def simple_table_with_style():
+        doc = SimpleDocTemplate(buffer, pagesize=letter)
+        story = []
+        data = [
+            ["col_{}".format(x) for x in range(1, 6)],
+            [str(x) for x in range(1, 6)],
+            ["a", "b", "c", "d", "e"],
+        ]
+        tblstyle = TableStyle(
+            [
+                ("BACKGROUND", (0, 0), (-1, 0), colors.red),
+                ("TEXTCOLOR", (0, 1), (-1, 1), colors.blue),
+            ]
+        )
+        tbl = Table(data)
+        tbl.setStyle(tblstyle)
+        story.append(tbl)
+        doc.build(story)
+
+    def table_background_gradient():
+        doc = SimpleDocTemplate(buffer, pagesize=letter)
+        story = []
+        data = data = [
+            ["col_{}".format(x) for x in range(1, 6)],
+            [str(x) for x in range(1, 6)],
+            ["a", "b", "c", "d", "e"],
+        ]
+        tblstyle = TableStyle(
+            [
+                # (
+                #     "BACKGROUND",
+                #     (0, 0),
+                #     (-1, -1),
+                #     ["HORIZONTAL", colors.red, colors.blue],
+                # ),
+                # ("TEXTCOLOR", (0, 0), (-1, -1), colors.white),
+                ("INNERGRID", (0, 0), (-1, -1), 1.25, colors.green),
+                ("BOX", (0, 0), (-1, -1), 0.25, colors.black),
+            ]
+        )
+        tbl = Table(data)
+        tbl.setStyle(tblstyle)
+        story.append(tbl)
+        story.append(Spacer(0, 25))
+        tbl = Table(data, style=[("GRID", (0, 0), (-1, -1), 0.5, colors.blue)])
+        story.append(tbl)
+        doc.build(story)
+
     c = Canvas(buffer, pagesize=A4)
     width, height = A4
     fonts = c.getAvailableFonts()
 
+    table_background_gradient()
+    # simple_table_with_style()
+    # simple_table()
+    # paragraph_numbering()
+    # paragraph_fonts()
+    # paragraph_spacing()
+    # intra_tags()
+    # paragraph_para_markup()
     # font_demo(c, fonts)
     # rotate_demo(c)
     # string_alignment(c)
@@ -455,6 +634,6 @@ def generate_pdf():
     # create_document()
     # mixed()
     # frame_demo()
-    alternate_orientations()
+    # alternate_orientations()
     buffer.seek(0)
     return buffer
