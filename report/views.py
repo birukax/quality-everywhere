@@ -23,6 +23,9 @@ from reportlab.platypus import (
     PageBreak,
     Table,
     TableStyle,
+    Preformatted,
+    ListFlowable,
+    ListItem,
 )
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.rl_config import defaultPageSize
@@ -602,11 +605,59 @@ def generate_pdf():
         story.append(tbl)
         doc.build(story)
 
+    def preformatted_paragraph():
+        doc = SimpleDocTemplate(buffer, pagesize=letter)
+        styles = getSampleStyleSheet()
+        flowables = []
+
+        text = "<para align=center>Hello, I'm a Paragraph</para>"
+        para = Paragraph(text, style=styles["Normal"])
+        flowables.append(para)
+
+        text = "<para align=center>Hello, I'm a Preformatted Paragraph</para>"
+        para = Preformatted(text, style=styles["Normal"])
+        flowables.append(para)
+
+        doc.build(flowables)
+
+    def list_flowable_squares():
+        doc = SimpleDocTemplate(buffer, pagesize=letter)
+        styles = getSampleStyleSheet()
+        normal = styles["Normal"]
+        story = []
+
+        flowables = [
+            Paragraph("Paragraph numero uno", normal),
+            ListItem(Paragraph("Paragraph #2", normal), bulletColor="Blue"),
+            Paragraph("Paragraph #3", normal),
+        ]
+        flowables.append(
+            ListFlowable(
+                [
+                    Paragraph("I'm a sublist item", normal),
+                    ListItem(
+                        Paragraph("I'm another sublist item", normal),
+                        bulletColor="Blue",
+                    ),
+                    ListItem(
+                        Paragraph("I'm the last sublist item", normal),
+                        bulletColor="red",
+                    ),
+                ],
+                bulletType="bullet",
+                start="square",
+            ),
+        )
+        lflow = ListFlowable(flowables, bulletType="I")
+        story.append(lflow)
+        doc.build(story)
+
     c = Canvas(buffer, pagesize=A4)
     width, height = A4
     fonts = c.getAvailableFonts()
 
-    table_background_gradient()
+    list_flowable_squares()
+    # table_background_gradient()
     # simple_table_with_style()
     # simple_table()
     # paragraph_numbering()
