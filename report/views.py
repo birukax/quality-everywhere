@@ -9,7 +9,7 @@ from reportlab.pdfgen.canvas import Canvas
 from reportlab.lib.pagesizes import A4, landscape, letter
 from reportlab.lib.units import mm, inch
 from assessment.models import Test
-from reportlab.lib import colors
+from reportlab.lib import colors, pdfencrypt
 from reportlab.pdfbase import pdfmetrics
 from reportlab.lib.enums import TA_JUSTIFY, TA_CENTER
 from reportlab.platypus import (
@@ -652,11 +652,22 @@ def generate_pdf():
         story.append(lflow)
         doc.build(story)
 
+    def encryption_demo(
+        userPassword, ownerPassword, canPrint=1, canModify=1, canCopy=1, canAnnotate=1
+    ):
+        encrypt = pdfencrypt.StandardEncryption(
+            userPassword, ownerPassword, canPrint, canModify, canCopy, canAnnotate
+        )
+        cvs = Canvas(buffer, encrypt=encrypt)
+        cvs.drawString(20, 750, "This is page one")
+        cvs.save()
+
     c = Canvas(buffer, pagesize=A4)
     width, height = A4
     fonts = c.getAvailableFonts()
 
-    list_flowable_squares()
+    encryption_demo(userPassword="bad_password", ownerPassword="XXXX_password")
+    # list_flowable_squares()
     # table_background_gradient()
     # simple_table_with_style()
     # simple_table()
@@ -678,13 +689,13 @@ def generate_pdf():
     # wordspacer(c)
     # create_form("02/18/2025", "$7,900", "John Doe", c)
     # embedded_font_demo(c)
-    # c.showPage()
-    # c.save()
     # hello()
     # form_letter()
     # create_document()
     # mixed()
     # frame_demo()
     # alternate_orientations()
+    # c.showPage()
+    # c.save()
     buffer.seek(0)
     return buffer
