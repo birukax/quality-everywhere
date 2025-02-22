@@ -5,7 +5,9 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import inch, mm
 from reportlab.pdfgen import canvas
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image
-from reportlab.platypus import Flowable, Indenter, Table
+from reportlab.platypus import Flowable, Indenter, Table, TableStyle
+from reportlab.lib import colors
+from assessment.models import Assessment
 
 
 class Header(Flowable):
@@ -40,16 +42,17 @@ class Header(Flowable):
         )
         p = Paragraph(ptext, self.styles["Normal"])
         p.wrapOn(self.canv, self.width, self.height)
+        p.drawOn(self.canv, *self.coord(110, 35, mm))
 
 
 class EOB:
-    def __init__(self, pdf_file):
+    def __init__(self, pdf_file, buffer):
         self.doc = SimpleDocTemplate(
-            pdf_file,
+            buffer,
             pagesize=letter,
             rightMargin=72,
-            leftMargin=72,
-            topMargin=72,
+            leftMargin=36,
+            topMargin=36,
             bottomMargin=18,
         )
         self.elements = []
@@ -88,7 +91,7 @@ class EOB:
         ptext = "<font size=26>Your payment summary</font>"
         p = Paragraph(ptext, self.styles["Normal"])
         self.elements.append(p)
-        self.elements.append(Spacer(1, 12))
+        self.elements.append(Spacer(1, 20))
 
         colWidths = [75, 125, 50, 125, 50, 150]
 
@@ -187,24 +190,47 @@ class EOB:
                 owe,
             ]
         ]
-        for item in range(50):
-            data.append(claim_one)
+        # for item in range(50):
+        #     data.append(claim_one)
 
-        colWidths = [110, 50, 50, 60, 50, 50, 50, 70, 60, 60]
+        for a in Assessment.objects.filter(type="FIRST-OFF"):
+            data.append(
+                [
+                    self.create_text(a.job_test.job.no),
+                    self.create_text(a.date),
+                    self.create_text(a.time),
+                    self.create_text(a.shift),
+                    self.create_text(a.machine.name),
+                    self.create_text(a.status),
+                ]
+            )
+
+        # colWidths = [110, 50, 40, 60, 50, 40, 50, 40, 55, 60]
+        colWidths = [70, 60, 60, 50, 50, 40, 50, 40, 55, 60]
+        table_style = TableStyle(
+            [
+                ("INNERGRID", (0, 0), (-1, -1), 0.25, colors.black),
+                ("BOX", (0, 0), (-1, -1), 0.25, colors.black),
+                ("BACKGROUND", (1, 0), (1, -1), colors.lightgoldenrodyellow),
+                ("BACKGROUND", (7, 0), (7, -1), colors.lightgoldenrodyellow),
+            ]
+        )
         table = Table(data, colWidths=colWidths)
+        table.setStyle(table_style)
 
-        self.elements.append(Indenter(left=60))
+        self.elements.append(Indenter(left=40))
         self.elements.append(table)
-        self.elements.append(Indenter(left=-60))
+        self.elements.append(Indenter(left=-40))
 
     def create(self):
+        self.create_header()
         self.create_header()
         self.create_payment_summary()
         self.create_claims()
         self.save()
 
 
-if __name__ == "__main__":
-    pdf_file = "eob_flow.pdf"
-    eob = EOB(pdf_file)
-    eob.create()
+# if __name__ == "__main__":
+#     pdf_file = "eob_flow.pdf"
+#     eob = EOB(pdf_file)
+#     eob.create()
