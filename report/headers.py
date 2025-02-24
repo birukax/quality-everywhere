@@ -8,7 +8,7 @@ from reportlab.lib import colors, utils
 
 
 class Header(Flowable):
-    def __init__(self, width=500, height=20):
+    def __init__(self, width=550, height=70):
         Flowable.__init__(self)
         self.width = width
         self.height = height
@@ -41,14 +41,14 @@ class Header(Flowable):
         doc_no = "QL-P-FPR-001"
         machine = "BOBST"
         page_no = 1
-        logo_path = os.path.join(settings.STATICFILES_DIRS[0], "logo.png")
+        logo_path = os.path.join(settings.STATICFILES_DIRS[0], "logo_sm.png")
         img = utils.ImageReader(logo_path)
         img_width, img_height = img.getSize()
         aspect = img_height / float(img_width)
         logo_image = Image(logo_path, width=50, height=(50 * aspect))
         logo_image.hAlign = "CENTER"
         logo_image.vAlign = "CENTER"
-        colWidths = [90, 200, 80, 80]
+        colWidths = [90, 275, 90, 90]
         data = [
             [
                 logo_image,
@@ -78,7 +78,7 @@ class Header(Flowable):
         ]
         hTblStyle = TableStyle(
             [
-                ("BOX", (0, 0), (-1, -1), 1.5, colors.black),
+                ("BOX", (0, 0), (-1, -1), 1, colors.black),
                 ("INNERGRID", (0, 0), (-1, -1), 0.50, colors.black),
                 ("ALIGN", (0, 0), (-1, -1), "CENTER"),
                 ("SPAN", (0, 0), (0, -1)),
@@ -86,7 +86,7 @@ class Header(Flowable):
                 ("SPAN", (-2, 1), (-1, 1)),
             ]
         )
-        tbl = Table(data, colWidths=colWidths)
+        tbl = Table(data, colWidths=colWidths, hAlign="CENTER")
         tbl.setStyle(hTblStyle)
         tbl.wrapOn(self.canv, self.width, self.height)
         t_width, t_height = tbl.wrapOn(self.canv, self.width, self.height)

@@ -13,6 +13,12 @@
                     {% if job_test.semi_wastes.exists %}
                         <div>{% include 'job/test/semi_waste/list.html' %}</div>
                     {% endif %}
+                    <div>
+                        <a href="{% url 'report:get_report' job_test.id %}"
+                           class="text-white inline-flex items-center bg-gray-700 hover:bg-gray-800 focus:ring-2 focus:outline-none focus:ring-gray-300 font-medium rounded-lg uppercase text-xs tracking-widest  px-4 py-1.5 text-center">
+                            Get Report
+                        </a>
+                    </div>
                 </div>
             </div>
             <ul class="my-4 space-y-3">

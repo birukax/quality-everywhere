@@ -27,6 +27,7 @@ from reportlab.platypus import (
     ListFlowable,
     ListItem,
 )
+from job.models import JobTest
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.rl_config import defaultPageSize
 from reportlab.lib.units import inch
@@ -36,10 +37,9 @@ from .tasks import FirstOff
 # from .eob_flow import EOB
 
 
-def test(request):
-
+def get_report(request, id):
     response = FileResponse(
-        generate_pdf(),
+        generate_pdf(id),
         as_attachment=True,
         filename="test.pdf",
     )
@@ -47,9 +47,9 @@ def test(request):
     return response
 
 
-def generate_pdf():
+def generate_pdf(id):
     buffer = BytesIO()
-    first_off = FirstOff(buffer)
+    first_off = FirstOff(buffer=buffer, id=id)
     first_off.create()
     buffer.seek(0)
     return buffer
