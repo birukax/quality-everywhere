@@ -9,17 +9,18 @@ from reportlab.platypus import (
     Table,
     TableStyle,
     Image,
+    PageBreak,
 )
 from reportlab.lib.styles import getSampleStyleSheet
 from .headers import Header
 from reportlab.lib import colors, utils
-from assessment.models import Assessment, Lamination, Substrate
+from assessment.models import Assessment, Lamination, Substrate, Viscosity
 from job.models import Job, JobTest
 from misc.models import Color
 from machine.models import Machine
 
 
-class FirstOff:
+class BaseReport:
     def __init__(self, buffer, id):
         self.doc = SimpleDocTemplate(
             buffer,
@@ -34,12 +35,6 @@ class FirstOff:
         self.colors = colors
         self.width, self.height = A4
         self.job_test = JobTest.objects.get(id=id)
-        self.first_offs = Assessment.objects.filter(
-            job_test=self.job_test, type="FIRST-OFF"
-        ).order_by("created_at")
-        self.lamination = Lamination.objects.filter(
-            assessment__job_test=self.job_test, assessment__machine__type="LAMINATION"
-        )
 
     def save(self):
         self.doc.build(self.elements)
@@ -50,9 +45,9 @@ class FirstOff:
 
     def ptext(self, name, value, align="left"):
 
-        fsize = 10
+        fsize = 9
         return Paragraph(
-            """<para align={align} size={fsize}>{name}: <b>{value}</b></para>""".format(
+            """<para align={align} size={fsize}>{name}:<font color=darkslategray> <b>  {value}  </b></font></para>""".format(
                 fsize=fsize, name=name, value=value, align=align
             ),
             self.styles["Normal"],
@@ -113,11 +108,11 @@ class FirstOff:
 
         return result
 
-    def create_text(self, text, size=8, bold=False, header=True):
+    def create_text(self, text, size=8, underline=False, bold=False, header=True):
         if not header:
             return Paragraph(
                 """
-                             <font name=times size={size}><b>{text}</b></font>
+                             <font name=times size={size}>{text}</font>
                              """.format(
                     size=size, text=text
                 ),
@@ -127,7 +122,16 @@ class FirstOff:
             if bold:
                 return Paragraph(
                     """
-                                <font name=times size={size}><u><b>{text}</b></u></font>
+                                <font size={size}><b>{text}</b></font>
+                                """.format(
+                        size=size, text=text.upper()
+                    ),
+                    self.styles["Normal"],
+                )
+            if underline:
+                return Paragraph(
+                    """
+                                <font  size={size}><u>{text}</u></font>
                                 """.format(
                         size=size, text=text
                     ),
@@ -135,17 +139,33 @@ class FirstOff:
                 )
             return Paragraph(
                 """
-                            <font name=times size={size}><u>{text}</u></font>
+                            <font size={size}>{text}</font>
                             """.format(
                     size=size, text=text
                 ),
                 self.styles["Normal"],
             )
 
+
+class FirstOff(BaseReport):
+    def __init__(self, buffer, id):
+        BaseReport.__init__(self, buffer, id)
+        self.first_offs = Assessment.objects.filter(
+            job_test=self.job_test, type="FIRST-OFF"
+        ).order_by("created_at")
+        self.lamination = Lamination.objects.filter(
+            assessment__job_test=self.job_test, assessment__machine__type="LAMINATION"
+        )
+        self.machine = self.first_offs.first().machine
+
     def create_header(self):
-        header = Header(width=(self.width - self.doc.rightMargin - self.doc.leftMargin))
+        header = Header(
+            width=(self.width - self.doc.rightMargin - self.doc.leftMargin),
+            assessment_type="FIRST-OFF",
+            machine=self.machine,
+        )
         self.elements.append(header)
-        self.elements.append(Spacer(1, 20))
+        self.elements.append(Spacer(1, 10))
 
     def create_job_info(self):
 
@@ -161,10 +181,11 @@ class FirstOff:
         self.elements.append(
             self.create_text(
                 "Job Detail",
-                size=14,
+                bold=True,
+                size=10,
             )
         )
-        self.elements.append(Spacer(1, 10))
+        self.elements.append(Spacer(1, 5))
 
         colWidths = [220, 220, 160]
         data = [
@@ -201,17 +222,18 @@ class FirstOff:
         self.elements.append(Indenter(left=20))
         self.elements.append(tbl1)
         self.elements.append(Indenter(left=-20))
-        self.elements.append(Spacer(1, 20))
+        self.elements.append(Spacer(1, 10))
 
     def create_color_info(self):
 
         self.elements.append(
             self.create_text(
                 "Color Detail",
-                size=14,
+                bold=True,
+                size=10,
             )
         )
-        self.elements.append(Spacer(1, 10))
+        self.elements.append(Spacer(1, 5))
         color_s_text = self.ptext("Color Standard", self.job_test.color_standard)
         self.elements.append(Indenter(left=20))
         self.elements.append(color_s_text)
@@ -239,17 +261,18 @@ class FirstOff:
         self.elements.append(Indenter(left=20))
         self.elements.append(tbl)
         self.elements.append(Indenter(left=-20))
-        self.elements.append(Spacer(1, 20))
+        self.elements.append(Spacer(1, 10))
 
     def create_lamination_info(self):
 
         self.elements.append(
             self.create_text(
                 "Lamination Detail",
-                size=14,
+                bold=True,
+                size=10,
             )
         )
-        self.elements.append(Spacer(1, 10))
+        self.elements.append(Spacer(1, 5))
         colWidths = [200, 200]
         data = [
             [
@@ -296,21 +319,20 @@ class FirstOff:
         self.elements.append(Indenter(left=20))
         self.elements.append(tbl)
         self.elements.append(Indenter(left=-20))
-        self.elements.append(Spacer(1, 20))
+        self.elements.append(Spacer(1, 10))
 
     def first_off_info(self):
         self.elements.append(
             self.create_text(
                 "First Off Detail",
-                size=14,
+                bold=True,
+                size=10,
             )
         )
-        self.elements.append(Spacer(1, 10))
+        self.elements.append(Spacer(1, 5))
         colWidths = [150, 150, 150, 150]
         rows = 8
-        test_list = (
-            self.first_offs.filter(machine__name="Slitter").first().first_offs.all()
-        )
+        test_list = self.first_offs.first().first_offs.all()
         count = len(test_list)
         test_ranges = self.split_list_ranges(
             rows=(count // 2) + 1, list_count=len(test_list)
@@ -327,16 +349,17 @@ class FirstOff:
         self.elements.append(Indenter(left=20))
         self.elements.append(tbl)
         self.elements.append(Indenter(left=-20))
-        self.elements.append(Spacer(1, 20))
+        self.elements.append(Spacer(1, 10))
 
     def inspection_info(self):
         self.elements.append(
             self.create_text(
                 "Inspection Detail",
-                size=14,
+                bold=True,
+                size=10,
             )
         )
-        self.elements.append(Spacer(1, 10))
+        self.elements.append(Spacer(1, 5))
 
         image_path = os.path.join(settings.STATICFILES_DIRS[0], "controlled_30.png")
         img = utils.ImageReader(image_path)
@@ -356,7 +379,7 @@ class FirstOff:
             [
                 "",
                 self.ptext(
-                    "Shift SUPERVISOR",
+                    "SHIFT SUPERVISOR",
                     self.first_offs.first()
                     .approvals.filter(approver="SUPERVISOR")
                     .first()
@@ -382,10 +405,7 @@ class FirstOff:
         self.elements.append(Indenter(left=20))
         self.elements.append(tbl)
         self.elements.append(Indenter(left=-20))
-        self.elements.append(Spacer(1, 20))
-
-    def controlled_image(self):
-        pass
+        self.elements.append(Spacer(1, 10))
 
     def create(self):
         self.create_header()
@@ -395,6 +415,152 @@ class FirstOff:
             self.create_lamination_info()
         self.first_off_info()
         self.inspection_info()
-        self.controlled_image()
+        self.elements.append(PageBreak())
+        self.save()
 
+
+class OnProcess(BaseReport):
+    def __init__(self, buffer, id):
+        BaseReport.__init__(self, buffer, id)
+        self.on_processes = Assessment.objects.filter(
+            job_test=self.job_test, type="ON-PROCESS"
+        ).order_by("created_at")
+
+        self.viscosities = Viscosity.objects.filter(
+            assessment=self.on_processes.first()
+        )
+        self.machine = self.on_processes.first().machine
+
+    def create_header(self):
+        header = Header(
+            width=(self.width - self.doc.rightMargin - self.doc.leftMargin),
+            assessment_type="ON-PROCESS",
+            machine=self.machine,
+        )
+        self.elements.append(header)
+        self.elements.append(Spacer(1, 10))
+
+    def create_job_info(self):
+        colWidths = [200, 200, 120]
+
+        data = [
+            [
+                self.ptext("Job", self.job_test.job.no),
+                self.ptext("Date", self.on_processes.first().date),
+            ],
+            [
+                self.ptext("Product Name", self.job_test.job.product.name),
+                self.ptext("Machine", self.on_processes.first().machine.name),
+            ],
+            [
+                self.ptext("Product No.", self.job_test.job.product.no),
+                self.ptext("Raw Material", self.job_test.raw_material.name),
+            ],
+            [
+                self.ptext("Customer", self.job_test.job.customer),
+                self.ptext("Batch No.", self.job_test.batch_no),
+            ],
+        ]
+        tbl = Table(data, colWidths=colWidths, hAlign="LEFT")
+        self.elements.append(Indenter(left=20))
+        self.elements.append(tbl)
+        self.elements.append(Indenter(left=-20))
+        self.elements.append(Spacer(1, 10))
+
+    def create_inspection_section(self):
+        self.elements.append(self.create_text("Inspection Section", bold=True, size=10))
+        self.elements.append(Spacer(1, 10))
+        colWidths = [95, 65, 65, 65, 65, 190]
+
+        def conf(c):
+            if c.conformity is None:
+                return "OK"
+            else:
+                return f"{c.conformity.name}"
+
+        data = [
+            ["NC", "Sample No.", "Shift", "Created at", "Created by", "Action Taken"],
+            *(
+                [
+                    self.create_text(text=conf(c), size=9),
+                    self.create_text(text=c.sample_no, size=9),
+                    self.create_text(text=c.shift.name, size=9),
+                    self.create_text(
+                        text=c.created_at.strftime("%d-%m-%Y %I:%M %p"), size=9
+                    ),
+                    self.create_text(text=c.created_by.username, size=9),
+                    self.create_text(text=c.action, size=9),
+                ]
+                for c in self.on_processes.first().on_processes.all()
+            ),
+        ]
+        tblStyle = TableStyle(
+            [
+                ("INNERGRID", (0, 0), (-1, -1), 0.25, colors.black),
+                ("BOX", (0, 0), (-1, -1), 0.25, colors.black),
+                ("VALIGN", (0, 1), (-1, -1), "TOP"),
+                ("FONT", (0, 0), (-1, 0), "Helvetica-Bold"),
+            ]
+        )
+
+        tbl = Table(data, colWidths=colWidths, hAlign="LEFT")
+        tbl.setStyle(tblStyle)
+        # self.elements.append(Indenter(left=20))
+        self.elements.append(tbl)
+        # self.elements.append(Indenter(left=-20))
+        self.elements.append(Spacer(1, 10))
+
+    def create_viscosity_section(self):
+        self.elements.append(self.create_text("Viscosity Section", bold=True, size=10))
+        self.elements.append(Spacer(1, 5))
+
+        data = [
+            [
+                self.create_text(text="Sample No.", size=8, bold=True),
+                *(
+                    self.create_text(
+                        text=f"{c.name} ({c.viscosity})", size=8, bold=True
+                    )
+                    for c in self.job_test.color_standard.colors.all()
+                ),
+            ]
+        ]
+        sample_numbers = [
+            value for value in self.viscosities.values_list("sample_no")[0]
+        ]
+        for s in sample_numbers:
+            data.append(
+                [
+                    s,
+                    *(
+                        [
+                            f"{v.value} "
+                            for v in Viscosity.objects.filter(
+                                sample_no=s, assessment=self.on_processes.first()
+                            )
+                        ]
+                    ),
+                ]
+            )
+
+        tblStyle = TableStyle(
+            [
+                ("INNERGRID", (0, 0), (-1, -1), 0.25, colors.black),
+                ("BOX", (0, 0), (-1, -1), 0.25, colors.black),
+                ("VALIGN", (0, 0), (-1, -1), "TOP"),
+                ("FONT", (0, 0), (-1, 0), "Helvetica-Bold", 8),
+            ]
+        )
+        tbl = Table(data, hAlign="LEFT")
+        tbl.setStyle(tblStyle)
+        # self.elements.append(Indenter(left=20))
+        self.elements.append(tbl)
+        # self.elements.append(Indenter(left=-20))
+        self.elements.append(Spacer(1, 10))
+
+    def create(self):
+        self.create_header()
+        self.create_job_info()
+        self.create_inspection_section()
+        self.create_viscosity_section()
         self.save()

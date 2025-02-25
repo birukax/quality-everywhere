@@ -32,7 +32,7 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.rl_config import defaultPageSize
 from reportlab.lib.units import inch
 from reportlab.lib.sequencer import getSequencer
-from .tasks import FirstOff
+from .tasks import FirstOff, OnProcess
 
 # from .eob_flow import EOB
 
@@ -49,7 +49,9 @@ def get_report(request, id):
 
 def generate_pdf(id):
     buffer = BytesIO()
-    first_off = FirstOff(buffer=buffer, id=id)
-    first_off.create()
+    # first_off = FirstOff(buffer=buffer, id=id)
+    # first_off.create()
+    on_process = OnProcess(buffer=buffer, id=id)
+    on_process.create()
     buffer.seek(0)
     return buffer

@@ -31,7 +31,9 @@ def customer_get():
                     name=customer["Name"],
                 )
                 if Customer.objects.filter(no=customer.no).exists():
-                    pass
+                    c = Customer.objects.filter(no=customer.no).first()
+                    c.name = customer.name
+                    c.save()
                 else:
                     customer.save()
     except Exception as e:
