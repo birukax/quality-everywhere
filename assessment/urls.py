@@ -5,6 +5,7 @@ app_name = "assessment"
 
 urlpatterns = [
     path("first-off/create/<int:id>", views.create_first_off, name="create_first_off"),
+    path("first-off/add/<int:id>", views.add_first_off, name="add_first_off"),
     path("first-off/list/<str:status>", views.first_off_list, name="first_off_list"),
     path("first-off/detail/<int:id>", views.first_off_detail, name="first_off_detail"),
     path("first-off/edit/<int:id>", views.edit_first_off, name="edit_first_off"),

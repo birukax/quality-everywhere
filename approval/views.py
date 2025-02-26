@@ -28,14 +28,10 @@ def create_assessment_approval(request, id):
 
 def assessment_list(request, type):
 
-    assessments = AssessmentApproval.objects.filter(
-        status="PENDING", assessment__type=type
-    )
-    assessment_approval_filter = AssessmentApprovalFilter(
-        request.GET, queryset=assessments
-    )
-    assessments = assessment_approval_filter.qs
-    page = get_page(request, model=assessments)
+    apps = AssessmentApproval.objects.filter(status="PENDING", assessment__type=type)
+    assessment_approval_filter = AssessmentApprovalFilter(request.GET, queryset=apps)
+    apps = assessment_approval_filter.qs
+    page = get_page(request, model=apps)
 
     context = {
         "page": page,
@@ -45,40 +41,40 @@ def assessment_list(request, type):
 
 
 def approve_assessment(request, id):
-    assessment = get_object_or_404(AssessmentApproval, id=id)
-    assessment.status = "APPROVED"
-    assessment.by = request.user
-    assessment.save()
+    app = get_object_or_404(AssessmentApproval, id=id)
+    app.status = "APPROVED"
+    app.by = request.user
+    app.save()
     # not_approved = AssessmentApproval.objects.filter(
-    #     assessment__id=assessment.assessment.id, status="PENDING"
+    #     assessment__id=app.assessment.id, status="PENDING"
     # )
     # if not not_approved.exists():
-    assessment.assessment.status = "COMPLETED"
-    type = assessment.assessment.type
-    if type == "FIRST-OFF":
-        assessment.assessment.job_test.status = "FIRST-OFF COMPLETED"
-        assessment.assessment.job_test.save()
-        assessment.assessment.save()
-        # elif type == "ON-PROCESS":
-        #     assessment.assessment.job_test.status = "ON-PROCESS COMPLETED"
-        #     assessment.assessment.job_test.save()
-        # assessment.assessment.job_test.save()
-    return redirect("approval:assessment_list", type=assessment.assessment.type)
+    app.assessment.status = "COMPLETED"
+    type = app.assessment.type
+    if type == "FIRST-OFF" and not app.assessment.extra:
+        app.assessment.job_test.status = "FIRST-OFF COMPLETED"
+        app.assessment.job_test.save()
+    app.assessment.save()
+    # elif type == "ON-PROCESS":
+    #     app.assessment.job_test.status = "ON-PROCESS COMPLETED"
+    #     app.assessment.job_test.save()
+    # app.assessment.job_test.save()
+    return redirect("approval:assessment_list", type=app.assessment.type)
 
 
 def reject_assessment(request, id):
-    assessment = get_object_or_404(AssessmentApproval, id=id)
-    assessment.status = "REJECTED"
-    assessment.by = request.user
-    assessment.save()
+    app = get_object_or_404(AssessmentApproval, id=id)
+    app.status = "REJECTED"
+    app.by = request.user
+    app.save()
     # not_approved = AssessmentApproval.objects.filter(
-    #     assessment__id=assessment.assessment.id, status="PENDING"
+    #     assessment__id=app.assessment.id, status="PENDING"
     # )
     # if not_approved.exists():
     # for a in not_approved:
     #     a.status = "CANCELED"
     #     a.by = request.user
     #     a.save()
-    assessment.assessment.status = "REJECTED"
-    assessment.assessment.save()
-    return redirect("approval:assessment_list", type=assessment.assessment.type)
+    app.assessment.status = "REJECTED"
+    app.assessment.save()
+    return redirect("approval:assessment_list", type=app.assessment.type)

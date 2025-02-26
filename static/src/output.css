@@ -2659,6 +2659,10 @@ input:checked + .toggle-bg {
     inset: 0px;
   }
 
+  .md\:col-span-2 {
+    grid-column: span 2 / span 2;
+  }
+
   .md\:ml-14 {
     margin-left: 3.5rem;
   }

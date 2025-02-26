@@ -32,6 +32,7 @@ from .forms import (
     CreateConformityForm,
     EditConformityForm,
     CreateAssessmentForm,
+    AddAssessmentForm,
     EditAssessmentForm,
     FirstOffTestsFrom,
     OnProcessConformitiesForm,
@@ -263,6 +264,89 @@ def create_on_process(request, id):
     context["form"] = form
     context["job_test"] = job_test
     return render(request, "on_process/create.html", context)
+
+
+@login_required
+def add_first_off(request, id):
+    context = {}
+    job_test = JobTest.objects.get(id=id)
+    if request.method == "POST":
+        form = AddAssessmentForm(request.POST, job_id=job_test.id)
+        lamination_form = CreateLaminationForm(request.POST)
+        if form.is_valid():
+            machine = form.cleaned_data["machine"]
+            shift = form.cleaned_data["shift"]
+            reason = form.cleaned_data["reason"]
+            if machine != "LAMINATION":
+                if Assessment.objects.filter(
+                    job_test=job_test, machine=machine
+                ).exists():
+                    assessment = Assessment(
+                        job_test=job_test,
+                        machine=machine,
+                        shift=shift,
+                        reason=reason,
+                        type="FIRST-OFF",
+                        extra=True,
+                    )
+                    if machine != "LAMINATION":
+                        if machine.tests:
+                            assessment.save()
+                            for test in machine.tests.all():
+                                first_off = FirstOff(
+                                    assessment=assessment,
+                                    test=test,
+                                )
+                                first_off.save()
+                            return redirect(
+                                "assessment:first_off_detail", id=assessment.id
+                            )
+                        else:
+                            form.add_error("machine", "Machine has no tests.")
+                    elif lamination_form.is_valid():
+                        if machine.tests:
+                            assessment.save()
+                            for test in machine.tests.all():
+                                first_off = FirstOff(
+                                    assessment=assessment,
+                                    test=test,
+                                )
+                                first_off.save()
+                            lamination = lamination_form.save(commit=False)
+                            lamination.assessment = assessment
+                            lamination.save()
+                            ply_structure = lamination_form.cleaned_data[
+                                "ply_structure"
+                            ]
+                            for p in range(0, ply_structure):
+                                substrate = Substrate(lamination=lamination)
+                                substrate.no = p + 1
+                                if p == 0:
+                                    substrate.raw_material = job_test.raw_material
+                                    substrate.batch_no = job_test.batch_no
+                                substrate.save()
+                            return redirect(
+                                "assessment:first_off_detail", id=assessment.id
+                            )
+                        else:
+                            form.add_error("machine", "Machine has no tests.")
+                else:
+                    form.add_error(
+                        "machine", "The machine must have a First-Off for this test."
+                    )
+            else:
+                pass
+        else:
+            pass
+
+    else:
+        form = AddAssessmentForm(job_id=job_test.id)
+        lamination_form = CreateLaminationForm()
+
+    context["form"] = form
+    context["lamination_form"] = lamination_form
+    context["job_test"] = job_test
+    return render(request, "first_off/add.html", context)
 
 
 @login_required

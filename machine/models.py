@@ -56,5 +56,5 @@ class MachineRoute(models.Model):
     order = models.IntegerField()
 
     def __str__(self):
-        return f"{self.route.name} - {self.order}"
+        return f"{self.route.name} - {self.machine.name} - {self.order}"
         # return f"{self.route.name} - {self.machine.name}"

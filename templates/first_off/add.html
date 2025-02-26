@@ -1,0 +1,97 @@
+{% extends 'form.html' %}
+{% block title %}Add First-Off{% endblock %}
+{% block form %}
+    <div class=" bg-gray-50 max-w-lg mx-auto">
+        <form class="p-2 md:p-5 "
+              method="post"
+              action="{% url 'assessment:add_first_off' job_test.id %}">
+            {% csrf_token %}
+            <p class="py-2  text-base  text-gray-700 tracking-wider uppercase">{{ job_test }}</p>
+            <div class="flex-col gap-2 mb-4 mx-auto">
+                <p class="text-red-700 text-sm">
+                    {% if form.non_field_errors %}{{ form.non_field_errors|join:", " }}{% endif %}
+                </p>
+                <div class="grid  gap-2 mb-4">
+                    {% for field in form %}
+                        <div class="flex-col justify-between gap-2 mb-4">
+                            <div class="font-semibold mb-2">{{ field.label_tag }}</div>
+                            <div class="flex gap-12">{{ field }}</div>
+                            <p class="text-red-700 text-sm">
+                                {% if field.errors %}{{ field.errors|join:", " }}{% endif %}
+                            </p>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div id="lamination_form" class="flex-col gap-2 mb-4 mx-auto">
+                <p class="text-red-700 text-sm">
+                    {% if lamination_form.non_field_errors %}{{ lamination_form.non_field_errors|join:", " }}{% endif %}
+                </p>
+                <div class="grid sm:grid-cols-2 gap-2 mb-4">
+                    {% for field in lamination_form %}
+                        <div class="flex-col justify-between gap-2 mb-4">
+                            <div class="font-normal mb-2">{{ field.label_tag }}</div>
+                            <div class="flex gap-12">{{ field }}</div>
+                            <p class="text-red-700 text-sm">
+                                {% if field.errors %}{{ field.errors|join:", " }}{% endif %}
+                            </p>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="flex gap-4">
+                <button type="submit"
+                        class="text-white inline-flex items-center bg-gray-700 hover:bg-gray-800 focus:ring-2 focus:outline-none focus:ring-gray-300 font-medium rounded-lg uppercase text-xs tracking-widest  px-4 py-1.5 text-center">
+                    Add
+                </button>
+                <a href="{% url 'job:test_detail' job_test.id %}"
+                   class=" inline-flex items-center bg-gray-200 hover:bg-gray-300 focus:ring-2 focus:outline-none focus:ring-gray-400 font-medium rounded-lg uppercase text-xs tracking-widest  px-4 py-1.5 text-center">
+                    Cancel
+                </a>
+            </div>
+        </form>
+        {{ form.media }}
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const machineSelect = document.querySelector('select[name="machine"]');
+                const laminationFormDiv = document.getElementById('lamination_form');
+                const laminationFormFields = laminationFormDiv.querySelectorAll('input, select, textarea');
+
+                if (machineSelect && laminationFormDiv) {
+                    // Function to show/hide the lamination form based on the selected machine.
+
+                    function toggleLaminationForm() {
+                        const selectedMachineOption = machineSelect.options[machineSelect.selectedIndex];
+                        
+                        if(selectedMachineOption.value){
+                            const selectedMachineName = selectedMachineOption.text.toUpperCase();
+                            if (selectedMachineName.includes("LAMINATION")) {
+                                laminationFormDiv.style.display = 'block';
+                                // Enable fields when shown
+                                laminationFormFields.forEach(field => field.disabled = false);
+                            } else {
+                                laminationFormDiv.style.display = 'none';
+                                // Disable fields when hidden
+                                laminationFormFields.forEach(field => field.disabled = true);
+                            }
+                        }else{
+                            laminationFormDiv.style.display = 'none';
+                            // Disable fields when hidden
+                            laminationFormFields.forEach(field => field.disabled = true);
+                        }
+                    }
+
+                    // Initially hide the lamination form and disable fields.
+                    laminationFormDiv.style.display = 'none';
+                    laminationFormFields.forEach(field => field.disabled = true);
+
+                    // Add an event listener to the machine select field.
+                    machineSelect.addEventListener('change', toggleLaminationForm);
+
+                    // Call the function initially to set the correct display state.
+                    toggleLaminationForm();
+                }
+            });
+        </script>
+    </div>
+{% endblock form %}

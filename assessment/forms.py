@@ -12,6 +12,8 @@ from .models import (
     Substrate,
 )
 from misc.models import RawMaterial
+from job.models import JobTest
+from machine.models import Machine, Route, MachineRoute
 
 
 class CreateAssessmentForm(forms.ModelForm):
@@ -39,6 +41,38 @@ class CreateAssessmentForm(forms.ModelForm):
                 attrs={"class": "w-full items-center text-center h-auto"}
             ),
         }
+
+
+class AddAssessmentForm(forms.ModelForm):
+    class Meta:
+        model = Assessment
+        fields = (
+            "shift",
+            "machine",
+            "reason",
+        )
+        widgets = {
+            "shift": forms.Select(
+                attrs={"class": "w-full items-center text-center h-auto"}
+            ),
+            "machine": forms.Select(
+                attrs={"class": "w-full items-center text-center h-auto"}
+            ),
+            "reason": forms.Textarea(
+                attrs={
+                    "class": "w-full",
+                    "rows": "3",
+                }
+            ),
+        }
+
+    def __init__(self, *args, **kwargs):
+        job_id = kwargs.pop("job_id")
+        super(AddAssessmentForm, self).__init__(*args, **kwargs)
+        machines = MachineRoute.objects.filter(
+            route=JobTest.objects.filter(id=job_id).first().route
+        ).values_list("machine", flat=True)
+        self.fields["machine"].queryset = Machine.objects.filter(id__in=machines)
 
 
 class EditAssessmentForm(forms.ModelForm):

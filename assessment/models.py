@@ -27,7 +27,7 @@ class Assessment(models.Model):
     date = models.DateField(default=datetime.datetime.now)
     time = models.TimeField(default=datetime.datetime.now)
     extra = models.BooleanField(default=False)
-    reason = models.TextField(max_length=200, null=True, blank=True)
+    reason = models.TextField(max_length=200, null=True)
     shift = models.ForeignKey("misc.Shift", on_delete=models.RESTRICT)
     machine = models.ForeignKey(
         "machine.Machine", on_delete=models.CASCADE, null=True, blank=True
@@ -85,7 +85,7 @@ class Conformity(models.Model):
 
 
 class Waste(models.Model):
-    quantity = models.PositiveIntegerField(default=0)
+    quantity = models.PositiveIntegerField()
     shift = models.ForeignKey(
         "misc.Shift",
         on_delete=models.CASCADE,
