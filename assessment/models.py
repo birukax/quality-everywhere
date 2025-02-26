@@ -286,20 +286,14 @@ class OnProcess(models.Model):
     shift = models.ForeignKey(
         "misc.Shift",
         on_delete=models.CASCADE,
-        null=True,
-        blank=True,
     )
     action = models.TextField(
         max_length=300,
-        null=True,
-        blank=True,
     )
     created_by = models.ForeignKey(
         User,
         on_delete=models.RESTRICT,
         related_name="created_on_processes",
-        blank=True,
-        null=True,
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

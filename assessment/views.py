@@ -112,6 +112,7 @@ def first_off_detail(request, id):
         or Substrate.objects.filter(
             lamination=lamination, raw_material__isnull=True
         ).exists()
+        or tests.exclude(value="N/A").count() < 1
     ):
         can_submit = False
     context = {
