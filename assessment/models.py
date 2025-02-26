@@ -115,7 +115,7 @@ class SemiWaste(models.Model):
     job_test = models.ForeignKey(
         "job.JobTest", on_delete=models.RESTRICT, related_name="semi_wastes"
     )
-    quantity = models.PositiveIntegerField(default=0)
+    quantity = models.PositiveIntegerField()
     tag_no = models.CharField(max_length=30, unique=True)
     remark = models.TextField(max_length=200, null=True, blank=True)
     comment = models.TextField(max_length=200, null=True, blank=True)
