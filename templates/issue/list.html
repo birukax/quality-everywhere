@@ -12,6 +12,7 @@
         <tr>
             <th scope="col" class="px-2 py-3 sm:px-6 sm:py-3">Issue Type</th>
             <th scope="col" class="px-2 py-3 sm:px-6 sm:py-3">Location</th>
+            <th scope="col" class="px-2 py-3 sm:px-6 sm:py-3 hidden md:table-cell">Assigned To</th>
             <th scope="col" class="px-2 py-3 sm:px-6 sm:py-3">Status</th>
             <th scope="col" class="px-2 py-3 sm:px-6 sm:py-3 hidden md:table-cell">Created By</th>
             <th scope="col" class="px-2 py-3 sm:px-6 sm:py-3">Action</th>
@@ -23,6 +24,7 @@
                 <th scope="row"
                     class="px-2 py-3 sm:px-6 sm:py-4 font-medium text-gray-900 ">{{ p.issue_type.name }}</th>
                 <td class="px-2 py-3 sm:px-6 sm:py-4">{{ p.location.name }}</td>
+                <td class="px-2 py-3 sm:px-6 sm:py-4 hidden md:table-cell">{{ p.department.name }}</td>
                 <td class="px-2 py-3 sm:px-6 sm:py-4 lowercase first-letter:capitalize">{{ p.status }}</td>
                 <td class="px-2 py-3 sm:px-6 sm:py-4 hidden md:table-cell">{{ p.created_by.username }}</td>
                 <td class="px-2 py-3 sm:px-6 sm:py-4">

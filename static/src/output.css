@@ -2681,8 +2681,16 @@ input:checked + .toggle-bg {
     margin-top: 1.5rem;
   }
 
+  .md\:ml-64 {
+    margin-left: 16rem;
+  }
+
   .md\:table-cell {
     display: table-cell;
+  }
+
+  .md\:hidden {
+    display: none;
   }
 
   .md\:w-32 {
@@ -2695,6 +2703,11 @@ input:checked + .toggle-bg {
 
   .md\:max-w-3xl {
     max-width: 48rem;
+  }
+
+  .md\:translate-x-0 {
+    --tw-translate-x: 0px;
+    transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
   }
 
   .md\:grid-cols-2 {
