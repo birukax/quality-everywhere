@@ -37,14 +37,22 @@ def list(request):
     return render(request, "issue/list.html", context)
 
 
+@login_required
 def detail(request, id):
-    issue = get_object_or_404(Issue, id=id)
-    form = CreateRemarkForm()
-    context = {
-        "issue": issue,
-        "form": form,
-    }
-    return render(request, "issue/detail.html", context)
+    user = request.user
+    if (
+        user.profile.role not in ["ADMIN", "MANAGER", "SAFETY"]
+        or user.profile.department
+    ):
+        issue = get_object_or_404(Issue, id=id)
+        form = CreateRemarkForm()
+        context = {
+            "issue": issue,
+            "form": form,
+        }
+        return render(request, "issue/detail.html", context)
+    else:
+        return render(request, "issue/list.html", context)
 
 
 @login_required
@@ -70,6 +78,7 @@ def create(request):
     return render(request, "issue/create.html", context)
 
 
+@login_required
 def update_status(request, id, action):
     issue = get_object_or_404(Issue, id=id)
     if request.method == "POST":
@@ -106,6 +115,8 @@ def update_status(request, id, action):
     return redirect("issue:detail", id=id)
 
 
+@login_required
+@role_check(["ADMIN", "MANAGER", "SAFETY"])
 def department_list(request):
     departments = Department.objects.all()
     department_filter = DepartmentFilter(
@@ -122,11 +133,15 @@ def department_list(request):
     return render(request, "issue/department/list.html", context)
 
 
+@login_required
+@role_check(["ADMIN", "MANAGER", "SAFETY"])
 def get_departments(request):
     departments_get()
     return redirect("issue:department_list")
 
 
+@login_required
+@role_check(["ADMIN", "MANAGER", "SAFETY"])
 def location_list(request):
     locations = Location.objects.all()
     location_filter = LocationFilter(
@@ -144,6 +159,8 @@ def location_list(request):
     return render(request, "issue/location/list.html", context)
 
 
+@login_required
+@role_check(["ADMIN", "MANAGER", "SAFETY"])
 def create_location(request):
     if request.method == "POST":
         form = CreateLocationForm(request.POST)
@@ -159,10 +176,14 @@ def create_location(request):
     return render(request, "issue/location/create.html", context)
 
 
+@login_required
+@role_check(["ADMIN", "MANAGER", "SAFETY"])
 def edit_location(request, id):
     pass
 
 
+@login_required
+@role_check(["ADMIN", "MANAGER", "SAFETY"])
 def issue_type_list(request):
     issue_types = IssueType.objects.all()
     issue_type_filter = IssueTypeFilter(
@@ -179,6 +200,8 @@ def issue_type_list(request):
     return render(request, "issue/type/list.html", context)
 
 
+@login_required
+@role_check(["ADMIN", "MANAGER", "SAFETY"])
 def create_issue_type(request):
     if request.method == "POST":
         form = CreateIssueTypeForm(request.POST)
@@ -190,5 +213,7 @@ def create_issue_type(request):
     return render(request, "issue/type/create.html", {"form": form})
 
 
+@login_required
+@role_check(["ADMIN", "MANAGER", "SAFETY"])
 def edit_issue_type(request, id):
     pass
