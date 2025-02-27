@@ -19,12 +19,18 @@ class Profile(models.Model):
         auth_user, on_delete=models.CASCADE, related_name="profile"
     )
     role = models.CharField(choices=ROLES, max_length=20, default="USER")
-    machine = models.ForeignKey(
-        "machine.Machine", on_delete=models.CASCADE, null=True, blank=True
-    )
+    # machine = models.ForeignKey(
+    #     "machine.Machine", on_delete=models.CASCADE, null=True, blank=True
+    # )
     department = models.ForeignKey(
         "issue.Department", on_delete=models.CASCADE, null=True, blank=True
     )
 
+    class Meta:
+        ordering = ["user__username"]
+
     def __str__(self):
         return f"{self.user.username}"
+
+    def get_absolute_url(self):
+        return reverse("account:detail", args={self.user.id})
