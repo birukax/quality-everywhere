@@ -6,9 +6,10 @@ ROLES = (
     ("USER", "USER"),
     ("ADMIN", "ADMIN"),
     ("MANAGER", "MANAGER"),
-    ("OPERATOR", "OPERATOR"),
     ("INSPECTOR", "INSPECTOR"),
     ("SUPERVISOR", "SUPERVISOR"),
+    ("SAFETY", "SAFETY"),
+    ("SHIFT-SUPERVISOR", "SHIFT-SUPERVISOR"),
 )
 
 
@@ -18,6 +19,9 @@ class Profile(models.Model):
     role = models.CharField(choices=ROLES, max_length=20, default="USER")
     machine = models.ForeignKey(
         "machine.Machine", on_delete=models.CASCADE, null=True, blank=True
+    )
+    department = models.ForeignKey(
+        "issue.Department", on_delete=models.CASCADE, null=True, blank=True
     )
 
     def __str__(self):

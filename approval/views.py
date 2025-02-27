@@ -1,10 +1,13 @@
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render, get_object_or_404, redirect
 from assessment.models import Assessment
 from .models import AssessmentApproval
 from .filters import AssessmentApprovalFilter
-from main.tasks import get_page
+from main.tasks import get_page, role_check
 
 
+@login_required
+@role_check([["ADMIN", "SHIFT-SUPERVISOR"]])
 def approvals(request):
     context = {}
     assessments = AssessmentApproval.objects.filter(status="PENDING")
@@ -26,8 +29,9 @@ def create_assessment_approval(request, id):
     return redirect("assessment:first_off_detail", id=assessment.id)
 
 
+@login_required
+@role_check([["ADMIN", "SHIFT-SUPERVISOR"]])
 def assessment_list(request, type):
-
     apps = AssessmentApproval.objects.filter(status="PENDING", assessment__type=type)
     assessment_approval_filter = AssessmentApprovalFilter(request.GET, queryset=apps)
     apps = assessment_approval_filter.qs

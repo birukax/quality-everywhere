@@ -55,6 +55,12 @@
                 </li>
                 <li>
                     <a class="grid sm:grid-cols-2 items-center p-1 sm:p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
+                        <span class="flex-1 mb-2 sm:mb-0 ms-3 whitespace-nowrap">Assigned To</span>
+                        <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ issue.department.name }}</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="grid sm:grid-cols-2 items-center p-1 sm:p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
                         <span class="flex-1 mb-2 sm:mb-0 ms-3 whitespace-nowrap">Issue Type</span>
                         <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ issue.issue_type.name }}</span>
                     </a>
@@ -65,7 +71,7 @@
                         <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ issue.created_by.username }}</span>
                     </a>
                     <a class="grid sm:grid-cols-2 items-center p-1 sm:p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
-                        <span class="flex-1 mb-2 sm:mb-0 ms-3 whitespace-nowrap">Created @</span>
+                        <span class="flex-1 mb-2 sm:mb-0 ms-3 whitespace-nowrap">Created At</span>
                         <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ issue.created_at }}</span>
                     </a>
                 </li>

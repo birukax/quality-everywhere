@@ -1,0 +1,13 @@
+{% extends "auth.html" %}
+{% block content %}
+    <div class="mx-4">
+        <div class="items-center w-fit mx-auto bg-white p-4 rounded-xl sm:mx-auto place-self-center ring-8 ring-gray-900 sm:max-w-sm max-w-xs ">
+            <div class=" p-2 rounded-lg  bg-white mx-auto w-fit mt-4">
+                <p class="uppercase tracking-wider text-sky-900  font-bold text-lg">403 Forbidden</p>
+                <p class="text-base font-normal text-sky-900 ">You dont have permission to access this page.</p>
+                <a href="{% url 'account:dashboard' %}"
+                   class="text-base font-normal tracking-wide text-sky-900 hover:underline">Go to Home.</a>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
