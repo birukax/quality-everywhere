@@ -1,6 +1,7 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Color, ColorStandard, Customer, RawMaterial, Shift
-from main.tasks import get_page
+from main.tasks import get_page, role_check
 from .tasks import (
     customer_get,
     raw_material_create,
@@ -30,6 +31,8 @@ from .forms import (
 )
 
 
+@login_required
+@role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def customer_list(request):
     customers = Customer.objects.all()
     customer_filter = CustomerFilter(request.GET, queryset=customers)
@@ -43,11 +46,15 @@ def customer_list(request):
     return render(request, "misc/customer/list.html", context)
 
 
+@login_required
+@role_check(["ADMIN", "MANAGER", "SUPERVISOR"])
 def get_customers(request):
     customer_get()
     return redirect("misc:customer_list")
 
 
+@login_required
+@role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def raw_material_list(request):
     raw_materials = RawMaterial.objects.all()
     raw_material_filter = RawMaterialFilter(request.GET, queryset=raw_materials)
@@ -60,6 +67,8 @@ def raw_material_list(request):
     return render(request, "misc/raw_material/list.html", context)
 
 
+@login_required
+@role_check(["ADMIN", "MANAGER", "SUPERVISOR"])
 def create_raw_material(request):
     if request.method == "GET":
         form = CreateRawMaterialForm()
@@ -70,6 +79,8 @@ def create_raw_material(request):
     return redirect("misc:raw_material_list")
 
 
+@login_required
+@role_check(["ADMIN", "MANAGER", "SUPERVISOR"])
 def edit_raw_material(request, id):
     if request.method == "GET":
         raw_material = get_object_or_404(RawMaterial, id=id)
@@ -81,6 +92,8 @@ def edit_raw_material(request, id):
     return redirect("misc:raw_material_list")
 
 
+@login_required
+@role_check(["ADMIN", "MANAGER", "SUPERVISOR"])
 def shift_list(request):
     shifts = Shift.objects.all()
     shift_filter = ShiftFilter(request.GET, queryset=shifts)
@@ -93,6 +106,8 @@ def shift_list(request):
     return render(request, "misc/shift/list.html", context)
 
 
+@login_required
+@role_check(["ADMIN", "MANAGER", "SUPERVISOR"])
 def create_shift(request):
     if request.method == "GET":
         form = CreateShiftForm()
@@ -103,6 +118,8 @@ def create_shift(request):
     return redirect("misc:shift_list")
 
 
+@login_required
+@role_check(["ADMIN", "MANAGER", "SUPERVISOR"])
 def edit_shift(request, id):
     if request.method == "GET":
         shift = get_object_or_404(Shift, id=id)
@@ -114,6 +131,8 @@ def edit_shift(request, id):
     return redirect("misc:shift_list")
 
 
+@login_required
+@role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def color_list(request):
     colors = Color.objects.all()
     color_filter = ColorFilter(request.GET, queryset=colors)
@@ -126,6 +145,8 @@ def color_list(request):
     return render(request, "misc/color/list.html", context)
 
 
+@login_required
+@role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def create_color(request):
     if request.method == "GET":
         form = CreateColorForm()
@@ -136,6 +157,8 @@ def create_color(request):
     return redirect("misc:color_list")
 
 
+@login_required
+@role_check(["ADMIN", "MANAGER", "SUPERVISOR"])
 def edit_color(request, id):
     if request.method == "GET":
         color = get_object_or_404(Color, id=id)
@@ -147,6 +170,8 @@ def edit_color(request, id):
     return redirect("misc:color_list")
 
 
+@login_required
+@role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def color_standard_list(request):
     color_standards = ColorStandard.objects.all()
     color_standard_filter = ColorStandardFilter(request.GET, queryset=color_standards)
@@ -159,6 +184,8 @@ def color_standard_list(request):
     return render(request, "misc/color_standard/list.html", context)
 
 
+@login_required
+@role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def create_color_standard(request):
     if request.method == "POST":
 
@@ -178,6 +205,8 @@ def create_color_standard(request):
     return render(request, "misc/color_standard/create.html", context)
 
 
+@login_required
+@role_check(["ADMIN", "MANAGER", "SUPERVISOR"])
 def edit_color_standard(request, id):
     color_standard = get_object_or_404(ColorStandard, id=id)
     if request.method == "POST":

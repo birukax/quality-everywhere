@@ -7,7 +7,7 @@ from main.tasks import get_page, role_check
 
 
 @login_required
-@role_check([["ADMIN", "SHIFT-SUPERVISOR"]])
+@role_check(["ADMIN", "SHIFT-SUPERVISOR"])
 def approvals(request):
     context = {}
     assessments = AssessmentApproval.objects.filter(status="PENDING")
@@ -15,6 +15,8 @@ def approvals(request):
     return render(request, "approval/list.html", context)
 
 
+@login_required
+@role_check(["ADMIN", "INSPECTOR", "SUPERVISOR"])
 def create_assessment_approval(request, id):
     assessment = get_object_or_404(Assessment, id=id)
     if assessment.type == "FIRST-OFF":
@@ -30,7 +32,7 @@ def create_assessment_approval(request, id):
 
 
 @login_required
-@role_check([["ADMIN", "SHIFT-SUPERVISOR"]])
+@role_check(["ADMIN", "SHIFT-SUPERVISOR"])
 def assessment_list(request, type):
     apps = AssessmentApproval.objects.filter(status="PENDING", assessment__type=type)
     assessment_approval_filter = AssessmentApprovalFilter(request.GET, queryset=apps)
@@ -44,41 +46,47 @@ def assessment_list(request, type):
     return render(request, "approval/assessment/list.html", context)
 
 
+@login_required
+@role_check(["ADMIN", "SHIFT-SUPERVISOR"])
 def approve_assessment(request, id):
     app = get_object_or_404(AssessmentApproval, id=id)
-    app.status = "APPROVED"
-    app.by = request.user
-    app.save()
-    # not_approved = AssessmentApproval.objects.filter(
-    #     assessment__id=app.assessment.id, status="PENDING"
-    # )
-    # if not not_approved.exists():
-    app.assessment.status = "COMPLETED"
-    type = app.assessment.type
-    if type == "FIRST-OFF" and not app.assessment.extra:
-        app.assessment.job_test.status = "FIRST-OFF COMPLETED"
-        app.assessment.job_test.save()
-    app.assessment.save()
-    # elif type == "ON-PROCESS":
-    #     app.assessment.job_test.status = "ON-PROCESS COMPLETED"
-    #     app.assessment.job_test.save()
-    # app.assessment.job_test.save()
+    if app.status == "PENDING":
+        app.status = "APPROVED"
+        app.by = request.user
+        app.save()
+        # not_approved = AssessmentApproval.objects.filter(
+        #     assessment__id=app.assessment.id, status="PENDING"
+        # )
+        # if not not_approved.exists():
+        app.assessment.status = "COMPLETED"
+        type = app.assessment.type
+        if type == "FIRST-OFF" and not app.assessment.extra:
+            app.assessment.job_test.status = "FIRST-OFF COMPLETED"
+            app.assessment.job_test.save()
+        app.assessment.save()
+        # elif type == "ON-PROCESS":
+        #     app.assessment.job_test.status = "ON-PROCESS COMPLETED"
+        #     app.assessment.job_test.save()
+        # app.assessment.job_test.save()
     return redirect("approval:assessment_list", type=app.assessment.type)
 
 
+@login_required
+@role_check(["ADMIN", "SHIFT-SUPERVISOR"])
 def reject_assessment(request, id):
     app = get_object_or_404(AssessmentApproval, id=id)
-    app.status = "REJECTED"
-    app.by = request.user
-    app.save()
-    # not_approved = AssessmentApproval.objects.filter(
-    #     assessment__id=app.assessment.id, status="PENDING"
-    # )
-    # if not_approved.exists():
-    # for a in not_approved:
-    #     a.status = "CANCELED"
-    #     a.by = request.user
-    #     a.save()
-    app.assessment.status = "REJECTED"
-    app.assessment.save()
+    if app.status == "PENDING":
+        app.status = "REJECTED"
+        app.by = request.user
+        app.save()
+        # not_approved = AssessmentApproval.objects.filter(
+        #     assessment__id=app.assessment.id, status="PENDING"
+        # )
+        # if not_approved.exists():
+        # for a in not_approved:
+        #     a.status = "CANCELED"
+        #     a.by = request.user
+        #     a.save()
+        app.assessment.status = "REJECTED"
+        app.assessment.save()
     return redirect("approval:assessment_list", type=app.assessment.type)

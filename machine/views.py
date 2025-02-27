@@ -1,7 +1,8 @@
 from django import forms
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.forms import modelformset_factory
-from main.tasks import get_page
+from main.tasks import get_page, role_check
 from .models import Machine, Route, MachineRoute
 from .filters import MachineFilter, RouteFilter
 from .forms import (
@@ -13,6 +14,8 @@ from .forms import (
 )
 
 
+@login_required
+@role_check(["ADMIN", "MANAGER", "SUPERVISOR"])
 def list(request):
     machines = Machine.objects.all()
     machine_filter = MachineFilter(
@@ -29,6 +32,8 @@ def list(request):
     return render(request, "machine/list.html", context)
 
 
+@login_required
+@role_check(["ADMIN", "MANAGER", "SUPERVISOR"])
 def create(request):
     context = {}
     if request.method == "POST":
@@ -42,6 +47,8 @@ def create(request):
     return render(request, "machine/create.html", context)
 
 
+@login_required
+@role_check(["ADMIN", "MANAGER", "SUPERVISOR"])
 def edit(request, id):
     machine = get_object_or_404(Machine, id=id)
     if request.method == "POST":
@@ -60,6 +67,8 @@ def edit(request, id):
     return render(request, "machine/edit.html", context)
 
 
+@login_required
+@role_check(["ADMIN", "MANAGER", "SUPERVISOR"])
 def route_list(request):
     routes = Route.objects.all()
     route_filter = RouteFilter(
@@ -78,6 +87,8 @@ def route_list(request):
     return render(request, "machine/route/list.html", context)
 
 
+@login_required
+@role_check(["ADMIN", "MANAGER", "SUPERVISOR"])
 def create_route(request):
     context = {}
     if request.method == "POST":
@@ -101,10 +112,14 @@ def create_route(request):
     return render(request, "machine/route/list.html", context)
 
 
+@login_required
+@role_check(["ADMIN", "MANAGER", "SUPERVISOR"])
 def edit_route(request):
     pass
 
 
+@login_required
+@role_check(["ADMIN", "MANAGER", "SUPERVISOR"])
 def update_machine_route(request, id):
     context = {}
     route = get_object_or_404(Route, id=id)
@@ -129,6 +144,8 @@ def update_machine_route(request, id):
     return render(request, "machine/route/update.html", context)
 
 
+@login_required
+@role_check(["ADMIN", "MANAGER", "SUPERVISOR"])
 def cancel_create_route(request, id):
     route = get_object_or_404(Route, id=id)
     route.delete()

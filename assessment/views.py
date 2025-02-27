@@ -5,7 +5,7 @@ from django.db.models import Sum
 from misc.models import ColorStandard, Color
 from job.models import JobTest
 from approval.models import AssessmentApproval
-from main.tasks import get_page
+from main.tasks import get_page, role_check
 from .tasks import test_create, test_edit, conformity_create, conformity_edit
 from .models import (
     Test,
@@ -47,6 +47,7 @@ from .forms import (
 
 
 @login_required
+@role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def first_off_list(request, status):
     if status == "OPEN":
         assessments = Assessment.objects.filter(type="FIRST-OFF").exclude(
@@ -66,6 +67,7 @@ def first_off_list(request, status):
 
 
 @login_required
+@role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def on_process_list(request, status):
     if status == "OPEN":
         assessments = Assessment.objects.filter(type="ON-PROCESS").exclude(
@@ -85,6 +87,7 @@ def on_process_list(request, status):
 
 
 @login_required
+@role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def first_off_detail(request, id):
     can_submit = True
     assessment = get_object_or_404(Assessment, id=id)
@@ -135,6 +138,7 @@ def first_off_detail(request, id):
 
 
 @login_required
+@role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def on_process_detail(request, id):
     assessment = get_object_or_404(Assessment, id=id)
     edit_assessment_form = EditAssessmentForm(instance=assessment)
@@ -174,6 +178,7 @@ def on_process_detail(request, id):
 
 
 @login_required
+@role_check(["ADMIN", "INSPECTOR", "SUPERVISOR"])
 def create_first_off(request, id):
     context = {}
     job_test = JobTest.objects.get(id=id)
@@ -240,6 +245,7 @@ def create_first_off(request, id):
 
 
 @login_required
+@role_check(["ADMIN", "INSPECTOR", "SUPERVISOR"])
 def create_on_process(request, id):
     context = {}
     job_test = JobTest.objects.get(id=id)
@@ -267,6 +273,7 @@ def create_on_process(request, id):
 
 
 @login_required
+@role_check(["ADMIN", "INSPECTOR", "SUPERVISOR"])
 def add_first_off(request, id):
     context = {}
     job_test = JobTest.objects.get(id=id)
@@ -350,6 +357,7 @@ def add_first_off(request, id):
 
 
 @login_required
+@role_check(["ADMIN", "INSPECTOR", "SUPERVISOR"])
 def edit_first_off(request, id):
     assessment = get_object_or_404(Assessment, id=id)
     form = EditAssessmentForm(instance=assessment)
@@ -361,6 +369,7 @@ def edit_first_off(request, id):
 
 
 @login_required
+@role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def edit_on_process(request, id):
     assessment = get_object_or_404(Assessment, id=id)
     form = EditAssessmentForm(instance=assessment)
@@ -372,6 +381,7 @@ def edit_on_process(request, id):
 
 
 @login_required
+@role_check(["ADMIN", "INSPECTOR", "SUPERVISOR"])
 def save_test(request, id):
     assessment = get_object_or_404(Assessment, id=id)
     test_formset = modelformset_factory(FirstOff, form=FirstOffTestsFrom, extra=0)
@@ -382,6 +392,7 @@ def save_test(request, id):
 
 
 @login_required
+@role_check(["ADMIN", "INSPECTOR", "SUPERVISOR"])
 def save_conformity(request, id):
     assessment = get_object_or_404(Assessment, id=id)
     conformity_form = OnProcessConformitiesForm(request.POST)
@@ -395,6 +406,7 @@ def save_conformity(request, id):
 
 
 @login_required
+@role_check(["ADMIN", "INSPECTOR", "SUPERVISOR"])
 def save_viscosity(request, id):
     assessment = Assessment.objects.get(id=id)
     if request.method == "POST":
@@ -420,6 +432,7 @@ def save_viscosity(request, id):
 
 
 @login_required
+@role_check(["ADMIN", "INSPECTOR", "SUPERVISOR"])
 def update_substrates(request, id):
     assessment = Assessment.objects.get(id=id)
     if request.method == "POST":
@@ -438,6 +451,7 @@ def update_substrates(request, id):
 
 
 @login_required
+@role_check(["ADMIN", "INSPECTOR", "SUPERVISOR"])
 def create_waste(request, id):
     assessment = get_object_or_404(Assessment, id=id)
     if request.method == "POST":
@@ -452,6 +466,7 @@ def create_waste(request, id):
 
 
 @login_required
+@role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def test_list(request):
     tests = Test.objects.all()
     test_filter = TestFilter(
@@ -469,6 +484,7 @@ def test_list(request):
 
 
 @login_required
+@role_check(["ADMIN", "MANAGER", "SUPERVISOR"])
 def create_test(request):
     if request.method == "GET":
         form = CreateTestForm()
@@ -480,6 +496,7 @@ def create_test(request):
 
 
 @login_required
+@role_check(["ADMIN", "MANAGER", "SUPERVISOR"])
 def edit_test(request, id):
     test = get_object_or_404(Test, id=id)
     if request.method == "GET":
@@ -491,6 +508,7 @@ def edit_test(request, id):
 
 
 @login_required
+@role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def conformity_list(request):
     conformities = Conformity.objects.all()
     conformity_filter = ConformityFilter(request.GET, queryset=conformities)
@@ -505,6 +523,7 @@ def conformity_list(request):
 
 
 @login_required
+@role_check(["ADMIN", "MANAGER", "SUPERVISOR"])
 def create_conformity(request):
     if request.method == "GET":
         form = CreateConformityForm()
@@ -516,6 +535,7 @@ def create_conformity(request):
 
 
 @login_required
+@role_check(["ADMIN", "MANAGER", "SUPERVISOR"])
 def edit_conformity(request, id):
     if request.method == "GET":
         conformity = get_object_or_404(Conformity, id=id)
@@ -528,6 +548,7 @@ def edit_conformity(request, id):
 
 
 @login_required
+@role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def waste_list(request):
     wastes = Waste.objects.all()
     waste_filter = WasteFilter(
@@ -544,6 +565,7 @@ def waste_list(request):
 
 
 @login_required
+@role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def semi_waste_list(request):
     semi_wastes = SemiWaste.objects.all()
     semi_waste_filter = SemiWasteFilter(
@@ -561,6 +583,7 @@ def semi_waste_list(request):
 
 
 @login_required
+@role_check(["ADMIN", "INSPECTOR", "SUPERVISOR"])
 def update_semi_waste(request, id):
     context = {}
     semi_waste = get_object_or_404(SemiWaste, id=id)

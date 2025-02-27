@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.db.models import OuterRef, Exists, Q, Count
-from main.tasks import get_page
+from django.db.models import Q
+from main.tasks import get_page, role_check
 from .tasks import departments_get
 from .models import Location, IssueType, Issue, Remark, Department
 from .forms import (
@@ -15,7 +15,15 @@ from .filters import IssueFilter, DepartmentFilter, LocationFilter, IssueTypeFil
 
 @login_required
 def list(request):
-    issues = Issue.objects.all()
+    user = request.user
+    if user.profile.role in ["ADMIN", "MANAGER", "SAFETY"]:
+        issues = Issue.objects.all()
+    elif user.profile.department:
+        issues = Issue.objects.filter(
+            Q(Q(department=user.profile.department) or Q(created_by=user))
+        )
+    else:
+        issues = Issue.objects.filter(created_by=user)
     issue_filter = IssueFilter(
         request.GET,
         queryset=issues,
@@ -29,7 +37,6 @@ def list(request):
     return render(request, "issue/list.html", context)
 
 
-@login_required
 def detail(request, id):
     issue = get_object_or_404(Issue, id=id)
     form = CreateRemarkForm()

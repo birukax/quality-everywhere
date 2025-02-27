@@ -6,13 +6,14 @@ from product.models import Artwork
 from machine.models import Route, MachineRoute
 from assessment.models import SemiWaste, Assessment
 from .tasks import job_get
-from main.tasks import get_page
+from main.tasks import get_page, role_check
 from .forms import EditJobForm, CreateJobTestForm
 from .filters import JobFilter, JobTestFilter
 from assessment.forms import CreateSemiWasteForm
 
 
 @login_required
+@role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def list(request):
     jobs = Job.objects.all()
     job_filter = JobFilter(request.GET, queryset=jobs)
@@ -27,6 +28,54 @@ def list(request):
 
 
 @login_required
+@role_check(["ADMIN", "MANAGER", "SUPERVISOR"])
+def get_jobs(request):
+    job_get()
+    return redirect("job:list")
+
+
+@login_required
+@role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
+def detail(request, id):
+    context = {}
+    ready = False
+
+    job = get_object_or_404(Job, id=id)
+    if Artwork.objects.filter(product=job.product):
+        artwork = Artwork.objects.filter(product=job.product).latest("created_at")
+        context["artwork"] = artwork
+    edit_job_form = EditJobForm(instance=job)
+    if JobTest.objects.filter(~Q(status="COMPLETED"), job=job).exists():
+        unfinished_test = JobTest.objects.filter(
+            ~Q(status="COMPLETED"), job=job
+        ).first()
+        context["unfinished_test"] = unfinished_test
+    if job.route and job.product:
+        ready = True
+    context["job"] = job
+    context["ready"] = ready
+    context["edit_job_form"] = edit_job_form
+    return render(request, "job/detail.html", context)
+
+
+@login_required
+@role_check(["ADMIN", "MANAGER", "SUPERVISOR"])
+def edit(request, id):
+    job = get_object_or_404(Job, id=id)
+    if request.method == "POST":
+        form = EditJobForm(request.POST, instance=job)
+        if form.is_valid():
+            job.customer = form.cleaned_data["customer"]
+            job.route = form.cleaned_data["route"]
+            job.color_standard = form.cleaned_data["color_standard"]
+            job.save()
+        else:
+            print(form.errors)
+    return redirect("job:detail", id=id)
+
+
+@login_required
+@role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def test_list(request):
     job_tests = JobTest.objects.all()
     job_test_filter = JobTestFilter(request.GET, queryset=job_tests)
@@ -41,6 +90,7 @@ def test_list(request):
 
 
 @login_required
+@role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def test_detail(request, id):
     context = {}
     first_off_ready = False
@@ -74,6 +124,7 @@ def test_detail(request, id):
 
 
 @login_required
+@role_check(["ADMIN", "INSPECTOR", "SUPERVISOR"])
 def create_semi_waste(request, id):
     job_test = JobTest.objects.get(id=id)
     if request.method == "POST":
@@ -91,6 +142,7 @@ def create_semi_waste(request, id):
 
 
 @login_required
+@role_check(["ADMIN", "SUPERVISOR"])
 def next_machine(request, id):
     job_test = JobTest.objects.get(id=id)
     route = MachineRoute.objects.get(
@@ -111,6 +163,8 @@ def next_machine(request, id):
     return redirect("job:test_detail", id=job_test.id)
 
 
+@login_required
+@role_check(["ADMIN", "SUPERVISOR"])
 def finish_test(request, id):
     if request.method == "POST":
         job_test = JobTest.objects.get(id=id)
@@ -133,50 +187,7 @@ def finish_test(request, id):
 
 
 @login_required
-def get_jobs(request):
-    job_get()
-    return redirect("job:list")
-
-
-@login_required
-def detail(request, id):
-    context = {}
-    ready = False
-
-    job = get_object_or_404(Job, id=id)
-    if Artwork.objects.filter(product=job.product):
-        artwork = Artwork.objects.filter(product=job.product).latest("created_at")
-        context["artwork"] = artwork
-    edit_job_form = EditJobForm(instance=job)
-    if JobTest.objects.filter(~Q(status="COMPLETED"), job=job).exists():
-        unfinished_test = JobTest.objects.filter(
-            ~Q(status="COMPLETED"), job=job
-        ).first()
-        context["unfinished_test"] = unfinished_test
-    if job.route and job.product:
-        ready = True
-    context["job"] = job
-    context["ready"] = ready
-    context["edit_job_form"] = edit_job_form
-    return render(request, "job/detail.html", context)
-
-
-@login_required
-def edit(request, id):
-    job = get_object_or_404(Job, id=id)
-    if request.method == "POST":
-        form = EditJobForm(request.POST, instance=job)
-        if form.is_valid():
-            job.customer = form.cleaned_data["customer"]
-            job.route = form.cleaned_data["route"]
-            job.color_standard = form.cleaned_data["color_standard"]
-            job.save()
-        else:
-            print(form.errors)
-    return redirect("job:detail", id=id)
-
-
-@login_required
+@role_check(["ADMIN", "SUPERVISOR"])
 def create_test(request, id):
     context = {}
     job = get_object_or_404(Job, id=id)

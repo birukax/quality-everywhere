@@ -1,11 +1,14 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
-from main.tasks import get_page
+from main.tasks import get_page, role_check
 from .models import Product, Artwork
 from .tasks import product_get
 from .forms import AddArtworkForm, EditArtworkForm
 from .filters import ArtworkFilter, ProductFilter
 
 
+@login_required
+@role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def list(request):
     products = Product.objects.all()
     product_filter = ProductFilter(request.GET, queryset=products)
@@ -19,6 +22,8 @@ def list(request):
     return render(request, "product/list.html", context)
 
 
+@login_required
+@role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def detail(request, id):
     context = {}
     product = Product.objects.get(id=id)
@@ -29,11 +34,15 @@ def detail(request, id):
     return render(request, "product/detail.html", context)
 
 
+@login_required
+@role_check(["ADMIN", "MANAGER", "SUPERVISOR"])
 def get(request):
     product_get()
     return redirect("product:list")
 
 
+@login_required
+@role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def artwork_list(request):
     artworks = Artwork.objects.all()
 
@@ -48,12 +57,16 @@ def artwork_list(request):
     return render(request, "product/artwork/list.html", context)
 
 
+@login_required
+@role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def artwork_detail(request, id):
     artwork = get_object_or_404(Artwork, id=id)
     context = {"artwork": artwork}
     return render(request, "product/artwork/detail.html", context)
 
 
+@login_required
+@role_check(["ADMIN", "MANAGER", "SUPERVISOR"])
 def add_artwork(request, id):
     context = {}
     product = Product.objects.get(id=id)
@@ -77,6 +90,8 @@ def add_artwork(request, id):
     return render(request, "product/artwork/add.html", context)
 
 
+@login_required
+@role_check(["ADMIN", "MANAGER", "SUPERVISOR"])
 def edit_artwork(request, id):
     artwork = get_object_or_404(Artwork, id=id)
     if request.method == "POST":

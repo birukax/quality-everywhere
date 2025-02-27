@@ -14,7 +14,7 @@ def role_check(allowed_roles):
         def wrapper(request, *args, **kwargs):
             if (
                 request.user.is_authenticated
-                and request.user.profile.role is allowed_roles
+                and request.user.profile.role in allowed_roles
             ):
                 return view_func(request, *args, **kwargs)
             else:
