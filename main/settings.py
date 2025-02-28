@@ -140,8 +140,8 @@ USE_TZ = False
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = "static/"
-STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
+STATIC_URL = "/static/"
+# STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
 STATIC_ROOT = BASE_DIR / 'static/'
 # DEVICE_CONN_TIMEOUT = "5"
 
@@ -153,17 +153,17 @@ MEDIA_ROOT = BASE_DIR / 'media/'
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-COMPRESS_ROOT =  BASE_DIR / 'static/'
+COMPRESS_ROOT = STATIC_ROOT
 COMPRESS_ENABLED = True
 # COMPRESS_OFFLINE = True
-# STATICFILES_DIRS = [
-#     # os.path.join(BASE_DIR, "static"),
-# ]
-# COMPRESS_URL = STATIC_URL
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+]
+COMPRESS_URL = STATIC_URL
 STATICFILES_FINDERS = (
-    "compressor.finders.CompressorFinder",
     "django.contrib.staticfiles.finders.FileSystemFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+    "compressor.finders.CompressorFinder",
 )
 
 
