@@ -1,6 +1,6 @@
 {% load compress %}
-{% load humanize %}
 {% load static %}
+{% load humanize %}
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -11,7 +11,7 @@
         <meta name="keywords" content="{% block meta_keywords %}{% endblock %}">
         <title>Quality Everywhere</title>
         {% compress css %}
-            <link rel="stylesheet" href="{% static 'src/output.css' %}">
+            <link rel="stylesheet" href="{% static 'src/output.css' %}" />
             <link rel="stylesheet"
                   href="{% static 'django_select2/django_select2.css' %}" />
             <link rel="stylesheet"

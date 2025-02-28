@@ -8,14 +8,14 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('assessment', '0019_semiwaste'),
-        ('misc', '0008_remark'),
+        # ('misc', '0008_remark'),
     ]
 
     operations = [
         migrations.AddField(
             model_name='semiwaste',
             name='remark',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='semi_wastes', to='misc.remark'),
+            field=models.TextField(blank=True, null=True),
         ),
         migrations.AlterField(
             model_name='semiwaste',

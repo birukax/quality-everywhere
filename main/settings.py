@@ -10,7 +10,6 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
-import os
 from pathlib import Path
 from decouple import config
 
@@ -42,12 +41,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "session_security",
-    "rest_framework",
-    "compressor",
+    "django.contrib.postgres",
     "django.contrib.humanize",
-    "django_select2",
-    "django_filters",
+    "session_security",
     "misc",
     "machine",
     "job",
@@ -57,6 +53,10 @@ INSTALLED_APPS = [
     "approval",
     "issue",
     "report",
+    # "rest_framework",
+    "compressor",
+    "django_select2",
+    "django_filters",
 ]
 
 MIDDLEWARE = [
@@ -98,7 +98,7 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": "quality",
-        "HOST": "localhost",
+        "HOST": config('DB_HOST'),
         "USER": config("DB_USER"),
         "PASSWORD": config("DB_PASSWORD"),
         "PORT": "5432",
@@ -134,33 +134,43 @@ TIME_ZONE = "UTC"
 
 USE_I18N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = "static/"
+STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
+STATIC_ROOT = BASE_DIR / 'static/'
+# DEVICE_CONN_TIMEOUT = "5"
+
+MEDIA_URL = "media/"
+MEDIA_ROOT = BASE_DIR / 'media/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-COMPRESS_ROOT = BASE_DIR / "static"
+COMPRESS_ROOT =  BASE_DIR / 'static/'
 COMPRESS_ENABLED = True
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
-]
+# COMPRESS_OFFLINE = True
+# STATICFILES_DIRS = [
+#     # os.path.join(BASE_DIR, "static"),
+# ]
+# COMPRESS_URL = STATIC_URL
 STATICFILES_FINDERS = (
+    "compressor.finders.CompressorFinder",
     "django.contrib.staticfiles.finders.FileSystemFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
-    "compressor.finders.CompressorFinder",
 )
 
-MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "media"
 
 SESSION_SECURITY_WARN_AFTER = 59 * 60
 SESSION_SECURITY_EXPIRE_AFTER = 60 * 60
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+SECURE_SSL_REDIRECT = True
