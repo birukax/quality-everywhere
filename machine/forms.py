@@ -22,8 +22,7 @@ class CreateMachineForm(forms.ModelForm):
         widget=s2forms.ModelSelect2MultipleWidget(
             queryset=Test.objects.all(),
             search_fields=[
-                "name__icontains",
-                "code__icontains",
+                "name__icontains"
             ],
             attrs={"class": "w-full text-center h-auto"},
         ),
@@ -34,8 +33,7 @@ class CreateMachineForm(forms.ModelForm):
         widget=s2forms.ModelSelect2MultipleWidget(
             queryset=Conformity.objects.all(),
             search_fields=[
-                "name__icontains",
-                "code__icontains",
+                "name__icontains"
             ],
             attrs={"class": "w-full text-center h-auto"},
         ),
@@ -59,8 +57,7 @@ class EditMachineForm(forms.ModelForm):
         widget=s2forms.ModelSelect2MultipleWidget(
             queryset=Test.objects.all(),
             search_fields=[
-                "name__icontains",
-                "code__icontains",
+                "name__icontains"
             ],
             attrs={"class": "w-full text-center h-auto"},
         ),
@@ -71,8 +68,7 @@ class EditMachineForm(forms.ModelForm):
         widget=s2forms.ModelSelect2MultipleWidget(
             queryset=Conformity.objects.all(),
             search_fields=[
-                "name__icontains",
-                "code__icontains",
+                "name__icontains"
             ],
             attrs={"class": "w-full text-center h-auto"},
         ),

@@ -40,19 +40,19 @@ def list(request):
 @login_required
 def detail(request, id):
     user = request.user
-    if (
-        user.profile.role not in ["ADMIN", "MANAGER", "SAFETY"]
-        or user.profile.department
-    ):
-        issue = get_object_or_404(Issue, id=id)
-        form = CreateRemarkForm()
-        context = {
-            "issue": issue,
-            "form": form,
-        }
-        return render(request, "issue/detail.html", context)
-    else:
-        return render(request, "issue/list.html", context)
+    # if (
+    #     user.profile.role not in ["ADMIN", "MANAGER", "SAFETY"]
+    #     or user.profile.department
+    # ):
+    issue = get_object_or_404(Issue, id=id)
+    form = CreateRemarkForm()
+    context = {
+        "issue": issue,
+        "form": form,
+    }
+    return render(request, "issue/detail.html", context)
+    # else:
+    #     return render(request, "issue/list.html", context)
 
 
 @login_required

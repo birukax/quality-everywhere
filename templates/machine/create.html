@@ -1,5 +1,6 @@
 {% extends 'form.html' %}
 {% block title %}Create Machine{% endblock %}
+{% load static %}
 {% block form %}
     <div class=" bg-gray-50 w-full">
         <form class="p-2 md:p-5 " method="post" action="{% url 'machine:create' %}">
@@ -31,6 +32,5 @@
                 </a>
             </div>
         </form>
-        {{ form.media }}
     </div>
 {% endblock form %}
