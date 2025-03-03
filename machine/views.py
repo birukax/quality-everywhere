@@ -15,7 +15,7 @@ from .forms import (
 
 
 @login_required
-@role_check(["ADMIN", "MANAGER", "SUPERVISOR"])
+@role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def list(request):
     machines = Machine.objects.all()
     machine_filter = MachineFilter(
@@ -33,7 +33,7 @@ def list(request):
 
 
 @login_required
-@role_check(["ADMIN", "MANAGER", "SUPERVISOR"])
+@role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def create(request):
     context = {}
     if request.method == "POST":
@@ -48,7 +48,7 @@ def create(request):
 
 
 @login_required
-@role_check(["ADMIN", "MANAGER", "SUPERVISOR"])
+@role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def edit(request, id):
     machine = get_object_or_404(Machine, id=id)
     if request.method == "POST":
@@ -68,7 +68,7 @@ def edit(request, id):
 
 
 @login_required
-@role_check(["ADMIN", "MANAGER", "SUPERVISOR"])
+@role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def route_list(request):
     routes = Route.objects.all()
     route_filter = RouteFilter(
@@ -88,7 +88,7 @@ def route_list(request):
 
 
 @login_required
-@role_check(["ADMIN", "MANAGER", "SUPERVISOR"])
+@role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def create_route(request):
     context = {}
     if request.method == "POST":
@@ -113,13 +113,13 @@ def create_route(request):
 
 
 @login_required
-@role_check(["ADMIN", "MANAGER", "SUPERVISOR"])
+@role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def edit_route(request):
     pass
 
 
 @login_required
-@role_check(["ADMIN", "MANAGER", "SUPERVISOR"])
+@role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def update_machine_route(request, id):
     context = {}
     route = get_object_or_404(Route, id=id)
@@ -145,7 +145,7 @@ def update_machine_route(request, id):
 
 
 @login_required
-@role_check(["ADMIN", "MANAGER", "SUPERVISOR"])
+@role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def cancel_create_route(request, id):
     route = get_object_or_404(Route, id=id)
     route.delete()

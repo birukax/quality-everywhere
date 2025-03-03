@@ -98,7 +98,7 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": "quality",
-        "HOST": config('DB_HOST'),
+        "HOST": config("DB_HOST"),
         "USER": config("DB_USER"),
         "PASSWORD": config("DB_PASSWORD"),
         "PORT": "5432",
@@ -142,11 +142,11 @@ USE_TZ = False
 
 STATIC_URL = "/static/"
 # STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
-STATIC_ROOT = BASE_DIR / 'static/'
+STATIC_ROOT = BASE_DIR / "static/"
 # DEVICE_CONN_TIMEOUT = "5"
 
 MEDIA_URL = "media/"
-MEDIA_ROOT = BASE_DIR / 'media/'
+MEDIA_ROOT = BASE_DIR / "media/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -156,9 +156,9 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 COMPRESS_ROOT = STATIC_ROOT
 COMPRESS_ENABLED = True
 # COMPRESS_OFFLINE = True
-STATICFILES_DIRS = [
-    BASE_DIR / 'static',
-]
+# STATICFILES_DIRS = [
+#     BASE_DIR / 'static',
+# ]
 COMPRESS_URL = STATIC_URL
 STATICFILES_FINDERS = (
     "django.contrib.staticfiles.finders.FileSystemFinder",
@@ -173,4 +173,4 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
-SECURE_SSL_REDIRECT = True
+# SECURE_SSL_REDIRECT = True

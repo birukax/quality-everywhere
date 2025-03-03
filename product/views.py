@@ -35,7 +35,6 @@ def detail(request, id):
 
 
 @login_required
-@role_check(["ADMIN", "MANAGER", "SUPERVISOR"])
 def get(request):
     product_get()
     return redirect("product:list")
@@ -66,7 +65,7 @@ def artwork_detail(request, id):
 
 
 @login_required
-@role_check(["ADMIN", "MANAGER", "SUPERVISOR"])
+@role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def add_artwork(request, id):
     context = {}
     product = Product.objects.get(id=id)
@@ -91,7 +90,7 @@ def add_artwork(request, id):
 
 
 @login_required
-@role_check(["ADMIN", "MANAGER", "SUPERVISOR"])
+@role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def edit_artwork(request, id):
     artwork = get_object_or_404(Artwork, id=id)
     if request.method == "POST":

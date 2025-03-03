@@ -128,7 +128,7 @@
             <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd">
             </path>
           </svg>
-          <span class="flex-1 ml-3 text-left whitespace-nowrap">Issue</span>
+          <span class="flex-1 ml-3 text-left whitespace-nowrap">S.H.E.</span>
           <svg aria-hidden="true"
                class="w-6 h-6"
                fill="currentColor"
@@ -402,15 +402,5 @@
         </a>
       </li>
     </ul>
-    <div class=" mt-2 p-2 bg-gray-100 text-center">
-      <p class="ms-3 capitalize tracking-wider font-semibold font-sans">{{ request.user.username }}</p>
-      <form class="py-3" method="post" action="{% url 'logout' %}">
-        {% csrf_token %}
-        <button type="submit"
-                class="text-white inline-flex items-center bg-gray-900 hover:bg-gray-800 focus:ring-2 focus:outline-none focus:ring-gray-300 font-medium rounded-lg uppercase text-xs tracking-widest  px-4 py-1.5 text-center">
-          Sign Out
-        </button>
-      </form>
-    </div>
   </div>
 </aside>

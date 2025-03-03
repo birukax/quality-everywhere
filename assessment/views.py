@@ -178,7 +178,7 @@ def on_process_detail(request, id):
 
 
 @login_required
-@role_check(["ADMIN", "INSPECTOR", "SUPERVISOR"])
+@role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def create_first_off(request, id):
     context = {}
     job_test = JobTest.objects.get(id=id)
@@ -245,7 +245,7 @@ def create_first_off(request, id):
 
 
 @login_required
-@role_check(["ADMIN", "INSPECTOR", "SUPERVISOR"])
+@role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def create_on_process(request, id):
     context = {}
     job_test = JobTest.objects.get(id=id)
@@ -273,7 +273,7 @@ def create_on_process(request, id):
 
 
 @login_required
-@role_check(["ADMIN", "INSPECTOR", "SUPERVISOR"])
+@role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def add_first_off(request, id):
     context = {}
     job_test = JobTest.objects.get(id=id)
@@ -357,7 +357,7 @@ def add_first_off(request, id):
 
 
 @login_required
-@role_check(["ADMIN", "INSPECTOR", "SUPERVISOR"])
+@role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def edit_first_off(request, id):
     assessment = get_object_or_404(Assessment, id=id)
     form = EditAssessmentForm(instance=assessment)
@@ -381,7 +381,7 @@ def edit_on_process(request, id):
 
 
 @login_required
-@role_check(["ADMIN", "INSPECTOR", "SUPERVISOR"])
+@role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def save_test(request, id):
     assessment = get_object_or_404(Assessment, id=id)
     test_formset = modelformset_factory(FirstOff, form=FirstOffTestsFrom, extra=0)
@@ -392,7 +392,7 @@ def save_test(request, id):
 
 
 @login_required
-@role_check(["ADMIN", "INSPECTOR", "SUPERVISOR"])
+@role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def save_conformity(request, id):
     assessment = get_object_or_404(Assessment, id=id)
     conformity_form = OnProcessConformitiesForm(request.POST)
@@ -406,7 +406,7 @@ def save_conformity(request, id):
 
 
 @login_required
-@role_check(["ADMIN", "INSPECTOR", "SUPERVISOR"])
+@role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def save_viscosity(request, id):
     assessment = Assessment.objects.get(id=id)
     if request.method == "POST":
@@ -432,7 +432,7 @@ def save_viscosity(request, id):
 
 
 @login_required
-@role_check(["ADMIN", "INSPECTOR", "SUPERVISOR"])
+@role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def update_substrates(request, id):
     assessment = Assessment.objects.get(id=id)
     if request.method == "POST":
@@ -451,7 +451,7 @@ def update_substrates(request, id):
 
 
 @login_required
-@role_check(["ADMIN", "INSPECTOR", "SUPERVISOR"])
+@role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def create_waste(request, id):
     assessment = get_object_or_404(Assessment, id=id)
     if request.method == "POST":
@@ -484,7 +484,7 @@ def test_list(request):
 
 
 @login_required
-@role_check(["ADMIN", "MANAGER", "SUPERVISOR"])
+@role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def create_test(request):
     if request.method == "GET":
         form = CreateTestForm()
@@ -496,7 +496,7 @@ def create_test(request):
 
 
 @login_required
-@role_check(["ADMIN", "MANAGER", "SUPERVISOR"])
+@role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def edit_test(request, id):
     test = get_object_or_404(Test, id=id)
     if request.method == "GET":
@@ -523,7 +523,7 @@ def conformity_list(request):
 
 
 @login_required
-@role_check(["ADMIN", "MANAGER", "SUPERVISOR"])
+@role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def create_conformity(request):
     if request.method == "GET":
         form = CreateConformityForm()
@@ -535,7 +535,7 @@ def create_conformity(request):
 
 
 @login_required
-@role_check(["ADMIN", "MANAGER", "SUPERVISOR"])
+@role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def edit_conformity(request, id):
     if request.method == "GET":
         conformity = get_object_or_404(Conformity, id=id)
@@ -583,7 +583,7 @@ def semi_waste_list(request):
 
 
 @login_required
-@role_check(["ADMIN", "INSPECTOR", "SUPERVISOR"])
+@role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def update_semi_waste(request, id):
     context = {}
     semi_waste = get_object_or_404(SemiWaste, id=id)

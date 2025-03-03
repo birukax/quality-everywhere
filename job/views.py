@@ -28,7 +28,7 @@ def list(request):
 
 
 @login_required
-@role_check(["ADMIN", "MANAGER", "SUPERVISOR"])
+@role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def get_jobs(request):
     job_get()
     return redirect("job:list")
@@ -59,7 +59,7 @@ def detail(request, id):
 
 
 @login_required
-@role_check(["ADMIN", "MANAGER", "SUPERVISOR"])
+@role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def edit(request, id):
     job = get_object_or_404(Job, id=id)
     if request.method == "POST":
@@ -124,7 +124,7 @@ def test_detail(request, id):
 
 
 @login_required
-@role_check(["ADMIN", "INSPECTOR", "SUPERVISOR"])
+@role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def create_semi_waste(request, id):
     job_test = JobTest.objects.get(id=id)
     if request.method == "POST":
@@ -142,7 +142,7 @@ def create_semi_waste(request, id):
 
 
 @login_required
-@role_check(["ADMIN", "SUPERVISOR"])
+@role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def next_machine(request, id):
     job_test = JobTest.objects.get(id=id)
     route = MachineRoute.objects.get(
@@ -164,7 +164,7 @@ def next_machine(request, id):
 
 
 @login_required
-@role_check(["ADMIN", "SUPERVISOR"])
+@role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def finish_test(request, id):
     if request.method == "POST":
         job_test = JobTest.objects.get(id=id)
@@ -187,7 +187,7 @@ def finish_test(request, id):
 
 
 @login_required
-@role_check(["ADMIN", "SUPERVISOR"])
+@role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def create_test(request, id):
     context = {}
     job = get_object_or_404(Job, id=id)

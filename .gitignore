@@ -5,3 +5,4 @@ media/
 package-lock.json
 __pycache__/
 .vscode/
+web.config

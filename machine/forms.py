@@ -20,10 +20,8 @@ class CreateMachineForm(forms.ModelForm):
     tests = forms.ModelMultipleChoiceField(
         queryset=Test.objects.all(),
         widget=s2forms.ModelSelect2MultipleWidget(
-            queryset=Test.objects.all(),
-            search_fields=[
-                "name__icontains"
-            ],
+            model=Test,
+            search_fields=["name__icontains"],
             attrs={"class": "w-full text-center h-auto"},
         ),
     )
@@ -31,10 +29,8 @@ class CreateMachineForm(forms.ModelForm):
     conformities = forms.ModelMultipleChoiceField(
         queryset=Conformity.objects.all(),
         widget=s2forms.ModelSelect2MultipleWidget(
-            queryset=Conformity.objects.all(),
-            search_fields=[
-                "name__icontains"
-            ],
+            model=Conformity,
+            search_fields=["name__icontains"],
             attrs={"class": "w-full text-center h-auto"},
         ),
     )
@@ -55,10 +51,9 @@ class EditMachineForm(forms.ModelForm):
     tests = forms.ModelMultipleChoiceField(
         queryset=Test.objects.all(),
         widget=s2forms.ModelSelect2MultipleWidget(
-            queryset=Test.objects.all(),
-            search_fields=[
-                "name__icontains"
-            ],
+            Model=Test,
+            search_fields=["name__icontains"],
+            max_results=5,
             attrs={"class": "w-full text-center h-auto"},
         ),
     )
@@ -66,10 +61,9 @@ class EditMachineForm(forms.ModelForm):
     conformities = forms.ModelMultipleChoiceField(
         queryset=Conformity.objects.all(),
         widget=s2forms.ModelSelect2MultipleWidget(
-            queryset=Conformity.objects.all(),
-            search_fields=[
-                "name__icontains"
-            ],
+            model=Conformity,
+            search_fields=["name__icontains"],
+            max_results=5,
             attrs={"class": "w-full text-center h-auto"},
         ),
     )
