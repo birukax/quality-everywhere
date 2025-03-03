@@ -37,7 +37,7 @@ from .forms import (
     FirstOffTestsFrom,
     OnProcessConformitiesForm,
     CreateWasteForm,
-    SampleForm,
+    ReelForm,
     CreateViscosityForm,
     UpdateSemiWasteForm,
     CreateLaminationForm,
@@ -158,7 +158,7 @@ def on_process_detail(request, id):
     total_waste = wastes.aggregate(total=Sum("quantity"))["total"] or 0
     create_waste_form = CreateWasteForm()
     viscosities = Viscosity.objects.filter(assessment=assessment)
-    sample_form = SampleForm()
+    reel_form = ReelForm()
     viscosities_formset = formset_factory(form=CreateViscosityForm, extra=0)
     formset = viscosities_formset(initial=colors)
     context = {
@@ -171,7 +171,7 @@ def on_process_detail(request, id):
         "viscosities": viscosities,
         "total_waste": total_waste,
         "form": conformity_form,
-        "sample_form": sample_form,
+        "reel_form": reel_form,
         "formset": formset,
     }
     return render(request, "on_process/detail.html", context)
@@ -411,15 +411,15 @@ def save_viscosity(request, id):
     assessment = Assessment.objects.get(id=id)
     if request.method == "POST":
         viscosities_formset = formset_factory(form=CreateViscosityForm, extra=0)
-        sample_form = SampleForm(request.POST)
+        reel_form = ReelForm(request.POST)
         formset = viscosities_formset(request.POST)
-        if sample_form.is_valid() and formset.is_valid():
-            sample_no = sample_form.cleaned_data["sample_no"]
+        if reel_form.is_valid() and formset.is_valid():
+            reel_no = reel_form.cleaned_data["reel_no"]
             for form in formset:
                 if form.cleaned_data:
                     color = Color.objects.get(id=form.cleaned_data["color_id"])
                     viscosity = Viscosity(
-                        sample_no=sample_no,
+                        reel_no=reel_no,
                         assessment=assessment,
                         color=color,
                         value=form.cleaned_data["value"],

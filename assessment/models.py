@@ -154,7 +154,7 @@ class SemiWaste(models.Model):
 
 
 class Viscosity(models.Model):
-    sample_no = models.CharField(
+    reel_no = models.CharField(
         max_length=30,
         null=True,
         blank=True,
@@ -280,11 +280,7 @@ class OnProcess(models.Model):
         null=True,
         blank=True,
     )
-    sample_no = models.CharField(
-        max_length=30,
-        null=True,
-        blank=True,
-    )
+    sample_no = models.PositiveIntegerField(editable=False, default=1)
     shift = models.ForeignKey(
         "misc.Shift",
         on_delete=models.CASCADE,
@@ -302,6 +298,20 @@ class OnProcess(models.Model):
 
     class Meta:
         ordering = ["-created_at", "-updated_at"]
+        unique_together = ("assessment", "sample_no")
 
     def __str__(self):
         return f"{self.assessment.machine} - {self.conformity}"
+
+    def save(self, *args, **kwargs):
+        last_sample = (
+            OnProcess.objects.filter(assessment=self.assessment)
+            .order_by("-sample_no")
+            .first()
+        )
+        if last_sample:
+            self.sample_no = last_sample.sample_no + 1
+        else:
+            self.sample_no = 1
+
+        super().save(*args, **kwargs)

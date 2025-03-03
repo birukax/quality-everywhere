@@ -49,14 +49,14 @@
                         {% endfor %}
                     </div>
                 </div>
-                <div class="text-lg font-semibold flex gap-6 text-cyan-900 items-center">
+                <div class="text-lg font-semibold flex gap-6 text-gray-700 items-center">
                     <button type="submit"
                             class="text-white inline-flex items-center bg-gray-700 hover:bg-gray-800 focus:ring-2 focus:outline-none focus:ring-gray-300 font-medium rounded-lg uppercase text-xs tracking-widest  px-4 py-1.5 text-center">
                         Add
                     </button>
                     <div class="gap-2 flex ">
-                        <p>Current Shift:</p>
-                        <p>{{ assessment.shift }}</p>
+                        <p>Shift:</p>
+                        <p class="text-red-600">{{ assessment.shift }}</p>
                     </div>
                 </div>
             </form>

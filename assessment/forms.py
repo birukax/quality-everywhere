@@ -111,17 +111,11 @@ class OnProcessConformitiesForm(forms.ModelForm):
         model = OnProcess
         fields = (
             "conformity",
-            "sample_no",
             "action",
         )
 
         widgets = {
             "conformity": forms.Select(
-                attrs={
-                    "class": "w-full items-center text-center h-auto",
-                }
-            ),
-            "sample_no": forms.TextInput(
                 attrs={
                     "class": "w-full items-center text-center h-auto",
                 }
@@ -132,6 +126,9 @@ class OnProcessConformitiesForm(forms.ModelForm):
                     "rows": "3",
                 }
             ),
+        }
+        labels = {
+            "conformity": "Non-Conformity",
         }
 
 
@@ -269,12 +266,12 @@ class UpdateSemiWasteForm(forms.ModelForm):
         return cleaned_data
 
 
-class SampleForm(forms.ModelForm):
+class ReelForm(forms.ModelForm):
     class Meta:
         model = Viscosity
-        fields = ["sample_no"]
+        fields = ["reel_no"]
 
-    sample_no = forms.CharField(
+    reel_no = forms.CharField(
         required=True,
         widget=forms.TextInput(
             attrs={
