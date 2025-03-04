@@ -92,6 +92,10 @@ def on_process_list(request, status):
 def first_off_detail(request, id):
     can_submit = True
     assessment = get_object_or_404(Assessment, id=id)
+    if assessment.status == "COMPLETED":
+        url_status = "COMPLETED"
+    else:
+        url_status = "OPEN"
     lamination = Lamination.objects.filter(assessment=assessment).first()
     approvals = AssessmentApproval.objects.filter(assessment=assessment)
     color_standard = ColorStandard.objects.get(id=assessment.job_test.color_standard.id)
@@ -122,6 +126,7 @@ def first_off_detail(request, id):
         can_submit = False
     context = {
         "assessment": assessment,
+        "url_status": url_status,
         "lamination": lamination,
         "substrates_formset": substrates_formset,
         "approvals": approvals,
@@ -142,6 +147,11 @@ def first_off_detail(request, id):
 @role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def on_process_detail(request, id):
     assessment = get_object_or_404(Assessment, id=id)
+
+    if assessment.status == "COMPLETED":
+        url_status = "COMPLETED"
+    else:
+        url_status = "OPEN"
     edit_assessment_form = EditAssessmentForm(instance=assessment)
     color_standard = ColorStandard.objects.get(id=assessment.job_test.color_standard.id)
     colors = [
@@ -164,6 +174,7 @@ def on_process_detail(request, id):
     formset = viscosities_formset(initial=colors)
     context = {
         "assessment": assessment,
+        "url_status": url_status,
         "color_standard": color_standard,
         "edit_assessment_form": edit_assessment_form,
         "create_waste_form": create_waste_form,
