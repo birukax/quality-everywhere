@@ -41,6 +41,8 @@ class Job(models.Model):
         blank=True,
         related_name="jobs",
     )
+    test_count = models.PositiveIntegerField(default=1)
+
     # certificate_no = models.CharField(max_length=100, null=True, blank=True)
 
     class Meta:
@@ -54,6 +56,7 @@ class Job(models.Model):
 
 
 class JobTest(models.Model):
+    no = models.PositiveIntegerField(default=1)
     status = models.CharField(max_length=100, choices=STATUS, default="READY")
     job = models.ForeignKey(
         "job.Job", on_delete=models.CASCADE, related_name="job_tests"
@@ -99,7 +102,7 @@ class JobTest(models.Model):
         ordering = ["-id"]
 
     def __str__(self):
-        return f"{self.job.no } - {self.id}"
+        return f"{self.job.no } - {self.no}"
 
     def get_absolute_url(self):
         return reverse("job:test_detail", args={self.id})

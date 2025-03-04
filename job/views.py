@@ -45,9 +45,11 @@ def detail(request, id):
         artwork = Artwork.objects.filter(product=job.product).latest("created_at")
         context["artwork"] = artwork
     edit_job_form = EditJobForm(instance=job)
-    if JobTest.objects.filter(~Q(status="COMPLETED"), job=job).exists():
+    if JobTest.objects.filter(
+        ~Q(status__in=["COMPLETED", "FINISHED"]), job=job
+    ).exists():
         unfinished_test = JobTest.objects.filter(
-            ~Q(status="COMPLETED"), job=job
+            ~Q(status__in=["COMPLETED", "FINISHED"]), job=job
         ).first()
         context["unfinished_test"] = unfinished_test
     if job.route and job.product:
@@ -197,6 +199,7 @@ def create_test(request, id):
             route = Route.objects.get(id=job.route.id)
             current_machine = MachineRoute.objects.get(route=route, order=1)
             job_test = JobTest(
+                no=job.test_count,
                 job=job,
                 route=job.route,
                 color_standard=job.color_standard,
@@ -210,6 +213,8 @@ def create_test(request, id):
                     "created_at"
                 )
             job_test.save()
+            job.test_count = job.test_count + 1
+            job.save()
             return redirect("job:detail", id=id)
     else:
         form = CreateJobTestForm()

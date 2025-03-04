@@ -4,6 +4,7 @@ from django.forms import modelformset_factory, formset_factory
 from django.db.models import Sum
 from misc.models import ColorStandard, Color
 from job.models import JobTest
+from machine.models import MachineRoute
 from approval.models import AssessmentApproval
 from main.tasks import get_page, role_check
 from .tasks import test_create, test_edit, conformity_create, conformity_edit
@@ -185,10 +186,14 @@ def create_first_off(request, id):
     if request.method == "POST":
         form = CreateAssessmentForm(request.POST)
         lamination_form = CreateLaminationForm(request.POST)
+        route = MachineRoute.objects.get(
+            route=job_test.route, machine=job_test.current_machine
+        )
         if form.is_valid() and job_test.current_machine.type != "LAMINATION":
             machine = job_test.current_machine
             assessment = Assessment(
                 job_test=job_test,
+                route_no=route.order,
                 shift=form.cleaned_data["shift"],
                 machine=machine,
                 type="FIRST-OFF",
@@ -209,6 +214,7 @@ def create_first_off(request, id):
             machine = job_test.current_machine
             assessment = Assessment(
                 job_test=job_test,
+                route_no=route.order,
                 shift=form.cleaned_data["shift"],
                 machine=machine,
                 type="ON-PROCESS",
@@ -251,10 +257,15 @@ def create_on_process(request, id):
     job_test = JobTest.objects.get(id=id)
     if request.method == "POST":
         form = CreateAssessmentForm(request.POST)
+
+        route = MachineRoute.objects.get(
+            route=job_test.route, machine=job_test.current_machine
+        )
         if form.is_valid():
             machine = job_test.current_machine
             assessment = Assessment(
                 job_test=job_test,
+                route_no=route.order,
                 shift=form.cleaned_data["shift"],
                 machine=machine,
                 type="ON-PROCESS",
@@ -280,6 +291,10 @@ def add_first_off(request, id):
     if request.method == "POST":
         form = AddAssessmentForm(request.POST, job_id=job_test.id)
         lamination_form = CreateLaminationForm(request.POST)
+
+        route = MachineRoute.objects.get(
+            route=job_test.route, machine=job_test.current_machine
+        )
         if form.is_valid():
             machine = form.cleaned_data["machine"]
             shift = form.cleaned_data["shift"]
@@ -288,55 +303,67 @@ def add_first_off(request, id):
                 if Assessment.objects.filter(
                     job_test=job_test, machine=machine
                 ).exists():
-                    assessment = Assessment(
-                        job_test=job_test,
-                        machine=machine,
-                        shift=shift,
-                        reason=reason,
-                        type="FIRST-OFF",
-                        extra=True,
-                    )
-                    if machine != "LAMINATION":
-                        if machine.tests:
-                            assessment.save()
-                            for test in machine.tests.all():
-                                first_off = FirstOff(
-                                    assessment=assessment,
-                                    test=test,
+                    if not (
+                        Assessment.objects.filter(job_test=job_test, machine=machine)
+                        .exclude(status="COMPLETED")
+                        .exists()
+                    ):
+                        assessment = Assessment(
+                            job_test=job_test,
+                            route_no=route.order,
+                            machine=machine,
+                            shift=shift,
+                            reason=reason,
+                            type="FIRST-OFF",
+                            extra=True,
+                        )
+                        if machine != "LAMINATION":
+                            if machine.tests:
+                                assessment.save()
+                                for test in machine.tests.all():
+                                    first_off = FirstOff(
+                                        assessment=assessment,
+                                        test=test,
+                                    )
+                                    first_off.save()
+                                return redirect(
+                                    "assessment:first_off_detail", id=assessment.id
                                 )
-                                first_off.save()
-                            return redirect(
-                                "assessment:first_off_detail", id=assessment.id
-                            )
-                        else:
-                            form.add_error("machine", "Machine has no tests.")
-                    elif lamination_form.is_valid():
-                        if machine.tests:
-                            assessment.save()
-                            for test in machine.tests.all():
-                                first_off = FirstOff(
-                                    assessment=assessment,
-                                    test=test,
+                            else:
+                                form.add_error("machine", "Machine has no tests.")
+                        elif lamination_form.is_valid():
+                            if machine.tests:
+                                assessment.save()
+                                for test in machine.tests.all():
+                                    first_off = FirstOff(
+                                        assessment=assessment,
+                                        test=test,
+                                    )
+                                    first_off.save()
+                                lamination = lamination_form.save(commit=False)
+                                lamination.assessment = assessment
+                                lamination.save()
+                                ply_structure = lamination_form.cleaned_data[
+                                    "ply_structure"
+                                ]
+                                for p in range(0, ply_structure):
+                                    substrate = Substrate(lamination=lamination)
+                                    substrate.no = p + 1
+                                    if p == 0:
+                                        substrate.raw_material = job_test.raw_material
+                                        substrate.batch_no = job_test.batch_no
+                                    substrate.save()
+                                return redirect(
+                                    "assessment:first_off_detail", id=assessment.id
                                 )
-                                first_off.save()
-                            lamination = lamination_form.save(commit=False)
-                            lamination.assessment = assessment
-                            lamination.save()
-                            ply_structure = lamination_form.cleaned_data[
-                                "ply_structure"
-                            ]
-                            for p in range(0, ply_structure):
-                                substrate = Substrate(lamination=lamination)
-                                substrate.no = p + 1
-                                if p == 0:
-                                    substrate.raw_material = job_test.raw_material
-                                    substrate.batch_no = job_test.batch_no
-                                substrate.save()
-                            return redirect(
-                                "assessment:first_off_detail", id=assessment.id
-                            )
-                        else:
-                            form.add_error("machine", "Machine has no tests.")
+                            else:
+                                form.add_error("machine", "Machine has no tests.")
+                    else:
+                        form.add_error(
+                            "machine",
+                            "The Job Test has an open First-Off for this machine.",
+                        )
+
                 else:
                     form.add_error(
                         "machine", "The machine must have a First-Off for this test."
