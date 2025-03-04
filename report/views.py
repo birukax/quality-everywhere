@@ -3,15 +3,8 @@ import reportlab
 import time
 from django.conf import settings
 from io import BytesIO
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import FileResponse
-from reportlab.pdfgen.canvas import Canvas
-from reportlab.lib.pagesizes import A4, landscape, letter
-from reportlab.lib.units import mm, inch
-from assessment.models import Test
-from reportlab.lib import colors, pdfencrypt
-from reportlab.pdfbase import pdfmetrics
-from reportlab.lib.enums import TA_JUSTIFY, TA_CENTER
 from reportlab.platypus import (
     SimpleDocTemplate,
     Paragraph,
@@ -28,6 +21,7 @@ from reportlab.platypus import (
     ListItem,
 )
 from job.models import JobTest
+from assessment.models import Assessment
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.rl_config import defaultPageSize
 from reportlab.lib.units import inch
@@ -49,9 +43,22 @@ def get_report(request, id):
 
 def generate_pdf(id):
     buffer = BytesIO()
-    # first_off = FirstOff(buffer=buffer, id=id)
-    # first_off.create()
-    on_process = OnProcess(buffer=buffer, id=id)
-    on_process.create()
+    elements = []
+    job_test = get_object_or_404(JobTest, id=id)
+    assessments = Assessment.objects.filter(job_test=job_test).order_by(
+        "route_no", "date", "time"
+    )
+    for assessment in assessments:
+        if assessment.type == "FIRST-OFF":
+            first_off = FirstOff(
+                buffer=buffer, elements=elements, assessment=assessment, id=id
+            )
+            first_off.create()
+        elif assessment.type == "ON-PROCESS":
+            on_process = OnProcess(
+                buffer=buffer, elements=elements, assessment=assessment, id=id
+            )
+            on_process.create()
+    first_off.save()
     buffer.seek(0)
     return buffer

@@ -9,6 +9,7 @@
             <th scope="col" class="px-3 py-3 sm:px-6 sm:py-3 hidden md:table-cell">Product</th>
             <th scope="col" class="px-3 py-3 sm:px-6 sm:py-3">Job-(Test Id)</th>
             <th scope="col" class="px-3 py-3 sm:px-6 sm:py-3">Status</th>
+            <th scope="col" class="px-3 py-3 sm:px-6 sm:py-3 hidden md:table-cell">Route</th>
             <th scope="col" class="px-3 py-3 sm:px-6 sm:py-3 hidden md:table-cell">Current Machine</th>
             <th scope="col" class="px-3 py-3 sm:px-6 sm:py-3">Action</th>
         </tr>
@@ -22,6 +23,7 @@
                     {{ p }}
                 </th>
                 <td class="px-3 py-3 sm:px-6 sm:py-3 capitalize">{{ p.status }}</td>
+                <td class="px-3 py-3 sm:px-6 sm:py-3 hidden md:table-cell">{{ p.route.name }}</td>
                 <td class="px-3 py-3 sm:px-6 sm:py-3 hidden md:table-cell">{{ p.current_machine.name }}</td>
                 <td class="px-3 py-3 sm:px-6 sm:py-3">
                     <a href="{{ p.get_absolute_url }}"

@@ -21,7 +21,7 @@ from machine.models import Machine
 
 
 class BaseReport:
-    def __init__(self, buffer, id):
+    def __init__(self, buffer, elements, id):
         self.doc = SimpleDocTemplate(
             buffer,
             pagesize=A4,
@@ -30,7 +30,7 @@ class BaseReport:
             topMargin=18,
             bottomMargin=18,
         )
-        self.elements = []
+        self.elements = elements
         self.styles = getSampleStyleSheet()
         self.colors = colors
         self.width, self.height = A4
@@ -148,15 +148,14 @@ class BaseReport:
 
 
 class FirstOff(BaseReport):
-    def __init__(self, buffer, id):
-        BaseReport.__init__(self, buffer, id)
-        self.first_offs = Assessment.objects.filter(
-            job_test=self.job_test, type="FIRST-OFF"
-        ).order_by("created_at")
-        self.lamination = Lamination.objects.filter(
-            assessment__job_test=self.job_test, assessment__machine__type="LAMINATION"
-        )
-        self.machine = self.first_offs.first().machine
+    def __init__(self, buffer, elements, assessment, id):
+        BaseReport.__init__(self, buffer, elements, id)
+        self.first_off = assessment
+        if assessment.machine.type == "LAMINATION":
+            self.lamination = assessment.lamination
+        else:
+            self.lamination = ""
+        self.machine = assessment.machine
 
     def create_header(self):
         header = Header(
@@ -170,7 +169,7 @@ class FirstOff(BaseReport):
     def create_job_info(self):
 
         job_text = self.ptext("Job", self.job_test, align="right")
-        date_text = self.ptext("Date", self.first_offs.first().date, align="right")
+        date_text = self.ptext("Date", self.first_off.date, align="right")
         self.elements.append(Indenter(left=410))
         self.elements.append(job_text)
         self.elements.append(Spacer(1, 5))
@@ -191,8 +190,8 @@ class FirstOff(BaseReport):
         data = [
             [
                 self.ptext("Customer", self.job_test.job.customer),
-                self.ptext("Machine", self.first_offs.first().machine.name),
-                self.ptext("Shift", self.first_offs.first().shift.name),
+                self.ptext("Machine", self.first_off.machine.name),
+                self.ptext("Shift", self.first_off.shift.name),
             ],
             [
                 self.ptext(
@@ -203,12 +202,12 @@ class FirstOff(BaseReport):
                     "Raw Material",
                     self.job_test.raw_material.name,
                 ),
-                self.ptext("Date", self.first_offs.first().date),
+                self.ptext("Date", self.first_off.date),
             ],
             [
                 self.ptext("Product No.", self.job_test.job.product.no),
                 self.ptext("Batch No.", self.job_test.batch_no),
-                self.ptext("Time", self.first_offs.first().time.strftime("%I:%M %p")),
+                self.ptext("Time", self.first_off.time.strftime("%I:%M %p")),
             ],
         ]
         tbl1 = Table(data, colWidths=colWidths, hAlign="LEFT")
@@ -278,39 +277,35 @@ class FirstOff(BaseReport):
             [
                 self.ptext(
                     "Ply Structure",
-                    self.lamination.first().ply_structure,
+                    self.lamination.ply_structure,
                 ),
-                self.ptext("Lamination Type", self.lamination.first().type),
+                self.ptext("Lamination Type", self.lamination.type),
             ],
             [
-                self.ptext("Supplier", self.lamination.first().supplier),
+                self.ptext("Supplier", self.lamination.supplier),
                 self.ptext(
                     "Mixing Ratio(Adhesive:Hardner)",
-                    self.lamination.first().mixing_ratio,
+                    self.lamination.mixing_ratio,
                 ),
             ],
             [
-                self.ptext("Adhesive", self.lamination.first().adhesive),
-                self.ptext("Hardner", self.lamination.first().hardner),
+                self.ptext("Adhesive", self.lamination.adhesive),
+                self.ptext("Hardner", self.lamination.hardner),
             ],
             [
-                self.ptext(
-                    "Adhesive Batch No.", self.lamination.first().adhesive_batch_no
-                ),
-                self.ptext(
-                    "Hardner Batch No.", self.lamination.first().hardner_batch_no
-                ),
+                self.ptext("Adhesive Batch No.", self.lamination.adhesive_batch_no),
+                self.ptext("Hardner Batch No.", self.lamination.hardner_batch_no),
             ],
         ]
         data.append(
             [
                 [
                     self.ptext(f"Raw Material (S{s.no})", s.raw_material.name)
-                    for s in self.lamination.first().substrates.all()
+                    for s in self.lamination.substrates.all()
                 ],
                 [
                     self.ptext(f"Batch No. (S{s.no})", s.batch_no)
-                    for s in self.lamination.first().substrates.all()
+                    for s in self.lamination.substrates.all()
                 ],
             ]
             # for s in Substrate.objects.all()
@@ -332,7 +327,7 @@ class FirstOff(BaseReport):
         self.elements.append(Spacer(1, 5))
         colWidths = [150, 150, 150, 150]
         rows = 8
-        test_list = self.first_offs.first().first_offs.all()
+        test_list = self.first_off.first_offs.all()
         count = len(test_list)
         test_ranges = self.split_list_ranges(
             rows=(count // 2) + 1, list_count=len(test_list)
@@ -361,7 +356,7 @@ class FirstOff(BaseReport):
         )
         self.elements.append(Spacer(1, 5))
 
-        image_path = os.path.join(settings.STATICFILES_DIRS[0], "controlled_30.png")
+        image_path = os.path.join(settings.STATIC_ROOT, "controlled_30.png")
         img = utils.ImageReader(image_path)
         img_width, img_height = img.getSize()
         aspect = img_height / float(img_width)
@@ -371,17 +366,14 @@ class FirstOff(BaseReport):
         data = [
             [
                 self.create_text("INSPECTION COMPLETED BY:", size=11, header=False),
-                self.ptext(
-                    "QA INSPECTOR", self.first_offs.first().inspected_by.username
-                ),
+                self.ptext("QA INSPECTOR", self.first_off.inspected_by.username),
                 controlled_image,
             ],
             [
                 "",
                 self.ptext(
                     "SHIFT SUPERVISOR",
-                    self.first_offs.first()
-                    .approvals.filter(approver="SUPERVISOR")
+                    self.first_off.approvals.filter(approver="SUPERVISOR")
                     .first()
                     .by.username,
                 ),
@@ -411,25 +403,20 @@ class FirstOff(BaseReport):
         self.create_header()
         self.create_job_info()
         self.create_color_info()
-        if self.lamination.exists():
+        if self.machine.type == "LAMINATION":
             self.create_lamination_info()
         self.first_off_info()
         self.inspection_info()
         self.elements.append(PageBreak())
-        self.save()
+        # self.save()
 
 
 class OnProcess(BaseReport):
-    def __init__(self, buffer, id):
-        BaseReport.__init__(self, buffer, id)
-        self.on_processes = Assessment.objects.filter(
-            job_test=self.job_test, type="ON-PROCESS"
-        ).order_by("created_at")
-
-        self.viscosities = Viscosity.objects.filter(
-            assessment=self.on_processes.first()
-        )
-        self.machine = self.on_processes.first().machine
+    def __init__(self, buffer, elements, assessment, id):
+        BaseReport.__init__(self, buffer, elements, id)
+        self.on_process = assessment
+        self.viscosities = assessment.viscosities
+        self.machine = assessment.machine
 
     def create_header(self):
         header = Header(
@@ -446,11 +433,11 @@ class OnProcess(BaseReport):
         data = [
             [
                 self.ptext("Job", self.job_test.job.no),
-                self.ptext("Date", self.on_processes.first().date),
+                self.ptext("Date", self.on_process.date),
             ],
             [
                 self.ptext("Product Name", self.job_test.job.product.name),
-                self.ptext("Machine", self.on_processes.first().machine.name),
+                self.ptext("Machine", self.on_process.machine.name),
             ],
             [
                 self.ptext("Product No.", self.job_test.job.product.no),
@@ -491,7 +478,7 @@ class OnProcess(BaseReport):
                     self.create_text(text=c.created_by.username, size=9),
                     self.create_text(text=c.action, size=9),
                 ]
-                for c in self.on_processes.first().on_processes.all()
+                for c in self.on_process.on_processes.all()
             ),
         ]
         tblStyle = TableStyle(
@@ -516,7 +503,7 @@ class OnProcess(BaseReport):
 
         data = [
             [
-                self.create_text(text="Sample No.", size=8, bold=True),
+                self.create_text(text="Reel No.", size=8, bold=True),
                 *(
                     self.create_text(
                         text=f"{c.name} ({c.viscosity})", size=8, bold=True
@@ -525,10 +512,8 @@ class OnProcess(BaseReport):
                 ),
             ]
         ]
-        sample_numbers = [
-            value for value in self.viscosities.values_list("sample_no")[0]
-        ]
-        for s in sample_numbers:
+        reel_numbers = [value for value in self.viscosities.values_list("reel_no")[0]]
+        for s in reel_numbers:
             data.append(
                 [
                     s,
@@ -536,7 +521,7 @@ class OnProcess(BaseReport):
                         [
                             f"{v.value} "
                             for v in Viscosity.objects.filter(
-                                sample_no=s, assessment=self.on_processes.first()
+                                reel_no=s, assessment=self.on_process
                             )
                         ]
                     ),
@@ -558,9 +543,19 @@ class OnProcess(BaseReport):
         # self.elements.append(Indenter(left=-20))
         self.elements.append(Spacer(1, 10))
 
+    def inspection_info(self):
+        image_path = os.path.join(settings.STATIC_ROOT, "controlled_30.png")
+        img = utils.ImageReader(image_path)
+        img_width, img_height = img.getSize()
+        aspect = img_height / float(img_width)
+        controlled_image = Image(image_path, width=150, height=(150 * aspect))
+        self.elements.append(controlled_image)
+
     def create(self):
         self.create_header()
         self.create_job_info()
         self.create_inspection_section()
-        self.create_viscosity_section()
-        self.save()
+        if self.machine.viscosity_test:
+            self.create_viscosity_section()
+        self.inspection_info()
+        self.elements.append(PageBreak())

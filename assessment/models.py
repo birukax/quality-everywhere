@@ -187,10 +187,10 @@ class Viscosity(models.Model):
 
 class Lamination(models.Model):
     ply_structure = models.PositiveIntegerField(default=2)
-    assessment = models.ForeignKey(
+    assessment = models.OneToOneField(
         "assessment.Assessment",
         on_delete=models.CASCADE,
-        related_name="laminations",
+        related_name="lamination",
     )
     type = models.CharField(
         max_length=30,

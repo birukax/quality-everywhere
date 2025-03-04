@@ -6,7 +6,7 @@ MACHINE_TYPE = (
     ("POST-PRESS", "POST-PRESS"),
     ("PRESS", "PRESS"),
     ("LAMINATION", "LAMINATION"),
-    ("BINDER", "BINDER"),
+    # ("BINDER", "BINDER"),
     ("PACKAGING", "PACKAGING"),
 )
 

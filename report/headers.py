@@ -44,7 +44,7 @@ class Header(Flowable):
         # machine = "BOBST"
         h_text = f"{self.assessment_type} INSPECTION FOR {self.machine.name.upper()}"
         page_no = 1
-        logo_path = os.path.join(settings.STATICFILES_DIRS[0], "logo_sm.png")
+        logo_path = os.path.join(settings.STATIC_ROOT, "logo_sm.png")
         img = utils.ImageReader(logo_path)
         img_width, img_height = img.getSize()
         aspect = img_height / float(img_width)
