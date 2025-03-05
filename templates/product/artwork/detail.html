@@ -1,10 +1,10 @@
 <!-- Modal toggle -->
-<button data-modal-target="artwork-detail-{{ a.id }}"
-        data-modal-toggle="artwork-detail-{{ a.id }}"
+<button data-modal-target="artwork-detail-{{ p.id }}"
+        data-modal-toggle="artwork-detail-{{ p.id }}"
         class="block text-white bg-gray-800 hover:bg-gray-900 focus:ring-2 focus:outline-none focus:ring-gray-300 font-normal rounded-lg uppercase text-xs tracking-widest  px-4 py-1.5 text-center "
-        type="button">View</button>
+        type="button">Detail</button>
 <!-- Main modal -->
-<div id="artwork-detail-{{ a.id }}"
+<div id="artwork-detail-{{ p.id }}"
      tabindex="-1"
      aria-hidden="true"
      class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
@@ -16,7 +16,7 @@
                 <h3 class="text-lg font-semibold text-gray-900 ">Artwork Detail</h3>
                 <button type="button"
                         class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                        data-modal-toggle="artwork-detail-{{ a.id }}">
+                        data-modal-toggle="artwork-detail-{{ p.id }}">
                     <svg class="w-3 h-3"
                          aria-hidden="true"
                          xmlns="http://www.w3.org/2000/svg"
@@ -34,7 +34,7 @@
                         <div class="flex items-center justify-between">
                             <div class="inline-flex  items-center text-base font-semibold text-gray-900 ">Product No.</div>
                             <div class="flex-row text-right">
-                                <p class="text-sm font-medium text-gray-900 truncate ">{{ a.product.no }}</p>
+                                <p class="text-sm font-medium text-gray-900 truncate ">{{ p.product.no }}</p>
                             </div>
                         </div>
                     </li>
@@ -42,7 +42,7 @@
                         <div class="flex items-center justify-between">
                             <div class="inline-flex  items-center text-base font-semibold text-gray-900 ">Product Name</div>
                             <div class="flex-row text-right">
-                                <p class="text-sm font-medium text-gray-900 truncate ">{{ a.product.name }}</p>
+                                <p class="text-sm font-medium text-gray-900 truncate ">{{ p.product.name }}</p>
                             </div>
                         </div>
                     </li>
@@ -50,21 +50,21 @@
                         <div class="flex items-center justify-between">
                             <div class="inline-flex  items-center text-base font-semibold text-gray-900 ">Code</div>
                             <div class="flex-row text-right">
-                                <p class="text-sm font-medium text-gray-900 truncate ">{{ a.code }}</p>
+                                <p class="text-sm font-medium text-gray-900 truncate ">{{ p.code }}</p>
                             </div>
                         </div>
                     </li>
                 </ul>
                 <div class="mx-auto  items-center w-fit mb-2">
-                    <img src="{{ a.file.url }}"
+                    <img src="{{ p.file.url }}"
                          alt="Job Artwork"
                          height=""
                          width=""
                          class=" h-auto w-full" />
                 </div>
-                {% if not a.approved %}
+                {% if not p.approved %}
                     <div class="text-right ">
-                        <a href="{% url 'product:edit_artwork' a.id %}"
+                        <a href="{% url 'product:edit_artwork' p.id %}"
                            class="text-white inline-flex items-center bg-gray-700 hover:bg-gray-800 focus:ring-2 focus:outline-none focus:ring-gray-300 font-medium rounded-lg uppercase text-xs tracking-widest  px-4 py-1.5 text-center">
                             Edit
                         </a>

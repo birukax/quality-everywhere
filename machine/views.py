@@ -17,7 +17,7 @@ from .forms import (
 @login_required
 @role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def list(request):
-    machines = Machine.objects.all()
+    machines = Machine.objects.prefetch_related("tests", "conformities").all()
     machine_filter = MachineFilter(
         request.GET,
         queryset=machines,
@@ -70,7 +70,7 @@ def edit(request, id):
 @login_required
 @role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def route_list(request):
-    routes = Route.objects.all()
+    routes = Route.objects.prefetch_related("route_machines").all()
     route_filter = RouteFilter(
         request.GET,
         queryset=routes,

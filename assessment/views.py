@@ -51,8 +51,10 @@ from .forms import (
 @role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def first_off_list(request, status):
     if status == "OPEN":
-        assessments = Assessment.objects.filter(type="FIRST-OFF").exclude(
-            status="COMPLETED"
+        assessments = (
+            Assessment.objects.select_related("machine", "shift")
+            .filter(type="FIRST-OFF")
+            .exclude(status="COMPLETED")
         )
     else:
         assessments = Assessment.objects.filter(type="FIRST-OFF", status=status)
@@ -71,8 +73,10 @@ def first_off_list(request, status):
 @role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def on_process_list(request, status):
     if status == "OPEN":
-        assessments = Assessment.objects.filter(type="ON-PROCESS").exclude(
-            status="COMPLETED"
+        assessments = (
+            Assessment.objects.select_related("machine", "shift")
+            .filter(type="ON-PROCESS")
+            .exclude(status="COMPLETED")
         )
     else:
         assessments = Assessment.objects.filter(type="ON-PROCESS", status=status)
@@ -588,7 +592,7 @@ def edit_conformity(request, id):
 @login_required
 @role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def waste_list(request):
-    wastes = Waste.objects.all()
+    wastes = Waste.objects.select_related("assessment", "machine", "shift").all()
     waste_filter = WasteFilter(
         request.GET,
         queryset=wastes,

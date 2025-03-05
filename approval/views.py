@@ -34,7 +34,9 @@ def create_assessment_approval(request, id):
 @login_required
 @role_check(["ADMIN", "SHIFT-SUPERVISOR"])
 def assessment_list(request, type):
-    apps = AssessmentApproval.objects.filter(status="PENDING", assessment__type=type)
+    apps = AssessmentApproval.objects.select_related("assessment").filter(
+        status="PENDING", assessment__type=type
+    )
     assessment_approval_filter = AssessmentApprovalFilter(request.GET, queryset=apps)
     apps = assessment_approval_filter.qs
     page = get_page(request, model=apps)

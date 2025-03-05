@@ -1,7 +1,9 @@
+import os
 from django.urls import reverse
 from django.db import models
 from main.validators import validate_artwork, validate_code
-import os
+from imagekit.models import ImageSpecField
+from imagekit.processors import ResizeToFit, Thumbnail
 
 
 def artwork_upload_path(instance, filename):
@@ -40,6 +42,12 @@ class Artwork(models.Model):
         upload_to=artwork_upload_path,
         validators=[validate_artwork],
         help_text="Upload artwork file",
+    )
+    file_thumbnail = ImageSpecField(
+        source="file",
+        processors=[Thumbnail(128, crop=False)],
+        format="PNG",
+        options={"quality": 100},
     )
     created_by = models.ForeignKey(
         "auth.User",

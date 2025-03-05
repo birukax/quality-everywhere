@@ -10,7 +10,7 @@ from .filters import ArtworkFilter, ProductFilter
 @login_required
 @role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def list(request):
-    products = Product.objects.all()
+    products = Product.objects.prefetch_related("jobs", "artworks").all()
     product_filter = ProductFilter(request.GET, queryset=products)
     products = product_filter.qs
     page = get_page(request, model=products)

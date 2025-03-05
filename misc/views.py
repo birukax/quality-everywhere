@@ -173,7 +173,7 @@ def edit_color(request, id):
 @login_required
 @role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def color_standard_list(request):
-    color_standards = ColorStandard.objects.all()
+    color_standards = ColorStandard.objects.prefetch_related("colors").all()
     color_standard_filter = ColorStandardFilter(request.GET, queryset=color_standards)
     color_standards = color_standard_filter.qs
     page = get_page(request, model=color_standards)

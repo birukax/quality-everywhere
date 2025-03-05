@@ -15,7 +15,9 @@ from assessment.forms import CreateSemiWasteForm
 @login_required
 @role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def list(request):
-    jobs = Job.objects.all()
+    jobs = Job.objects.select_related(
+        "product", "customer", "route", "color_standard"
+    ).all()
     job_filter = JobFilter(request.GET, queryset=jobs)
     jobs = job_filter.qs
     page = get_page(request, model=jobs)
@@ -79,7 +81,7 @@ def edit(request, id):
 @login_required
 @role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def test_list(request):
-    job_tests = JobTest.objects.all()
+    job_tests = JobTest.objects.select_related("job", "route", "current_machine").all()
     job_test_filter = JobTestFilter(request.GET, queryset=job_tests)
     job_tests = job_test_filter.qs
     page = get_page(request, model=job_tests)
