@@ -16,14 +16,15 @@ from .filters import IssueFilter, DepartmentFilter, LocationFilter, IssueTypeFil
 @login_required
 def list(request):
     user = request.user
-    if user.profile.role in ["ADMIN", "MANAGER", "SAFETY"]:
-        issues = Issue.objects.all()
-    elif user.profile.department:
-        issues = Issue.objects.filter(
-            Q(Q(department=user.profile.department) or Q(created_by=user))
-        )
-    else:
-        issues = Issue.objects.filter(created_by=user)
+    issues = Issue.objects.all()
+    # if user.profile.role in ["ADMIN", "MANAGER", "SAFETY"]:
+    #     issues = Issue.objects.all()
+    # elif user.profile.department:
+    #     issues = Issue.objects.filter(
+    #         Q(Q(department=user.profile.department) or Q(created_by=user))
+    #     )
+    # else:
+    #     issues = Issue.objects.filter(created_by=user)
     issue_filter = IssueFilter(
         request.GET,
         queryset=issues,

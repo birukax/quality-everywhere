@@ -22,14 +22,21 @@
             <div class="flex place-content-end">
                 <div class="flex flex-wrap gap-4  ">
                     {% if issue.status == 'CREATED' %}
-                        <div>{% include 'issue/action/form.html' with id=issue.id action='ACCEPT' %}</div>
-                        <div>{% include 'issue/action/form.html' with id=issue.id action='REJECT' %}</div>
-                        <div>{% include 'issue/action/form.html' with id=issue.id action='CANCEL' %}</div>
+                        {% if request.user == issue.created_by %}
+                            <div>{% include 'issue/action/form.html' with id=issue.id action='CANCEL' %}</div>
+                        {% else %}
+                            <div>{% include 'issue/action/form.html' with id=issue.id action='ACCEPT' %}</div>
+                            <div>{% include 'issue/action/form.html' with id=issue.id action='REJECT' %}</div>
+                        {% endif %}
                     {% elif issue.status == 'ACCEPTED' or issue.status == 'INCOMPLETE' %}
-                        <div>{% include 'issue/action/form.html' with id=issue.id action='CLOSE' %}</div>
+                        {% if request.user != issue.created_by %}
+                            <div>{% include 'issue/action/form.html' with id=issue.id action='CLOSE' %}</div>
+                        {% endif %}
                     {% elif issue.status == 'PENDING' %}
-                        <div>{% include 'issue/action/form.html' with id=issue.id action='APPROVE' %}</div>
-                        <div>{% include 'issue/action/form.html' with id=issue.id action='REJECT' %}</div>
+                        {% if request.user == issue.created_by %}
+                            <div>{% include 'issue/action/form.html' with id=issue.id action='APPROVE' %}</div>
+                            <div>{% include 'issue/action/form.html' with id=issue.id action='REJECT' %}</div>
+                        {% endif %}
                     {% endif %}
                     <div>{% include 'issue/remark/list.html' %}</div>
                 </div>
