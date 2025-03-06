@@ -93,7 +93,7 @@ def update_status(request, id, action):
             action = "REJECTED"
         elif action == "COMPLETE":
             action = "COMPLETED"
-        elif action == "CANCEL":
+        elif action == "CANCEL" and request.user == issue.created_by:
             action = "CANCELLED"
         # elif action == "START":
         #     action = "IN-PROGRESS"

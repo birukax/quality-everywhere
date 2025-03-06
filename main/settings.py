@@ -61,8 +61,8 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -141,6 +141,7 @@ USE_TZ = False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
+WHITENOISE_MANIFEST_STRICT = False
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 STATIC_URL = "/static/"
@@ -158,7 +159,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 COMPRESS_ROOT = STATIC_ROOT
 COMPRESS_ENABLED = True
-# COMPRESS_OFFLINE = True
+COMPRESS_OFFLINE = True
 # STATICFILES_DIRS = [
 #     BASE_DIR / 'static',
 # ]

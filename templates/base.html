@@ -12,6 +12,8 @@
         <title>Quality Everywhere</title>
         {% compress css %}
             <link rel="stylesheet" href="{% static 'src/output.css' %}" />
+        {% endcompress %}
+        {% compress js %}
             <link rel="stylesheet"
                   href="{% static 'django_select2/django_select2.css' %}" />
             <link rel="stylesheet"
