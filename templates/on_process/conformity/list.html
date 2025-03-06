@@ -32,11 +32,11 @@
                 <table class="w-full table table-auto ">
                     <tr class="text-left uppercase text-sm">
                         <th class="py-1 px-2 ">Assessment</th>
-                        <th class="py-1 px-2 font-semibold">Action Taken</th>
+                        <!-- <th class="py-1 px-2 font-semibold">Action Taken</th> -->
                     </tr>
                     {% for nc in conformities %}
                         <tr class="text-left align-top border-y">
-                            <td class="px-2 py-1 ">
+                            <td class="sm:px-2 px-1 py-1 ">
                                 <div class="sm:flex gap-3">
                                     <p class="font-semibold">NC:</p>
                                     <p class="text-gray-700 whitespace-normal lg:whitespace-nowrap">
@@ -51,20 +51,27 @@
                                     <p class="font-semibold whitespace-nowrap">Inspected By:</p>
                                     <p class="text-gray-700">{{ nc.created_by.username }}</p>
                                 </div>
-                                <div class="sm:flex gap-3">
-                                    <p class="font-semibold whitespace-nowrap">At:</p>
-                                    <p class="text-gray-700 whitespace-nowrap">{{ nc.created_at }}</p>
-                                </div>
-                                <div class="sm:flex gap-3">
-                                    <p class="font-semibold whitespace-nowrap">Sample No.:</p>
-                                    <p class="text-gray-700">{{ nc.sample_no }}</p>
-                                </div>
+                                
                                 <div class="sm:flex gap-3">
                                     <p class="font-semibold whitespace-nowrap">Shift:</p>
                                     <p class="text-gray-700">{{ nc.shift.name }}</p>
                                 </div>
                             </td>
-                            <td class="px-2 py-1">{{ nc.action }}</td>
+                            <td class="sm:px-2 px-1 py-1">
+                                <div class="sm:flex gap-3">
+                                    <p class="font-semibold whitespace-nowrap">At:</p>
+                                    <p class="text-gray-700 ">{{ nc.created_at }}</p>
+                                </div>
+                                <div class="sm:flex gap-3 ">
+                                    <p class="font-semibold whitespace-nowrap">Sample No.:</p>
+                                    <p class="text-gray-700">{{ nc.sample_no }}</p>
+                                </div>
+                                <div class="gap-2">
+                                    <p class="font-semibold whitespace-nowrap">Action:</p>
+                                    <p class="text-gray-700 ">{{ nc.action }}</p>
+                                    
+                                </div>
+                            </td>
                         </tr>
                     {% endfor %}
                 </table>

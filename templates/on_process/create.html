@@ -6,7 +6,7 @@
               method="post"
               action="{% url 'assessment:create_on_process' job_test.id %}">
             {% csrf_token %}
-            <p class="py-2  text-base  text-gray-700 tracking-wider uppercase">{{ job_test }}</p>
+            <p class="py-2  text-base  text-gray-700 tracking-wider uppercase">{{ job_test }} - {{ job_test.current_machine.name }}</p>
             <div class="flex-col gap-2 mb-4 mx-auto">
                 <p class="text-red-700 text-sm">
                     {% if form.non_field_errors %}{{ form.non_field_errors|join:", " }}{% endif %}

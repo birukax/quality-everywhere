@@ -46,7 +46,7 @@ def generate_pdf(id):
     elements = []
     job_test = get_object_or_404(JobTest, id=id)
     assessments = Assessment.objects.filter(job_test=job_test).order_by(
-        "route_no", "date", "time"
+        "route_no",'type', "date", "time"
     )
     for assessment in assessments:
         if assessment.type == "FIRST-OFF":

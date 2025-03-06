@@ -8,6 +8,7 @@
         <tr>
             <th scope="col" class="px-3 py-3 sm:px-6 sm:py-3">Job -(Test ID)</th>
             <th scope="col" class="px-3 py-3 sm:px-6 sm:py-3">Machine</th>
+            <th scope="col" class="px-3 py-3 sm:px-6 sm:py-3 hidden md:table-cell">Assessments</th>
             <th scope="col" class="px-3 py-3 sm:px-6 sm:py-3 hidden md:table-cell">Status</th>
             <th scope="col" class="px-3 py-3 sm:px-6 sm:py-3 hidden md:table-cell">Shift</th>
             <th scope="col" class="px-3 py-3 sm:px-6 sm:py-3">Action</th>
@@ -19,6 +20,7 @@
                 <th scope="row"
                     class="px-3 py-3 sm:px-6 sm:py-4 font-medium text-gray-900 ">{{ a.job_test }}</th>
                 <td class="px-3 py-3 sm:px-6 sm:py-4">{{ a.machine }}</td>
+                <td class="px-3 py-3 sm:px-6 sm:py-4 hidden md:table-cell">{{ a.on_processes.count }}</td>
                 <td class="px-3 py-3 sm:px-6 sm:py-4 hidden md:table-cell">{{ a.status }}</td>
                 <td class="px-3 py-3 sm:px-6 sm:py-4 hidden md:table-cell">{{ a.shift.name }}</td>
                 <td class="px-3 py-3 sm:px-6 sm:py-4">

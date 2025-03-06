@@ -263,7 +263,7 @@ class FirstOff(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     class meta:
-        ordering = ["-updated_at"]
+        ordering = ["updated_at"]
 
     def __str__(self):
         return f"{self.assessment.machine} - {self.test}"

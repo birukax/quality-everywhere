@@ -1,10 +1,10 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from django.db.models import Q
+from django.db.models import Q, Count
 from .models import Job, JobTest
 from product.models import Artwork
 from machine.models import Route, MachineRoute
-from assessment.models import SemiWaste, Assessment
+from assessment.models import SemiWaste, Assessment, OnProcess
 from .tasks import job_get
 from main.tasks import get_page, role_check
 from .forms import EditJobForm, CreateJobTestForm
@@ -104,6 +104,10 @@ def test_detail(request, id):
     job_test = get_object_or_404(JobTest, id=id)
     create_semi_waste_form = CreateSemiWasteForm()
     semi_wastes = SemiWaste.objects.filter(job_test=job_test)
+    empty_on_processes = Assessment.objects.annotate(on_processes_count=Count('on_processes')).filter(
+            job_test=job_test, type='ON-PROCESS', on_processes_count=0
+        )
+    open_first_offs = Assessment.objects.filter(job_test=job_test, type='FIRST-OFF').exclude(status='COMPLETED')
     if job_test.status == "READY":
         first_off_ready = True
     if job_test.status == "FIRST-OFF COMPLETED":
@@ -115,6 +119,8 @@ def test_detail(request, id):
         job_test.status == "COMPLETED"
         and not open_semi_wastes.exists()
         and job_test.current_machine == None
+    and empty_on_processes.exists() == False
+    and open_first_offs.exists() == False
     ):
         ready_to_finish = True
     context["job_test"] = job_test
@@ -173,11 +179,14 @@ def finish_test(request, id):
     if request.method == "POST":
         job_test = JobTest.objects.get(id=id)
         open_semi_wastes = SemiWaste.objects.filter(job_test=job_test, status="OPEN")
+        empty_on_processes = Assessment.objects.filter(
+            job_test=job_test, type='ON-PROCESS', on_processes__isnull=True
+        )
         if (
             job_test.status == "COMPLETED"
             and not open_semi_wastes.exists()
             and job_test.current_machine == None
-        ):
+        ) and not empty_on_processes.exists():
             on_processes = Assessment.objects.filter(
                 job_test=job_test, type="ON-PROCESS"
             )

@@ -232,7 +232,7 @@ def create_first_off(request, id):
                 route_no=route.order,
                 shift=form.cleaned_data["shift"],
                 machine=machine,
-                type="ON-PROCESS",
+                type="FIRST-OFF",
             )
             if machine.tests:
                 assessment.save()
@@ -307,19 +307,19 @@ def add_first_off(request, id):
         form = AddAssessmentForm(request.POST, job_id=job_test.id)
         lamination_form = CreateLaminationForm(request.POST)
 
-        route = MachineRoute.objects.get(
-            route=job_test.route, machine=job_test.current_machine
-        )
         if form.is_valid():
             machine = form.cleaned_data["machine"]
             shift = form.cleaned_data["shift"]
             reason = form.cleaned_data["reason"]
+            route = MachineRoute.objects.get(
+                route=job_test.route, machine=machine
+            )
             if machine != "LAMINATION":
                 if Assessment.objects.filter(
-                    job_test=job_test, machine=machine
+                    job_test=job_test, machine=machine, type='FIRST-OFF'
                 ).exists():
                     if not (
-                        Assessment.objects.filter(job_test=job_test, machine=machine)
+                        Assessment.objects.filter(job_test=job_test, machine=machine,type='FIRST-OFF')
                         .exclude(status="COMPLETED")
                         .exists()
                     ):

@@ -96,15 +96,15 @@
                     {% endfor %}
                 </li>
             </ul>
-            {% if assessment.job.artwork %}
-                <div class="mt-4 w-full h-96">
-                    <img src="{{ assessment.job.artwork.url }}"
-                         alt="Job Artwork"
-                         height=""
-                         width=""
-                         class=" object-cover rounded-lg">
-                </div>
-            {% endif %}
+            {% if assessment.job_test.artwork %}
+            <div class="mt-4 w-fit  items-center mx-auto">
+                <img src="{{ assessment.job_test.artwork.file.url }}"
+                     alt="Artwork"
+                     height=""
+                     width=""
+                     class=" h-auto w-full  rounded-lg" />
+            </div>
+        {% endif %}
         </div>
     </div>
 {% endblock content %}

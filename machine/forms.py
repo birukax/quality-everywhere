@@ -21,7 +21,8 @@ class CreateMachineForm(forms.ModelForm):
         queryset=Test.objects.all(),
         widget=s2forms.ModelSelect2MultipleWidget(
             model=Test,
-            search_fields=["id_exact","name__exact"],
+            max_results=5,
+            search_fields=["name__icontains"],
             attrs={"class": "w-full text-center h-auto"},
         ),
     )
@@ -30,6 +31,7 @@ class CreateMachineForm(forms.ModelForm):
         queryset=Conformity.objects.all(),
         widget=s2forms.ModelSelect2MultipleWidget(
             model=Conformity,
+            max_results=5,
             search_fields=["name__icontains"],
             attrs={"class": "w-full text-center h-auto"},
         ),

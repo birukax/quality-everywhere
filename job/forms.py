@@ -8,15 +8,15 @@ class EditJobForm(forms.ModelForm):
         model = Job
         fields = (
             "customer",
-            "color_standard",
             "route",
+            "color_standard",
         )
         widgets = {
             "customer": forms.Select(attrs={"class": "w-full text-center h-auto"}),
+            "route": forms.Select(attrs={"class": "w-full text-center h-auto"}),
             "color_standard": forms.Select(
                 attrs={"class": "w-full text-center h-auto"}
             ),
-            "route": forms.Select(attrs={"class": "w-full text-center h-auto"}),
         }
 
 
