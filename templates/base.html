@@ -10,6 +10,8 @@
               content="{% block meta_description %}{% endblock %}">
         <meta name="keywords" content="{% block meta_keywords %}{% endblock %}">
         <title>Quality Everywhere</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
         {% compress css %}
             <link rel="stylesheet" href="{% static 'src/output.css' %}" />
         {% endcompress %}
@@ -69,7 +71,6 @@
                 {% block content %}{% endblock %}
             </div>
         </div>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="{% static 'flowbite/dist/flowbite.min.js' %}"></script>
         {{ form.media.js }}
         {{ filter.form.media.js }}

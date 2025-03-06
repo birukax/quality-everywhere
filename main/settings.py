@@ -44,6 +44,10 @@ INSTALLED_APPS = [
     "django.contrib.postgres",
     "django.contrib.humanize",
     "session_security",
+    "imagekit",
+    "compressor",
+    "django_filters",
+    "django_select2",
     "misc",
     "machine",
     "job",
@@ -54,10 +58,6 @@ INSTALLED_APPS = [
     "issue",
     "report",
     # "rest_framework",
-    "imagekit",
-    "django_select2",
-    "django_filters",
-    "compressor",
 ]
 
 MIDDLEWARE = [
@@ -159,7 +159,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 COMPRESS_ROOT = STATIC_ROOT
 COMPRESS_ENABLED = True
-COMPRESS_OFFLINE = True
+# COMPRESS_OFFLINE = True
 # STATICFILES_DIRS = [
 #     BASE_DIR / 'static',
 # ]
@@ -178,3 +178,19 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 # SECURE_SSL_REDIRECT = True
+
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+#         'LOCATION': 'my_cache_table',  # Name of the cache table
+#     }
+# }
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': config('CACHE_LOCATION'),  # Path to the cache directory
+    }
+}
+
+SELECT2_CACHE_BACKEND = 'default'

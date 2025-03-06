@@ -21,7 +21,7 @@ class CreateMachineForm(forms.ModelForm):
         queryset=Test.objects.all(),
         widget=s2forms.ModelSelect2MultipleWidget(
             model=Test,
-            search_fields=["name__icontains"],
+            search_fields=["id_exact","name__exact"],
             attrs={"class": "w-full text-center h-auto"},
         ),
     )

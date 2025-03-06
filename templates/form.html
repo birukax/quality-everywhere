@@ -9,12 +9,16 @@
               content="{% block meta_description %}{% endblock %}">
         <meta name="keywords" content="{% block meta_keywords %}{% endblock %}">
         <title>Quality Everywhere</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
         {% compress css %}
-            <link rel="stylesheet" href="{% static 'src/output.css' %}">
+            <link rel="stylesheet" href="{% static 'src/output.css' %}" />
             <link rel="stylesheet"
-                  href="{% static 'django_select2/django_select2.css' %}" />
+                href="{% static 'django_select2/django_select2.css' %}" />
+        {% endcompress %}
+        {% compress js %}
             <link rel="stylesheet"
-                  href="{% static 'django_select2/django_select2.js' %}" />
+                href="{% static 'django_select2/django_select2.js' %}" />
         {% endcompress %}
         <style>input, select {width: 100%; height: 2rem;}</style>
     </head>
@@ -31,7 +35,6 @@
             </div>
             {% block form %}{% endblock %}
         </div>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="{% static 'flowbite/dist/flowbite.min.js' %}"></script>
         {{ form.media.js }}
         {{ filter.form.media.js }}
