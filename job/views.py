@@ -47,12 +47,16 @@ def detail(request, id):
         artwork = Artwork.objects.filter(product=job.product).latest("created_at")
         context["artwork"] = artwork
     edit_job_form = EditJobForm(instance=job)
-    if JobTest.objects.filter(
-        ~Q(status__in=["COMPLETED", "FINISHED"]), job=job
-    ).exists():
-        unfinished_test = JobTest.objects.filter(
-            ~Q(status__in=["COMPLETED", "FINISHED"]), job=job
-        ).first()
+    if (
+        JobTest.objects.filter(job=job)
+        .exclude(status__in=["COMPLETED", "FINISHED"])
+        .exists()
+    ):
+        unfinished_test = (
+            JobTest.objects.filter(job=job)
+            .exclude(status__in=["COMPLETED", "FINISHED"])
+            .first()
+        )
         context["unfinished_test"] = unfinished_test
     if job.route and job.product:
         ready = True
@@ -66,15 +70,16 @@ def detail(request, id):
 @role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def edit(request, id):
     job = get_object_or_404(Job, id=id)
-    if request.method == "POST":
-        form = EditJobForm(request.POST, instance=job)
-        if form.is_valid():
-            job.customer = form.cleaned_data["customer"]
-            job.route = form.cleaned_data["route"]
-            job.color_standard = form.cleaned_data["color_standard"]
-            job.save()
-        else:
-            print(form.errors)
+    if not JobTest.objects.filter(job=job).exclude(status="FINISHED").exists():
+        if request.method == "POST":
+            form = EditJobForm(request.POST, instance=job)
+            if form.is_valid():
+                job.customer = form.cleaned_data["customer"]
+                job.route = form.cleaned_data["route"]
+                job.color_standard = form.cleaned_data["color_standard"]
+                job.save()
+            else:
+                print(form.errors)
     return redirect("job:detail", id=id)
 
 
@@ -104,10 +109,12 @@ def test_detail(request, id):
     job_test = get_object_or_404(JobTest, id=id)
     create_semi_waste_form = CreateSemiWasteForm()
     semi_wastes = SemiWaste.objects.filter(job_test=job_test)
-    empty_on_processes = Assessment.objects.annotate(on_processes_count=Count('on_processes')).filter(
-            job_test=job_test, type='ON-PROCESS', on_processes_count=0
-        )
-    open_first_offs = Assessment.objects.filter(job_test=job_test, type='FIRST-OFF').exclude(status='COMPLETED')
+    empty_on_processes = Assessment.objects.annotate(
+        on_processes_count=Count("on_processes")
+    ).filter(job_test=job_test, type="ON-PROCESS", on_processes_count=0)
+    open_first_offs = Assessment.objects.filter(
+        job_test=job_test, type="FIRST-OFF"
+    ).exclude(status="COMPLETED")
     if job_test.status == "READY":
         first_off_ready = True
     if job_test.status == "FIRST-OFF COMPLETED":
@@ -119,8 +126,8 @@ def test_detail(request, id):
         job_test.status == "COMPLETED"
         and not open_semi_wastes.exists()
         and job_test.current_machine == None
-    and empty_on_processes.exists() == False
-    and open_first_offs.exists() == False
+        and empty_on_processes.exists() == False
+        and open_first_offs.exists() == False
     ):
         ready_to_finish = True
     context["job_test"] = job_test
@@ -155,38 +162,43 @@ def create_semi_waste(request, id):
 @role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def next_machine(request, id):
     job_test = JobTest.objects.get(id=id)
-    route = MachineRoute.objects.get(
-        route=job_test.route, machine=job_test.current_machine
-    )
-    print(job_test.route, route.order)
-    next_machine = MachineRoute.objects.filter(
-        route=job_test.route, order=route.order + 1
-    )
-    if next_machine:
-        job_test.current_machine = next_machine[0].machine
-        job_test.status = "READY"
-        job_test.save()
-    else:
-        job_test.current_machine = None
-        job_test.status = "COMPLETED"
-        job_test.save()
+    if job_test.status == "ON-PROCESS CREATED":
+        route = MachineRoute.objects.get(
+            route=job_test.route, machine=job_test.current_machine
+        )
+        next_machine = MachineRoute.objects.filter(
+            route=job_test.route, order=route.order + 1
+        )
+        if next_machine:
+            job_test.current_machine = next_machine[0].machine
+            job_test.status = "READY"
+            job_test.save()
+        else:
+            job_test.current_machine = None
+            job_test.status = "COMPLETED"
+            job_test.save()
     return redirect("job:test_detail", id=job_test.id)
 
 
 @login_required
 @role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def finish_test(request, id):
-    if request.method == "POST":
-        job_test = JobTest.objects.get(id=id)
+    job_test = JobTest.objects.get(id=id)
+    if request.method == "POST" and job_test.status == "COMPLETED":
         open_semi_wastes = SemiWaste.objects.filter(job_test=job_test, status="OPEN")
         empty_on_processes = Assessment.objects.filter(
-            job_test=job_test, type='ON-PROCESS', on_processes__isnull=True
+            job_test=job_test, type="ON-PROCESS", on_processes__isnull=True
         )
+        open_first_offs = Assessment.objects.filter(
+            job_test=job_test, type="FIRST-OFF"
+        ).exclude(status="COMPLETED")
         if (
             job_test.status == "COMPLETED"
             and not open_semi_wastes.exists()
             and job_test.current_machine == None
-        ) and not empty_on_processes.exists():
+            and not empty_on_processes.exists()
+            and not open_first_offs.exists()
+        ):
             on_processes = Assessment.objects.filter(
                 job_test=job_test, type="ON-PROCESS"
             )
@@ -204,6 +216,8 @@ def finish_test(request, id):
 def create_test(request, id):
     context = {}
     job = get_object_or_404(Job, id=id)
+    if JobTest.objects.filter(job=job).exclude(status="FINISHED").exists():
+        return redirect("job:detail", id=id)
     if request.method == "POST":
         form = CreateJobTestForm(request.POST)
         if form.is_valid():

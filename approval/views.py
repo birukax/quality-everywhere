@@ -20,7 +20,7 @@ def approvals(request):
 def create_assessment_approval(request, id):
     assessment = get_object_or_404(Assessment, id=id)
     if assessment.type == "FIRST-OFF":
-        if not assessment.status in ("PENDING", "COMPLETED"):
+        if not assessment.status in ["PENDING", "COMPLETED"]:
             # approvers = ["OPERATOR", "SUPERVISOR"]
             # for a in approvers:
             app = AssessmentApproval(assessment=assessment)

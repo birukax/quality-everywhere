@@ -177,7 +177,7 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
-SECURE_SSL_REDIRECT = True
+# SECURE_SSL_REDIRECT = True
 
 # CACHES = {
 #     'default': {
@@ -187,10 +187,10 @@ SECURE_SSL_REDIRECT = True
 # }
 
 CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-        'LOCATION': config('CACHE_LOCATION'),  # Path to the cache directory
+    "default": {
+        "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
+        "LOCATION": config("CACHE_LOCATION"),  # Path to the cache directory
     }
 }
 
-SELECT2_CACHE_BACKEND = 'default'
+SELECT2_CACHE_BACKEND = "default"

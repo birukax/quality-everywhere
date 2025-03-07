@@ -115,3 +115,5 @@ class BaseMachineRouteFormset(forms.BaseModelFormSet):
                 machines.append(machine)
         if duplicates:
             raise forms.ValidationError("Duplicate machines.")
+        if machines == []:
+            raise forms.ValidationError("Machine can not be empty.")

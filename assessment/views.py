@@ -198,71 +198,74 @@ def on_process_detail(request, id):
 def create_first_off(request, id):
     context = {}
     job_test = JobTest.objects.get(id=id)
-    if request.method == "POST":
-        form = CreateAssessmentForm(request.POST)
-        lamination_form = CreateLaminationForm(request.POST)
-        route = MachineRoute.objects.get(
-            route=job_test.route, machine=job_test.current_machine
-        )
-        if form.is_valid() and job_test.current_machine.type != "LAMINATION":
-            machine = job_test.current_machine
-            assessment = Assessment(
-                job_test=job_test,
-                route_no=route.order,
-                shift=form.cleaned_data["shift"],
-                machine=machine,
-                type="FIRST-OFF",
+    if job_test.status == "READY":
+        if request.method == "POST":
+            form = CreateAssessmentForm(request.POST)
+            lamination_form = CreateLaminationForm(request.POST)
+            route = MachineRoute.objects.get(
+                route=job_test.route, machine=job_test.current_machine
             )
-            if machine.tests:
-                assessment.save()
-                for test in machine.tests.all():
-                    first_off = FirstOff(
-                        assessment=assessment,
-                        test=test,
-                    )
-                    first_off.save()
-                assessment.job_test.status = "FIRST-OFF CREATED"
-                assessment.job_test.save()
-                return redirect("assessment:first_off_detail", id=assessment.id)
+            if form.is_valid() and job_test.current_machine.type != "LAMINATION":
+                machine = job_test.current_machine
+                assessment = Assessment(
+                    job_test=job_test,
+                    route_no=route.order,
+                    shift=form.cleaned_data["shift"],
+                    machine=machine,
+                    type="FIRST-OFF",
+                )
+                if machine.tests:
+                    assessment.save()
+                    for test in machine.tests.all():
+                        first_off = FirstOff(
+                            assessment=assessment,
+                            test=test,
+                        )
+                        first_off.save()
+                    assessment.job_test.status = "FIRST-OFF CREATED"
+                    assessment.job_test.save()
+                    return redirect("assessment:first_off_detail", id=assessment.id)
 
-        if form.is_valid() and lamination_form.is_valid():
-            machine = job_test.current_machine
-            assessment = Assessment(
-                job_test=job_test,
-                route_no=route.order,
-                shift=form.cleaned_data["shift"],
-                machine=machine,
-                type="FIRST-OFF",
-            )
-            if machine.tests:
-                assessment.save()
-                for test in machine.tests.all():
-                    first_off = FirstOff(
-                        assessment=assessment,
-                        test=test,
-                    )
-                    first_off.save()
-                lamination = lamination_form.save(commit=False)
-                lamination.assessment = assessment
-                lamination.save()
-                ply_structure = lamination_form.cleaned_data["ply_structure"]
-                for p in range(0, ply_structure):
-                    substrate = Substrate(lamination=lamination)
-                    substrate.no = p + 1
-                    if p == 0:
-                        substrate.raw_material = job_test.raw_material
-                        substrate.batch_no = job_test.batch_no
-                    substrate.save()
-                assessment.job_test.status = "FIRST-OFF CREATED"
-                assessment.job_test.save()
-                return redirect("assessment:first_off_detail", id=assessment.id)
+            if form.is_valid() and lamination_form.is_valid():
+                machine = job_test.current_machine
+                assessment = Assessment(
+                    job_test=job_test,
+                    route_no=route.order,
+                    shift=form.cleaned_data["shift"],
+                    machine=machine,
+                    type="FIRST-OFF",
+                )
+                if machine.tests:
+                    assessment.save()
+                    for test in machine.tests.all():
+                        first_off = FirstOff(
+                            assessment=assessment,
+                            test=test,
+                        )
+                        first_off.save()
+                    lamination = lamination_form.save(commit=False)
+                    lamination.assessment = assessment
+                    lamination.save()
+                    ply_structure = lamination_form.cleaned_data["ply_structure"]
+                    for p in range(0, ply_structure):
+                        substrate = Substrate(lamination=lamination)
+                        substrate.no = p + 1
+                        if p == 0:
+                            substrate.raw_material = job_test.raw_material
+                            substrate.batch_no = job_test.batch_no
+                        substrate.save()
+                    assessment.job_test.status = "FIRST-OFF CREATED"
+                    assessment.job_test.save()
+                    return redirect("assessment:first_off_detail", id=assessment.id)
+        else:
+            form = CreateAssessmentForm()
+            lamination_form = CreateLaminationForm()
+        context["lamination_form"] = lamination_form
+        context["form"] = form
+        context["job_test"] = job_test
+        return render(request, "first_off/create.html", context)
     else:
-        form = CreateAssessmentForm()
-        lamination_form = CreateLaminationForm()
-    context["lamination_form"] = lamination_form
-    context["form"] = form
-    context["job_test"] = job_test
-    return render(request, "first_off/create.html", context)
+        return redirect("job:test_detail", id=job_test.id)
 
 
 @login_required
@@ -270,32 +273,36 @@ def create_first_off(request, id):
 def create_on_process(request, id):
     context = {}
     job_test = JobTest.objects.get(id=id)
-    if request.method == "POST":
-        form = CreateAssessmentForm(request.POST)
+    if job_test.status == "FIRST-OFF COMPLETED":
+        if request.method == "POST":
+            form = CreateAssessmentForm(request.POST)
 
-        route = MachineRoute.objects.get(
-            route=job_test.route, machine=job_test.current_machine
-        )
-        if form.is_valid():
-            machine = job_test.current_machine
-            assessment = Assessment(
-                job_test=job_test,
-                route_no=route.order,
-                shift=form.cleaned_data["shift"],
-                machine=machine,
-                type="ON-PROCESS",
+            route = MachineRoute.objects.get(
+                route=job_test.route, machine=job_test.current_machine
             )
-            if machine.tests:
-                assessment.save()
-                assessment.job_test.status = "ON-PROCESS CREATED"
-                assessment.job_test.save()
-                return redirect("assessment:on_process_detail", id=assessment.id)
-    else:
-        form = CreateAssessmentForm()
+            if form.is_valid():
+                machine = job_test.current_machine
+                assessment = Assessment(
+                    job_test=job_test,
+                    route_no=route.order,
+                    shift=form.cleaned_data["shift"],
+                    machine=machine,
+                    type="ON-PROCESS",
+                )
+                if machine.tests:
+                    assessment.save()
+                    assessment.job_test.status = "ON-PROCESS CREATED"
+                    assessment.job_test.save()
+                    return redirect("assessment:on_process_detail", id=assessment.id)
+        else:
+            form = CreateAssessmentForm()
 
-    context["form"] = form
-    context["job_test"] = job_test
-    return render(request, "on_process/create.html", context)
+        context["form"] = form
+        context["job_test"] = job_test
+        return render(request, "on_process/create.html", context)
+
+    else:
+        return redirect("job:test_detail", id=job_test.id)
 
 
 @login_required
@@ -311,15 +318,15 @@ def add_first_off(request, id):
             machine = form.cleaned_data["machine"]
             shift = form.cleaned_data["shift"]
             reason = form.cleaned_data["reason"]
-            route = MachineRoute.objects.get(
-                route=job_test.route, machine=machine
-            )
+            route = MachineRoute.objects.get(route=job_test.route, machine=machine)
             if machine != "LAMINATION":
                 if Assessment.objects.filter(
-                    job_test=job_test, machine=machine, type='FIRST-OFF'
+                    job_test=job_test, machine=machine, type="FIRST-OFF"
                 ).exists():
                     if not (
-                        Assessment.objects.filter(job_test=job_test, machine=machine,type='FIRST-OFF')
+                        Assessment.objects.filter(
+                            job_test=job_test, machine=machine, type="FIRST-OFF"
+                        )
                         .exclude(status="COMPLETED")
                         .exists()
                     ):

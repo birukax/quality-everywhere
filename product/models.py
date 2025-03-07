@@ -1,6 +1,7 @@
 import os
 from django.urls import reverse
 from django.db import models
+from django.db.models.functions import Lower
 from main.validators import validate_artwork, validate_code
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFit, Thumbnail
@@ -22,7 +23,7 @@ class Product(models.Model):
         return self.name
 
     class Meta:
-        ordering = [ '-no',"name"]
+        ordering = ["-no", "name"]
 
     def get_absolute_url(self):
         return reverse("product:detail", args={self.id})
@@ -60,4 +61,10 @@ class Artwork(models.Model):
         return f"{self.code} ({self.product.name})"
 
     class Meta:
+
+        constraints = [
+            models.UniqueConstraint(
+                Lower("code"), name="unique_case_insensitive_artwork_code"
+            )
+        ]
         ordering = ["-id"]

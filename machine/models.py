@@ -24,7 +24,9 @@ class Machine(models.Model):
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(Lower("name"), name="unique_case_insensitive_name")
+            models.UniqueConstraint(
+                Lower("name"), name="unique_case_insensitive_machine_name"
+            )
         ]
         ordering = ["name"]
 
@@ -37,6 +39,11 @@ class Route(models.Model):
     active = models.BooleanField(default=True)
 
     class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                Lower("name"), name="unique_case_insensitive_route_name"
+            )
+        ]
         ordering = ["name"]
 
     def __str__(self):

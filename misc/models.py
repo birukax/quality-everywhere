@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from django.db.models.functions import Lower
 
 
 class Customer(models.Model):
@@ -22,6 +23,11 @@ class ColorStandard(models.Model):
     )
 
     class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                Lower("name"), name="unique_case_insensitive_color_standard_name"
+            )
+        ]
         ordering = ["name"]
 
     def __str__(self):
@@ -34,6 +40,11 @@ class Color(models.Model):
     code = models.CharField(max_length=100, unique=True)
 
     class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                Lower("name"), name="unique_case_insensitive_color_name"
+            )
+        ]
         ordering = ["name"]
 
     def __str__(self):
@@ -41,10 +52,15 @@ class Color(models.Model):
 
 
 class RawMaterial(models.Model):
-    no = models.CharField(max_length=100, unique=True)
+    no = models.CharField(max_length=100)
     name = models.CharField(max_length=100, unique=True)
 
     class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                Lower("name"), name="unique_case_insensitive_RM_name"
+            )
+        ]
         ordering = ["name"]
 
     def __str__(self):
@@ -56,6 +72,11 @@ class Shift(models.Model):
     name = models.CharField(max_length=100, unique=True)
 
     class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                Lower("name"), name="unique_case_insensitive_shift_name"
+            )
+        ]
         ordering = ["name"]
 
     def __str__(self):
