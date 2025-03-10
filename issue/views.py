@@ -70,14 +70,9 @@ def detail(request, id):
 @login_required
 def create(request):
     if request.method == "POST":
-        form = CreateIssueForm(request.POST)
+        form = CreateIssueForm(request.POST, request.FILES)
         if form.is_valid():
-            issue = Issue(
-                issue_type=form.cleaned_data["issue_type"],
-                department=form.cleaned_data["department"],
-                location=form.cleaned_data["location"],
-                description=form.cleaned_data["description"],
-            )
+            issue = form.save(commit=False)
             issue.created_by = request.user
             issue.save()
             return redirect("issue:list")
@@ -151,7 +146,11 @@ def create_incident(request):
     if request.method == "POST":
         form = CreateIncidentForm(request.POST)
         if form.is_valid():
-            form.save()
+            incident = form.save(commit=False)
+            incident.created_by = request.user
+            incident.save()
+            incident.witness_list.set(form.cleaned_data["witness_list"])
+            incident.save()
             return redirect("issue:incident_list")
     else:
         form = CreateIncidentForm()

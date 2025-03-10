@@ -12,7 +12,7 @@ urlpatterns = [
         "status/update/<int:id>/<str:action>", views.update_status, name="update_status"
     ),
     path("incident/list", views.incident_list, name="incident_list"),
-    path("incident/create", views.incident_create, name="incident_create"),
+    path("incident/create", views.create_incident, name="create_incident"),
     path("incident/detail/<int:id>", views.incident_detail, name="incident_detail"),
     path("department/list", views.department_list, name="department_list"),
     path("department/get", views.get_departments, name="get_departments"),
@@ -27,10 +27,5 @@ urlpatterns = [
     path("incident/type/list", views.incident_type_list, name="incident_type_list"),
     path(
         "incident/type/create", views.create_incident_type, name="create_incident_type"
-    ),
-    path(
-        "incident/type/edit/<int:id>",
-        views.edit_incident_type,
-        name="edit_incident_type",
     ),
 ]

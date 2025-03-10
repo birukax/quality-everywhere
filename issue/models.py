@@ -8,8 +8,10 @@ from main.validators import validate_image
 
 def issue_image_upload_path(instance, filename):
     ext = filename.split(".")[-1]
-    new_filename = f"{instance.issue_type.name}-{instance.location.name}-{instance.created_at}.{ext}"
-    return os.path.join("artworks/", new_filename)
+    new_filename = (
+        f"{instance.issue_type.name}-{instance.location.name}-{instance.id}.{ext}"
+    )
+    return os.path.join("issues/", new_filename)
 
 
 class Location(models.Model):
@@ -161,7 +163,7 @@ class Incident(models.Model):
         IncidentType, on_delete=models.RESTRICT, related_name="incidents"
     )
     date = models.DateField(default=datetime.datetime.now)
-    time = models.DateField(default=datetime.datetime.now)
+    time = models.TimeField(default=datetime.datetime.now)
     witness_list = models.ManyToManyField(
         Employee,
         related_name="witnessed_incidents",

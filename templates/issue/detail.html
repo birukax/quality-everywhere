@@ -24,12 +24,8 @@
                     {% if issue.status == 'CREATED' %}
                         {% if request.user == issue.created_by %}
                             <div>{% include 'issue/action/form.html' with id=issue.id action='CANCEL' %}</div>
-                        {% else %}
-                            <div>{% include 'issue/action/form.html' with id=issue.id action='ACCEPT' %}</div>
-                            <div>{% include 'issue/action/form.html' with id=issue.id action='REJECT' %}</div>
                         {% endif %}
-                    {% elif issue.status == 'ACCEPTED' or issue.status == 'INCOMPLETE' %}
-                        {% if request.user != issue.created_by %}
+                        {% if request.user != issue.created_by or request.user.profile.role == 'ADMIN' %}
                             <div>{% include 'issue/action/form.html' with id=issue.id action='CLOSE' %}</div>
                         {% endif %}
                     {% elif issue.status == 'PENDING' %}
@@ -97,24 +93,20 @@
                 </li>
                 <li>
                     <a class="grid sm:grid-cols-2 items-center p-1 sm:p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
-                        <span class="flex-1 mb-2 sm:mb-0 ms-3 whitespace-nowrap">Description</span>
-                        <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ issue.description }}</span>
+                        <span class="flex-1 mb-2 sm:mb-0 ms-3 whitespace-nowrap">Observation</span>
+                        <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ issue.observation }}</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="grid sm:grid-cols-2 items-center p-1 sm:p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
+                        <span class="flex-1 mb-2 sm:mb-0 ms-3 whitespace-nowrap">Suggestion</span>
+                        <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ issue.suggestion }}</span>
                     </a>
                 </li>
             </ul>
-            <div class="flex gap-4">
-                {% if issue.status == 'OPEN' or issue.status == 'REJECTED' %}
-                    {% if can_submit %}
-                        <a href="{% url 'approval:create_issue_approval' issue.id %}"
-                           class="text-white inline-flex items-center bg-gray-700 hover:bg-gray-800 focus:ring-2 focus:outline-none focus:ring-gray-300 font-medium rounded-lg uppercase text-xs tracking-widest  px-4 py-1.5 text-center">
-                            Submit
-                        </a>
-                    {% endif %}
-                {% endif %}
-            </div>
-            {% if issue.job_test.artwork %}
+            {% if issue.image %}
                 <div class="mt-4 w-fit  items-center mx-auto">
-                    <img src="{{ issue.job_test.artwork.file.url }}"
+                    <img src="{{ issue.image.url }}"
                          alt="Artwork"
                          height=""
                          width=""

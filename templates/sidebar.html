@@ -128,7 +128,7 @@
             <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd">
             </path>
           </svg>
-          <span class="flex-1 ml-3 text-left whitespace-nowrap">S.H.E</span>
+          <span class="flex-1 ml-3 text-left whitespace-nowrap">S.H.E.</span>
           <svg aria-hidden="true"
                class="w-6 h-6"
                fill="currentColor"
@@ -141,19 +141,31 @@
         <ul id="dropdown-issue" class="hidden py-2 space-y-2">
           <li>
             <a href="{% url 'issue:list' %}"
-               class="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Issues</a>
+               class="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">S.H.E. Issues</a>
+          </li>
+          <li>
+            <a href="{% url 'issue:incident_list' %}"
+               class="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Incidents</a>
+          </li>
+          <li>
+            <a href="{% url 'issue:issue_type_list' %}"
+               class="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Issue Types</a>
+          </li>
+          <li>
+            <a href="{% url 'issue:incident_type_list' %}"
+               class="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Incident Types</a>
           </li>
           <li>
             <a href="{% url 'issue:location_list' %}"
                class="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Locations</a>
           </li>
           <li>
-            <a href="{% url 'issue:department_list' %}"
-               class="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Departments</a>
+            <a href="{% url 'issue:employee_list' %}"
+               class="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Employees</a>
           </li>
           <li>
-            <a href="{% url 'issue:issue_type_list' %}"
-               class="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Issue Types</a>
+            <a href="{% url 'issue:department_list' %}"
+               class="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Departments</a>
           </li>
         </ul>
       </li>

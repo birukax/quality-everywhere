@@ -76,10 +76,11 @@ class CreateIncidentForm(forms.ModelForm):
         fields = (
             "employee",
             "location",
+            "type",
+            "referred_to_hospital",
             "date",
             "time",
             "witness_list",
-            "referred_to_hospital",
             "cause",
             "body_part_injured",
             "nature_of_injury",
@@ -87,7 +88,6 @@ class CreateIncidentForm(forms.ModelForm):
             "tools_used_before_incident",
             "recommendation",
             "action_taken",
-            "incident_type",
         )
         labels = {
             "employee": "Employee",
@@ -112,6 +112,12 @@ class CreateIncidentForm(forms.ModelForm):
             "referred_to_hospital": forms.Select(
                 attrs={"class": "w-full text-center h-auto"},
                 choices=(((False, "No"), (True, "Yes"))),
+            ),
+            "date": forms.DateInput(
+                attrs={"class": "w-full text-center h-auto", "type": "date"}
+            ),
+            "time": forms.TimeInput(
+                attrs={"class": "w-full text-center h-auto", "type": "time"}
             ),
             "cause": forms.Textarea(
                 attrs={
@@ -179,7 +185,7 @@ class CreateIncidentForm(forms.ModelForm):
         ),
     )
 
-    incident_type = forms.ModelChoiceField(
+    type = forms.ModelChoiceField(
         queryset=IncidentType.objects.all(),
         widget=s2forms.ModelSelect2Widget(
             model=IncidentType,

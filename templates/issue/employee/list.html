@@ -1,28 +1,29 @@
 {% extends "partials/table.html" %}
-{% block title %}Issue Type List{% endblock %}
+{% block title %}Employee List{% endblock %}
 {% block buttons %}
-    <a href="{% url 'issue:create_issue_type' %}"
+    <a href="{% url 'issue:get_employees' %}"
        class="text-white inline-flex items-center bg-gray-700 hover:bg-gray-800 focus:ring-2 focus:outline-none focus:ring-gray-300 font-medium rounded-lg uppercase text-xs tracking-widest  px-4 py-1.5 text-center">
-        Create
+        Update List
     </a>
     {% include 'partials/filter.html' %}
 {% endblock buttons %}
 {% block table %}
     <thead class="text-xs sm:text-sm text-gray-700 uppercase bg-gray-50">
         <tr>
-            <th scope="col" class="px-3 sm:px-6 py-3">Name</th>
-            <th scope="col" class="px-3 sm:px-6 py-3">Active</th>
-            <th scope="col" class="px-3 sm:px-6 py-3 text-right">Action</th>
+            <th scope="col" class="px-3 py-3 sm:px-6 sm:py-3">Employee Name</th>
+            <th scope="col" class="px-3 py-3 sm:px-6 sm:py-3">Department</th>
+            <th scope="col" class="px-3 py-3 sm:px-6 sm:py-3 text-right">Action</th>
         </tr>
     </thead>
     <tbody>
         {% for p in page %}
             <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b">
-                <th scope="row" class="px-3 sm:px-6 py-3 font-medium text-gray-900 ">
+                <th scope="row"
+                    class="px-3 py-3 sm:px-6 sm:py-3 font-medium text-gray-900  ">
                     <p>{{ p.name }}</p>
                 </th>
-                <td class="px-3 sm:px-6 py-3 capitalize">{{ p.active }}</td>
-                <td class="px-3 sm:px-6 py-3 flex justify-end">{% include 'issue/type/detail.html' %}</td>
+                <td class="px-3 py-3 sm:px-6 sm:py-3 capitalize">{{ p.department.name }}</td>
+                <td class="px-3 py-3 sm:px-6 sm:py-3 flex justify-end">{% include 'issue/employee/detail.html' %}</td>
             </tr>
         {% endfor %}
     </tbody>
