@@ -8,13 +8,13 @@ from main.custom_widgets import ColorWidget
 class CreateRawMaterialForm(forms.ModelForm):
     class Meta:
         model = RawMaterial
-        fields = ["no", "name"]
+        fields = [ "name", 'thickness']
 
 
 class EditRawMaterialForm(forms.ModelForm):
     class Meta:
         model = RawMaterial
-        fields = ["no", "name"]
+        fields = [ "name", 'thickness']
 
 
 class CreateShiftForm(forms.ModelForm):

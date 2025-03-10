@@ -53,7 +53,7 @@ def raw_material_edit(request, id):
         form = EditRawMaterialForm(request.POST, instance=raw_material)
         if form.is_valid():
             raw_material.name = form.cleaned_data["name"]
-            raw_material.no = form.cleaned_data["no"]
+            raw_material.thickness = form.cleaned_data["thickness"]
             raw_material.save()
 
 

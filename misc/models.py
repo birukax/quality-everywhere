@@ -52,19 +52,23 @@ class Color(models.Model):
 
 
 class RawMaterial(models.Model):
-    no = models.CharField(max_length=100)
-    name = models.CharField(max_length=100, unique=True)
+    name = models.CharField(max_length=100)
+    thickness = models.IntegerField(null=True, blank=True)
+
 
     class Meta:
-        constraints = [
-            models.UniqueConstraint(
-                Lower("name"), name="unique_case_insensitive_RM_name"
-            )
-        ]
-        ordering = ["name"]
+        # constraints = [
+        #     models.UniqueConstraint(
+        #         Lower("name"), name="unique_case_insensitive_RM_name"
+        #     )
+        # ]
+        ordering = ["name",'thickness']
 
     def __str__(self):
-        return self.name
+        if self.thickness == None:
+            return self.name
+        else:
+            return self.name + "-" + self.thickness
 
 
 class Shift(models.Model):

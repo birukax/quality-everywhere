@@ -116,8 +116,8 @@ class RouteWidget(s2forms.ModelSelect2Widget):
 class RawMaterialWidget(s2forms.ModelSelect2Widget):
     queryset = RawMaterial.objects.all()
     search_fields = [
-        "no__icontains",
         "name__icontains",
+        "thickness__icontains",
     ]
 
 
