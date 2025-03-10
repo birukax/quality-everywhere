@@ -54,6 +54,7 @@ class EditMachineForm(forms.ModelForm):
         queryset=Test.objects.all(),
         widget=s2forms.ModelSelect2MultipleWidget(
             Model=Test,
+            queryset=Test.objects.all(),
             search_fields=["name__icontains"],
             max_results=5,
             attrs={"class": "w-full text-center h-auto"},
@@ -64,6 +65,7 @@ class EditMachineForm(forms.ModelForm):
         queryset=Conformity.objects.all(),
         widget=s2forms.ModelSelect2MultipleWidget(
             model=Conformity,
+            queryset=Conformity.objects.all(),
             search_fields=["name__icontains"],
             max_results=5,
             attrs={"class": "w-full text-center h-auto"},

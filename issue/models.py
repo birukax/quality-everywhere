@@ -115,7 +115,7 @@ class Issue(models.Model):
     department = models.ForeignKey(
         Department, on_delete=models.RESTRICT, related_name="issues"
     )
-    description = models.TextField(max_length=200)
+    observation = models.TextField(max_length=200)
     suggestion = models.TextField(max_length=200, null=True, blank=True)
     image = models.ImageField(
         upload_to=issue_image_upload_path,
@@ -171,7 +171,7 @@ class Incident(models.Model):
     cause = models.TextField(max_length=200)
     body_part_injured = models.CharField(max_length=75)
     nature_of_injury = models.CharField(max_length=75)
-    employee_activity_before_incident = models.TextField(max_length=100)
+    pre_incident_activity = models.TextField(max_length=100)
     tools_used_before_incident = models.TextField(max_length=100)
     recommendation = models.TextField(max_length=100)
     action_taken = models.TextField(max_length=100)

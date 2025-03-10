@@ -2,13 +2,24 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from main.tasks import get_page, role_check
-from .tasks import departments_get
-from .models import Location, IssueType, Issue, Remark, Department
+from .tasks import departments_get, employees_get
+from .models import (
+    Location,
+    IssueType,
+    Issue,
+    Remark,
+    Department,
+    IncidentType,
+    Incident,
+    Employee,
+)
 from .forms import (
     CreateLocationForm,
     CreateIssueTypeForm,
     CreateIssueForm,
     CreateRemarkForm,
+    CreateIncidentForm,
+    CreateIncidentTypeForm,
 )
 from .filters import IssueFilter, DepartmentFilter, LocationFilter, IssueTypeFilter
 
@@ -117,6 +128,41 @@ def update_status(request, id, action):
 
 
 @login_required
+def incident_list(request):
+    incidents = Incident.objects.all()
+    page = get_page(request, model=incidents)
+    context = {
+        "page": page,
+    }
+    return render(request, "incident/list.html", context)
+
+
+@login_required
+def incident_detail(request, id):
+    incident = get_object_or_404(Incident, id=id)
+    context = {
+        "incident": incident,
+    }
+    return render(request, "incident/detail.html", context)
+
+
+@login_required
+def create_incident(request):
+    if request.method == "POST":
+        form = CreateIncidentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("issue:incident_list")
+    else:
+        form = CreateIncidentForm()
+
+    context = {
+        "form": form,
+    }
+    return render(request, "incident/create.html", context)
+
+
+@login_required
 @role_check(["ADMIN", "MANAGER", "SAFETY"])
 def department_list(request):
     departments = Department.objects.all()
@@ -139,6 +185,24 @@ def department_list(request):
 def get_departments(request):
     departments_get()
     return redirect("issue:department_list")
+
+
+@login_required
+@role_check(["ADMIN", "MANAGER", "SAFETY"])
+def employee_list(request):
+    employees = Employee.objects.all()
+    page = get_page(request, model=employees)
+    context = {
+        "page": page,
+    }
+    return render(request, "issue/employee/list.html", context)
+
+
+@login_required
+@role_check(["ADMIN", "MANAGER", "SAFETY"])
+def get_employees(request):
+    employees_get()
+    return redirect("issue:employee_list")
 
 
 @login_required
@@ -212,6 +276,30 @@ def create_issue_type(request):
     else:
         form = CreateIssueTypeForm()
     return render(request, "issue/type/create.html", {"form": form})
+
+
+@login_required
+@role_check(["ADMIN", "MANAGER", "SAFETY"])
+def create_incident_type(request):
+    if request.method == "POST":
+        form = CreateIncidentTypeForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("issue:incident_type_list")
+    else:
+        form = CreateIncidentTypeForm()
+    return render(request, "incident/type/create.html", {"form": form})
+
+
+@login_required
+@role_check(["ADMIN", "MANAGER", "SAFETY"])
+def incident_type_list(request):
+    incident_types = IncidentType.objects.all()
+    page = get_page(request, model=incident_types)
+    context = {
+        "page": page,
+    }
+    return render(request, "incident/type/list.html", context)
 
 
 @login_required
