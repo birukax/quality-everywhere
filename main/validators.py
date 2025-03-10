@@ -18,7 +18,7 @@ def validate_ratio_format(value):
         raise ValidationError(_("Values cannot exceed 100."))
 
 
-def validate_artwork(file):
+def validate_image(file):
     max_size = 10 * 1024 * 1024
     valid_extensions = [".jpg", ".jpeg", ".png", ".webp", ".tiff", ".bmp"]
     ext = os.path.splitext(file.name)[1].lower()
@@ -38,6 +38,10 @@ def validate_artwork(file):
             img.verify()
     except Exception:
         raise ValidationError(_("Invalid image file."))
+
+
+def validate_artwork(file):
+    pass
 
 
 def validate_code(value):

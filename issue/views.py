@@ -83,20 +83,20 @@ def create(request):
 def update_status(request, id, action):
     issue = get_object_or_404(Issue, id=id)
     if request.method == "POST":
-        if action == "ACCEPT":
-            action = "ACCEPTED"
-        elif action == "APPROVE" and request.user == issue.created_by:
+        # if action == "ACCEPT":
+        #     action = "ACCEPTED"
+        # elif action == "REJECT":
+        #     action = "REJECTED"
+        # elif action == "COMPLETE":
+        #     action = "COMPLETED"
+        # elif action == "START":
+        #     action = "IN-PROGRESS"
+        if action == "APPROVE" and request.user == issue.created_by:
             action = "COMPLETED"
         elif action == "REJECT" and request.user == issue.created_by:
             action = "INCOMPLETE"
-        elif action == "REJECT":
-            action = "REJECTED"
-        elif action == "COMPLETE":
-            action = "COMPLETED"
         elif action == "CANCEL" and request.user == issue.created_by:
             action = "CANCELLED"
-        # elif action == "START":
-        #     action = "IN-PROGRESS"
         elif action == "CLOSE":
             action = "PENDING"
 

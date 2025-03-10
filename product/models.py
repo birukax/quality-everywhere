@@ -2,7 +2,7 @@ import os
 from django.urls import reverse
 from django.db import models
 from django.db.models.functions import Lower
-from main.validators import validate_artwork, validate_code
+from main.validators import validate_image, validate_code
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFit, Thumbnail
 
@@ -41,7 +41,7 @@ class Artwork(models.Model):
     remark = models.TextField(null=True, blank=True)
     file = models.FileField(
         upload_to=artwork_upload_path,
-        validators=[validate_artwork],
+        validators=[validate_image],
         help_text="Upload artwork file",
     )
     file_thumbnail = ImageSpecField(
