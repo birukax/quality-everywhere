@@ -22,17 +22,14 @@
             <div class="flex place-content-end">
                 <div class="flex flex-wrap gap-4  ">
                     {% if issue.status == 'CREATED' %}
-                        {% if request.user == issue.created_by %}
-                            <div>{% include 'issue/action/form.html' with id=issue.id action='CANCEL' %}</div>
-                        {% endif %}
-                        {% if request.user != issue.created_by or request.user.profile.role == 'ADMIN' %}
-                            <div>{% include 'issue/action/form.html' with id=issue.id action='CLOSE' %}</div>
-                        {% endif %}
+                        {% if request.user == issue.created_by %}{% endif %}
+                        {% if request.user != issue.created_by or request.user.profile.role == 'ADMIN' %}{% endif %}
+                        <div>{% include 'issue/action/form.html' with id=issue.id action='CANCEL' %}</div>
+                        <div>{% include 'issue/action/form.html' with id=issue.id action='CLOSE' %}</div>
                     {% elif issue.status == 'PENDING' %}
-                        {% if request.user == issue.created_by %}
-                            <div>{% include 'issue/action/form.html' with id=issue.id action='APPROVE' %}</div>
-                            <div>{% include 'issue/action/form.html' with id=issue.id action='REJECT' %}</div>
-                        {% endif %}
+                        {% if request.user == issue.created_by %}{% endif %}
+                        <div>{% include 'issue/action/form.html' with id=issue.id action='APPROVE' %}</div>
+                        <div>{% include 'issue/action/form.html' with id=issue.id action='REJECT' %}</div>
                     {% endif %}
                     <div>{% include 'issue/remark/list.html' %}</div>
                 </div>
