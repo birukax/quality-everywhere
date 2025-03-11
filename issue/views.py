@@ -21,7 +21,15 @@ from .forms import (
     CreateIncidentForm,
     CreateIncidentTypeForm,
 )
-from .filters import IssueFilter, DepartmentFilter, LocationFilter, IssueTypeFilter
+from .filters import (
+    IssueFilter,
+    DepartmentFilter,
+    LocationFilter,
+    IssueTypeFilter,
+    EmployeeFilter,
+    IncidentFilter,
+    IncidentTypeFilter,
+)
 
 
 @login_required
@@ -125,9 +133,16 @@ def update_status(request, id, action):
 @login_required
 def incident_list(request):
     incidents = Incident.objects.all()
+    incident_filter = IncidentFilter(
+        request.GET,
+        queryset=incidents,
+    )
+    incidents = incident_filter.qs
+
     page = get_page(request, model=incidents)
     context = {
         "page": page,
+        "filter": incident_filter,
     }
     return render(request, "incident/list.html", context)
 
@@ -190,9 +205,16 @@ def get_departments(request):
 @role_check(["ADMIN", "MANAGER", "SAFETY"])
 def employee_list(request):
     employees = Employee.objects.all()
+    employee_filter = EmployeeFilter(
+        request.GET,
+        queryset=employees,
+    )
+    employees = employee_filter.qs
+
     page = get_page(request, model=employees)
     context = {
         "page": page,
+        "filter": employee_filter,
     }
     return render(request, "issue/employee/list.html", context)
 
@@ -294,9 +316,16 @@ def create_incident_type(request):
 @role_check(["ADMIN", "MANAGER", "SAFETY"])
 def incident_type_list(request):
     incident_types = IncidentType.objects.all()
+    incident_type_filter = IncidentTypeFilter(
+        request.GET,
+        queryset=incident_types,
+    )
+    incident_types = incident_type_filter.qs
+
     page = get_page(request, model=incident_types)
     context = {
         "page": page,
+        "filter": incident_type_filter,
     }
     return render(request, "incident/type/list.html", context)
 
