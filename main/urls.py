@@ -47,7 +47,7 @@ urlpatterns = [
     path("misc/", include("misc.urls")),
     path("machine/", include("machine.urls")),
     path("assessment/", include("assessment.urls")),
-    path("issue/", include("issue.urls")),
+    path("she/", include("she.urls")),
     path("report/", include("report.urls")),
     re_path(r"^session_security/", include("session_security.urls")),
 ]

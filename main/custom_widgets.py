@@ -4,7 +4,7 @@ from job.models import Job, JobTest
 from product.models import Product, Artwork
 from misc.models import ColorStandard, Color, Customer, RawMaterial, Shift
 from machine.models import Machine, Route
-from issue.models import (
+from she.models import (
     Department,
     Location,
     Issue,

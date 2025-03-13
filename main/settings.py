@@ -55,7 +55,7 @@ INSTALLED_APPS = [
     "assessment",
     "account",
     "approval",
-    "issue",
+    "she",
     "report",
     # "rest_framework",
 ]

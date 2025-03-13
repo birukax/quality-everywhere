@@ -118,8 +118,8 @@
       <li>
         <button type="button"
                 class="flex items-center p-2 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-                aria-controls="dropdown-issue"
-                data-collapse-toggle="dropdown-issue">
+                aria-controls="dropdown-she"
+                data-collapse-toggle="dropdown-she">
           <svg aria-hidden="true"
                class="flex-shrink-0 w-6 h-6 text-gray-400 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
                fill="currentColor"
@@ -138,33 +138,33 @@
             </path>
           </svg>
         </button>
-        <ul id="dropdown-issue" class="hidden py-2 space-y-2">
+        <ul id="dropdown-she" class="hidden py-2 space-y-2">
           <li>
-            <a href="{% url 'issue:list' %}"
-               class="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">S.H.E. Issues</a>
+            <a href="{% url 'she:issue_list' %}"
+               class="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Issues</a>
           </li>
           <li>
-            <a href="{% url 'issue:incident_list' %}"
-               class="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">S.H.E. Incidents</a>
+            <a href="{% url 'she:incident_list' %}"
+               class="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Incidents</a>
           </li>
           <li>
-            <a href="{% url 'issue:issue_type_list' %}"
+            <a href="{% url 'she:issue_type_list' %}"
                class="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Issue Types</a>
           </li>
           <li>
-            <a href="{% url 'issue:incident_type_list' %}"
+            <a href="{% url 'she:incident_type_list' %}"
                class="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Incident Types</a>
           </li>
           <li>
-            <a href="{% url 'issue:location_list' %}"
+            <a href="{% url 'she:location_list' %}"
                class="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Locations</a>
           </li>
           <li>
-            <a href="{% url 'issue:employee_list' %}"
+            <a href="{% url 'she:employee_list' %}"
                class="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Employees</a>
           </li>
           <li>
-            <a href="{% url 'issue:department_list' %}"
+            <a href="{% url 'she:department_list' %}"
                class="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Departments</a>
           </li>
         </ul>

@@ -30,7 +30,7 @@
             <!-- Modal body -->
             <form class="p-4 md:p-5"
                   method="post"
-                  action="{% url 'issue:update_status' id=id action=action %}">
+                  action="{% url 'she:update_status' id=id action=action %}">
                 {% csrf_token %}
                 {{ form.media }}
                 <div class="flex-col gap-2 mb-4 mx-auto">

@@ -23,7 +23,7 @@ class Profile(models.Model):
     #     "machine.Machine", on_delete=models.CASCADE, null=True, blank=True
     # )
     department = models.ForeignKey(
-        "issue.Department", on_delete=models.CASCADE, null=True, blank=True
+        "she.Department", on_delete=models.SET_NULL, null=True, blank=True
     )
 
     class Meta:

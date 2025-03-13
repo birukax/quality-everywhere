@@ -1,7 +1,7 @@
 from django import forms
 from django.forms.models import inlineformset_factory
 from django.contrib.auth.models import User
-from issue.models import Department
+from she.models import Department
 from .models import Profile, ROLES
 
 
