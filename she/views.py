@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
+from django.forms import formset_factory, modelformset_factory
 from main.tasks import get_page, role_check
 from .tasks import departments_get, employees_get
 from .models import (
@@ -25,6 +26,8 @@ from .forms import (
     CreateIncidentTypeForm,
     CreateCheckpointForm,
     CreateFirePreventionForm,
+    FPChecklistForm,
+    SubmitFPChecklistForm,
 )
 from .filters import (
     IssueFilter,
@@ -341,6 +344,8 @@ def incident_type_list(request):
     return render(request, "incident/type/list.html", context)
 
 
+@login_required
+@role_check(["ADMIN", "MANAGER", "SAFETY"])
 def checkpoint_list(request):
     checkpoints = Checkpoint.objects.all()
 
@@ -352,6 +357,8 @@ def checkpoint_list(request):
     return render(request, "fire_prevention/checkpoint/list.html", context)
 
 
+@login_required
+@role_check(["ADMIN", "MANAGER", "SAFETY"])
 def create_checkpoint(request):
     if request.method == "POST":
         form = CreateCheckpointForm(request.POST)
@@ -366,6 +373,8 @@ def create_checkpoint(request):
     return render(request, "fire_prevention/checkpoint/create.html", context)
 
 
+@login_required
+@role_check(["ADMIN", "MANAGER", "SAFETY"])
 def fire_prevention_list(request):
     fire_preventions = FirePrevention.objects.all()
 
@@ -377,6 +386,8 @@ def fire_prevention_list(request):
     return render(request, "fire_prevention/list.html", context)
 
 
+@login_required
+@role_check(["ADMIN", "MANAGER", "SAFETY"])
 def create_fire_prevention(request):
     if request.method == "POST":
         form = CreateFirePreventionForm(request.POST)
@@ -400,5 +411,33 @@ def create_fire_prevention(request):
     return render(request, "fire_prevention/create.html", context)
 
 
+@login_required
+@role_check(["ADMIN", "MANAGER", "SAFETY"])
 def fire_prevention_detail(request, id):
-    pass
+    fire_prevention = get_object_or_404(FirePrevention, id=id)
+    can_submit = True
+    submit_form = SubmitFPChecklistForm()
+    checklists = FPChecklist.objects.filter(fire_prevention=fire_prevention)
+    checklist_formset = modelformset_factory(FPChecklist, form=FPChecklistForm, extra=0)
+    formset = checklist_formset(queryset=checklists)
+
+    context = {
+        "fire_prevention": fire_prevention,
+        "checklists": checklists,
+        "can_submit": can_submit,
+        "submit_form": submit_form,
+        "formset": formset,
+    }
+
+    return render(request, "fire_prevention/detail.html", context)
+
+
+@login_required
+@role_check(["ADMIN", "MANAGER", "SAFETY"])
+def save_fp_checklist(request, id):
+    fire_prevention = get_object_or_404(FirePrevention, id=id)
+    checklist_formset = modelformset_factory(FPChecklist, form=FPChecklistForm, extra=0)
+    formset = checklist_formset(request.POST)
+    if formset.is_valid():
+        formset.save()
+    return redirect("she:fire_prevention_detail", id=id)

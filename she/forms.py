@@ -232,7 +232,7 @@ class CreateCheckpointForm(forms.ModelForm):
             "name": forms.Textarea(
                 attrs={
                     "class": "w-full",
-                    "rows": "3",
+                    "rows": "2",
                 }
             ),
         }
@@ -247,3 +247,38 @@ class CreateFirePreventionForm(forms.ModelForm):
                 attrs={"class": "w-full items-center text-center h-auto"}
             ),
         }
+
+
+class FPChecklistForm(forms.ModelForm):
+    class Meta:
+        model = FPChecklist
+        fields = (
+            "value",
+            "remark",
+        )
+
+        widgets = {
+            "value": forms.RadioSelect(
+                attrs={"class": " flex text-sm tracking-wider gap-2"},
+            ),
+            "remark": forms.TextInput(
+                attrs={
+                    "class": "w-full h-auto",
+                }
+            ),
+        }
+
+
+class SubmitFPChecklistForm(forms.ModelForm):
+    class Meta:
+        model = FirePrevention
+        fields = ("comment",)
+        widgets = {
+            "comment": forms.Textarea(
+                attrs={
+                    "class": "w-full",
+                    "rows": "2",
+                }
+            ),
+        }
+        labels = {"comment": "Comment for the next shift?"}

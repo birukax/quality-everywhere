@@ -1,6 +1,6 @@
 {% extends "partials/table.html" %}
 {% block title %}
-    First-Off Approval List
+    Fire Prevention Approval List
 {% endblock title %}
 {% block buttons %}
     {% include "partials/filter.html" %}
@@ -8,26 +8,24 @@
 {% block table %}
     <thead class="text-xs sm:text-sm text-gray-700 uppercase bg-gray-50">
         <tr>
-            <th scope="col" class="px-3 py-3 sm:px-6 sm:py-3">Job Test</th>
-            <th scope="col" class="px-3 py-3 sm:px-6 sm:py-3">Machine</th>
+            <th scope="col" class="px-3 py-3 sm:px-6 sm:py-3">Shift</th>
+            <th scope="col" class="px-3 py-3 sm:px-6 sm:py-3">Date</th>
             <th scope="col" class="px-3 py-3 sm:px-6 sm:py-3 hidden md:table-cell">Shift</th>
             <th scope="col" class="px-3 py-3 sm:px-6 sm:py-3 hidden md:table-cell">Inspected by</th>
             <th scope="col" class="px-3 py-3 sm:px-6 sm:py-3 ">Action</th>
         </tr>
     </thead>
     <tbody>
-        {% for ass in page %}
+        {% for p in page %}
             <tr class="odd:bg-white items-center odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b">
                 <th scope="row"
                     class="px-3 py-3 sm:px-6 sm:py-3 font-medium text-gray-900 ">
-                    <p>{{ ass.assessment.job_test }}</p>
+                    <p>{{ p.fire_prevention.shift.name }}</p>
                 </th>
-                <td class="px-3 py-3 sm:px-6 sm:py-3">{{ ass.assessment.machine.name }}</td>
-                <td class="px-3 py-3 sm:px-6 sm:py-3 hidden md:table-cell">{{ ass.assessment.shift.name }}</td>
-                <td class="px-3 py-3 sm:px-6 sm:py-3 hidden md:table-cell">{{ ass.assessment.inspected_by.username }}</td>
-                {% if ass.assessment.type == 'FIRST-OFF' %}
-                    <td class="px-3 py-3 sm:px-6 sm:py-3 ">{% include 'approval/assessment/first_off/detail.html' %}</td>
-                {% endif %}
+                <td class="px-3 py-3 sm:px-6 sm:py-3">{{ p.fire_prevention.created_at.date }}</td>
+                <td class="px-3 py-3 sm:px-6 sm:py-3 hidden md:table-cell">{{ p.fire_prevention.shift.name }}</td>
+                <td class="px-3 py-3 sm:px-6 sm:py-3 hidden md:table-cell">{{ p.fire_prevention.inspected_by.username }}</td>
+                <td class="px-3 py-3 sm:px-6 sm:py-3 ">{% include "approval/fire_prevention/detail.html" %}</td>
             </tr>
         {% endfor %}
     </tbody>

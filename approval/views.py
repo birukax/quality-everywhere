@@ -1,7 +1,9 @@
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render, get_object_or_404, redirect
 from assessment.models import Assessment
-from .models import AssessmentApproval
+from she.models import FirePrevention
+from she.forms import SubmitFPChecklistForm
+from .models import AssessmentApproval, FirePreventionApproval, ROLES
 from .filters import AssessmentApprovalFilter
 from main.tasks import get_page, role_check
 
@@ -92,3 +94,81 @@ def reject_assessment(request, id):
         app.assessment.status = "REJECTED"
         app.assessment.save()
     return redirect("approval:assessment_list", type=app.assessment.type)
+
+
+@login_required
+def fire_prevention_list(request):
+    apps = FirePreventionApproval.objects.filter(status="PENDING")
+    page = get_page(request, model=apps)
+    context = {
+        "page": page,
+    }
+    return render(request, "approval/fire_prevention/list.html", context)
+
+
+@login_required
+def create_fire_prevention_approval(request, id):
+    fire_prevention = get_object_or_404(FirePrevention, id=id)
+    if request.method == "POST" and fire_prevention.status in ["OPEN", "REJECTED"]:
+        form = SubmitFPChecklistForm(request.POST)
+        if form.is_valid():
+            fire_prevention.comment = form.cleaned_data["comment"]
+            for r in ROLES:
+                FirePreventionApproval.objects.create(
+                    fire_prevention=fire_prevention, approver=r[0]
+                )
+            fire_prevention.status = "PENDING"
+            fire_prevention.inspected_by = request.user
+            fire_prevention.save()
+
+    return redirect("she:fire_prevention_detail", id=fire_prevention.id)
+
+
+@login_required
+def approve_fire_prevention(request, id):
+    fire_prevention_approval = get_object_or_404(FirePreventionApproval, id=id)
+    fire_prevention = FirePrevention.objects.get(
+        id=fire_prevention_approval.fire_prevention.id
+    )
+    fp_approvals = FirePreventionApproval.objects.filter(
+        fire_prevention=fire_prevention
+    )
+    if fire_prevention.status == "PENDING" and (
+        request.user.profile.role == fire_prevention_approval.approver
+        or request.user.is_superuser
+    ):
+        fire_prevention_approval.status = "APPROVED"
+        fire_prevention_approval.by = request.user
+        fire_prevention_approval.save()
+        pending_approvals = fp_approvals.filter(status="PENDING")
+        if not pending_approvals.exists():
+            fire_prevention.status = "COMPLETED"
+            fire_prevention.save()
+    return redirect("approval:fire_prevention_list")
+
+
+@login_required
+def reject_fire_prevention(request, id):
+    fire_prevention_approval = get_object_or_404(FirePreventionApproval, id=id)
+    fire_prevention = FirePrevention.objects.get(
+        id=fire_prevention_approval.fire_prevention.id
+    )
+    fp_approvals = FirePreventionApproval.objects.filter(
+        fire_prevention=fire_prevention
+    )
+    if fire_prevention.status == "PENDING" and (
+        request.user.profile.role == fire_prevention_approval.approver
+        or request.user.is_superuser
+    ):
+        fire_prevention_approval.status = "REJECTED"
+        fire_prevention_approval.by = request.user
+        fire_prevention_approval.save()
+        pending_approvals = fp_approvals.filter(status="PENDING")
+        if pending_approvals.exists():
+            for pending in pending_approvals:
+                pending.status = "CANCELED"
+                pending.by = request.user
+                pending.save()
+        fire_prevention.status = "REJECTED"
+        fire_prevention.save()
+    return redirect("approval:fire_prevention_list")

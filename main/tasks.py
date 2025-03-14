@@ -15,7 +15,7 @@ def role_check(allowed_roles):
             if (
                 request.user.is_authenticated
                 and request.user.profile.role in allowed_roles
-            ):
+            ) or request.user.is_superuser:
                 return view_func(request, *args, **kwargs)
             else:
                 return render(request, "registration/403.html")

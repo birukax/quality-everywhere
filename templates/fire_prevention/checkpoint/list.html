@@ -1,7 +1,9 @@
 {% extends "partials/table.html" %}
-{% block title %}Issue Type List{% endblock %}
+{% block title %}
+    FP Checkpoint List
+{% endblock title %}
 {% block buttons %}
-    <a href="{% url 'she:create_issue_type' %}"
+    <a href="{% url 'she:create_checkpoint' %}"
        class="text-white inline-flex items-center bg-gray-700 hover:bg-gray-800 focus:ring-2 focus:outline-none focus:ring-gray-300 font-medium rounded-lg uppercase text-xs tracking-widest  px-4 py-1.5 text-center">
         Create
     </a>
@@ -11,18 +13,20 @@
     <thead class="text-xs sm:text-sm text-gray-700 uppercase bg-gray-50">
         <tr>
             <th scope="col" class="px-3 sm:px-6 py-3">Name</th>
-            <th scope="col" class="px-3 sm:px-6 py-3">Active</th>
+            <th scope="col" class="px-3 sm:px-6 py-3 hidden md:table-cell">Active</th>
             <th scope="col" class="px-3 sm:px-6 py-3 text-right">Action</th>
         </tr>
     </thead>
-    <tbody>
+    <tbody class="content-center">
         {% for p in page %}
-            <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b">
+            <tr class=" odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b">
                 <th scope="row" class="px-3 sm:px-6 py-3 font-medium text-gray-900 ">
-                    <p>{{ p.name }}</p>
+                    <div>
+                        <p class="whitespace-normal truncate">{{ p.name }}</p>
+                    </div>
                 </th>
-                <td class="px-3 sm:px-6 py-3 capitalize">{{ p.active }}</td>
-                <td class="px-3 sm:px-6 py-3 flex justify-end">{% include 'issue/type/detail.html' %}</td>
+                <td scope="row" class="px-3 sm:px-6 py-3 capitalize hidden md:table-cell">{{ p.active }}</td>
+                <td scope="row" class="px-3 sm:px-6 py-3 justify-end">{% include "fire_prevention/checkpoint/detail.html" %}</td>
             </tr>
         {% endfor %}
     </tbody>

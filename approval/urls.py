@@ -18,4 +18,20 @@ urlpatterns = [
     path(
         "assessment/reject/<int:id>", views.reject_assessment, name="reject_assessment"
     ),
+    path("fire-preventions", views.fire_prevention_list, name="fire_prevention_list"),
+    path(
+        "fire-prevention/create/<int:id>",
+        views.create_fire_prevention_approval,
+        name="create_fire_prevention_approval",
+    ),
+    path(
+        "fire-prevention/approve/<int:id>",
+        views.approve_fire_prevention,
+        name="approve_fire_prevention",
+    ),
+    path(
+        "fire-prevention/reject/<int:id>",
+        views.reject_fire_prevention,
+        name="reject_fire_prevention",
+    ),
 ]

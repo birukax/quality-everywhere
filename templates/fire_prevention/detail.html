@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block title %}
+    <span>Fire Prevention Detail</span>
+{% endblock title %}
+{% block content %}
+    <div class="mx-auto ">
+        <div class="w-full space-y-4 p-2 bg-white border border-gray-200 rounded-lg shadow sm:p-4">
+            <div class="flex gap-2">
+                <a href="{% url 'she:fire_prevention_list' %}">
+                    <svg class="w-8 h-8 text-gray-800 "
+                         aria-hidden="true"
+                         xmlns="http://www.w3.org/2000/svg"
+                         width="24"
+                         height="24"
+                         fill="none"
+                         viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12l4-4m-4 4 4 4" />
+                    </svg>
+                </a>
+                <p class="text-base md:text-lg font-semibold uppercase text-gray-600 ">{{ fire_prevention.job_test.job }}</p>
+            </div>
+            <div class="flex place-content-end">
+                <div class="flex flex-wrap gap-4  ">
+                    {% if fire_prevention.status == 'OPEN' or fire_prevention.status == 'REJECTED' %}
+                        {% if can_submit %}
+                            <div>
+                                <div>{% include "fire_prevention/submit.html" %}</div>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                    {% if fire_prevention.status == 'OPEN' or fire_prevention.status == 'REJECTED' %}
+                        <div>{% include "fire_prevention/checklist/edit.html" %}</div>
+                    {% else %}
+                        <div>{% include "fire_prevention/checklist/list.html" %}</div>
+                    {% endif %}
+                    {% if fire_prevention.status == 'COMPLETED' or fire_prevention.status == 'REJECTED' or fire_prevention.status == 'PENDING' %}
+                        <div>{% include "fire_prevention/approval/list.html" %}</div>
+                    {% endif %}
+                </div>
+            </div>
+            <ul class="my-4 space-y-3">
+                <li class="grid grid-cols-1 sm:grid-cols-2">
+                    <a class="grid sm:grid-cols-2 items-center p-1 sm:p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
+                        <span class="flex-1 ms-3 whitespace-nowrap">Date</span>
+                        <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ fire_prevention.created_at.date }}</span>
+                    </a>
+                    <a class="grid sm:grid-cols-2 items-center p-1 sm:p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
+                        <span class="flex-1 ms-3 whitespace-nowrap">Time</span>
+                        <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ fire_prevention.created_at.time }}</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="grid sm:grid-cols-2 items-center p-1 sm:p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
+                        <span class="flex-1 ms-3 whitespace-nowrap">Status</span>
+                        <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ fire_prevention.status }}</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="grid sm:grid-cols-2 items-center p-1 sm:p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
+                        <span class="flex-1 ms-3 whitespace-nowrap">Shift</span>
+                        <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ fire_prevention.shift.name }}</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="grid sm:grid-cols-2 items-center p-1 sm:p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
+                        <span class="flex-1 ms-3 whitespace-nowrap">Checklists</span>
+                        <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ checklists.count }}</span>
+                    </a>
+                    <a class="grid sm:grid-cols-2 items-center p-1 sm:p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
+                        <span class="flex-1 ms-3 whitespace-nowrap">Passed</span>
+                        <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-green-300 rounded">{{ fire_prevention.passed.count }}</span>
+                    </a>
+                    <a class="grid sm:grid-cols-2 items-center p-1 sm:p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
+                        <span class="flex-1 ms-3 whitespace-nowrap">Failed</span>
+                        <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-red-300 rounded">{{ fire_prevention.failed.count }}</span>
+                    </a>
+                </li>
+                {% if fire_prevention.comment %}
+                    <li>
+                        <a class="grid sm:grid-cols-2 items-center p-1 sm:p-3 text-sm md:text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow">
+                            <span class="flex-1 ms-3 whitespace-nowrap">Comment</span>
+                            <span class="inline-flex items-center justify-center px-2 py-0.5 ms-3 text-xs md:text-sm font-semibold text-gray-700 bg-gray-200 rounded">{{ fire_prevention.comment }}</span>
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+            <div class="flex gap-4"></div>
+        </div>
+    </div>
+{% endblock content %}

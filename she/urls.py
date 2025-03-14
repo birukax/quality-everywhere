@@ -21,9 +21,9 @@ urlpatterns = [
     path("location/list", views.location_list, name="location_list"),
     path("location/create", views.create_location, name="create_location"),
     path("location/edit/<int:id>", views.edit_location, name="edit_location"),
-    path("type/list", views.issue_type_list, name="issue_type_list"),
-    path("type/create", views.create_issue_type, name="create_issue_type"),
-    path("type/edit/<int:id>", views.edit_issue_type, name="edit_issue_type"),
+    path("issue/type/list", views.issue_type_list, name="issue_type_list"),
+    path("issue/type/create", views.create_issue_type, name="create_issue_type"),
+    path("issue/type/edit/<int:id>", views.edit_issue_type, name="edit_issue_type"),
     path("incident/type/list", views.incident_type_list, name="incident_type_list"),
     path(
         "incident/type/create", views.create_incident_type, name="create_incident_type"
@@ -41,6 +41,17 @@ urlpatterns = [
         views.fire_prevention_detail,
         name="fire_prevention_detail",
     ),
-    path("checkpoint/list", views.checkpoint_list, name="checkpoint_list"),
-    path("checkpoint/create", views.create_checkpoint, name="create_checkpoint"),
+    path(
+        "fire-prevention/checklist/save/<int:id>",
+        views.save_fp_checklist,
+        name="save_fp_checklist",
+    ),
+    path(
+        "fire-prevention/checkpoint/list", views.checkpoint_list, name="checkpoint_list"
+    ),
+    path(
+        "fire-prevention/checkpoint/create",
+        views.create_checkpoint,
+        name="create_checkpoint",
+    ),
 ]

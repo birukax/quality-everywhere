@@ -253,7 +253,15 @@ class FirePrevention(models.Model):
         return reverse("she:fire_prevention_detail", args={self.id})
 
     def __str__(self):
-        return f"{self.date} - {self.shift.name}"
+        return f"{self.created_at.date()} - {self.shift.name}"
+
+    @property
+    def passed(self):
+        return FPChecklist.objects.filter(fire_prevention=self, value=True)
+
+    @property
+    def failed(self):
+        return FPChecklist.objects.filter(fire_prevention=self, value=False)
 
 
 class Checkpoint(models.Model):
@@ -280,7 +288,7 @@ class FPChecklist(models.Model):
     YES_NO = (
         (True, "Yes"),
         (False, "No"),
-        ("", "N/A"),
+        (None, "N/A"),
     )
     fire_prevention = models.ForeignKey(
         FirePrevention,
@@ -292,7 +300,7 @@ class FPChecklist(models.Model):
         on_delete=models.CASCADE,
         related_name="fp_checklists",
     )
-    value = models.BooleanField(null=True, blank=True, choices=YES_NO, default="N/A")
+    value = models.BooleanField(null=True, blank=True, choices=YES_NO, default=None)
     remark = models.TextField(
         max_length=100,
         null=True,
