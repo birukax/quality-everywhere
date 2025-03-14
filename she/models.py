@@ -141,6 +141,22 @@ class Issue(models.Model):
         ordering = ["created_at"]
 
 
+class Remark(models.Model):
+    issue = models.ForeignKey(Issue, on_delete=models.RESTRICT, related_name="remarks")
+    action = models.CharField(max_length=20, choices=Issue.STATUS)
+    text = models.TextField(max_length=200)
+    created_at = models.DateTimeField(auto_now_add=True)
+    created_by = models.ForeignKey(
+        User, on_delete=models.RESTRICT, related_name="remarks"
+    )
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"{self.issue} - {self.action}"
+
+
 class IncidentType(models.Model):
     name = models.CharField(max_length=100, unique=True)
     active = models.BooleanField(default=True)
@@ -193,17 +209,100 @@ class Incident(models.Model):
         return f"{self.type.name} - {self.employee.name}"
 
 
-class Remark(models.Model):
-    issue = models.ForeignKey(Issue, on_delete=models.RESTRICT, related_name="remarks")
-    action = models.CharField(max_length=20, choices=Issue.STATUS)
-    text = models.TextField(max_length=200)
+class FirePrevention(models.Model):
+
+    STATUS = (
+        ("OPEN", "OPEN"),
+        ("PENDING", "PENDING"),
+        ("REJECTED", "REJECTED"),
+        ("COMPLETED", "COMPLETED"),
+    )
+    shift = models.ForeignKey("misc.Shift", on_delete=models.RESTRICT)
+    # date = models.DateField(default=datetime.datetime.now)
+    # time = models.TimeField(default=datetime.datetime.now)
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS,
+        default="OPEN",
+    )
+    comment = models.TextField(
+        max_length=200,
+        null=True,
+        blank=True,
+    )
+    inspected_by = models.ForeignKey(
+        User,
+        on_delete=models.RESTRICT,
+        related_name="inspected_fire_preventions",
+        blank=True,
+        null=True,
+    )
+
     created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     created_by = models.ForeignKey(
-        User, on_delete=models.RESTRICT, related_name="remarks"
+        User,
+        on_delete=models.RESTRICT,
+        related_name="created_fire_preventions",
     )
 
     class Meta:
         ordering = ["-created_at"]
 
+    def get_absolute_url(self):
+        return reverse("she:fire_prevention_detail", args={self.id})
+
     def __str__(self):
-        return f"{self.issue} - {self.action}"
+        return f"{self.date} - {self.shift.name}"
+
+
+class Checkpoint(models.Model):
+    YES_NO = (
+        (True, "Yes"),
+        (False, "No"),
+    )
+    name = models.TextField(max_length=200, unique=True)
+    active = models.BooleanField(default=True)
+    created_by = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="created_checkpoints",
+    )
+
+    class Meta:
+        ordering = ["name"]
+
+    def __str_(self):
+        return self.name
+
+
+class FPChecklist(models.Model):
+    YES_NO = (
+        (True, "Yes"),
+        (False, "No"),
+        ("", "N/A"),
+    )
+    fire_prevention = models.ForeignKey(
+        FirePrevention,
+        on_delete=models.CASCADE,
+        related_name="fp_checklists",
+    )
+    checkpoint = models.ForeignKey(
+        Checkpoint,
+        on_delete=models.CASCADE,
+        related_name="fp_checklists",
+    )
+    value = models.BooleanField(null=True, blank=True, choices=YES_NO, default="N/A")
+    remark = models.TextField(
+        max_length=100,
+        null=True,
+        blank=True,
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["updated_at"]
+
+    def __str__(self):
+        return f"{self.checkpoint.name}"

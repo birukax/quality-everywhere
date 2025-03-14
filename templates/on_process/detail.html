@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% block title %}On-Process Detail{% endblock %}
 {% block content %}
     <div class="mx-auto ">
@@ -97,14 +97,14 @@
                 </li>
             </ul>
             {% if assessment.job_test.artwork %}
-            <div class="mt-4 w-fit  items-center mx-auto">
-                <img src="{{ assessment.job_test.artwork.file.url }}"
-                     alt="Artwork"
-                     height=""
-                     width=""
-                     class=" h-auto w-full  rounded-lg" />
-            </div>
-        {% endif %}
+                <div class="mt-4 w-fit  items-center mx-auto">
+                    <img src="{{ assessment.job_test.artwork.file.url }}"
+                         alt="Artwork"
+                         height=""
+                         width=""
+                         class=" h-auto w-full  rounded-lg" />
+                </div>
+            {% endif %}
         </div>
     </div>
 {% endblock content %}

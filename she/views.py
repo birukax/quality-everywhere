@@ -12,6 +12,9 @@ from .models import (
     IncidentType,
     Incident,
     Employee,
+    FPChecklist,
+    FirePrevention,
+    Checkpoint,
 )
 from .forms import (
     CreateLocationForm,
@@ -20,6 +23,8 @@ from .forms import (
     CreateRemarkForm,
     CreateIncidentForm,
     CreateIncidentTypeForm,
+    CreateCheckpointForm,
+    CreateFirePreventionForm,
 )
 from .filters import (
     IssueFilter,
@@ -301,6 +306,12 @@ def create_issue_type(request):
 
 @login_required
 @role_check(["ADMIN", "MANAGER", "SAFETY"])
+def edit_issue_type(request, id):
+    pass
+
+
+@login_required
+@role_check(["ADMIN", "MANAGER", "SAFETY"])
 def create_incident_type(request):
     if request.method == "POST":
         form = CreateIncidentTypeForm(request.POST)
@@ -330,7 +341,64 @@ def incident_type_list(request):
     return render(request, "incident/type/list.html", context)
 
 
-@login_required
-@role_check(["ADMIN", "MANAGER", "SAFETY"])
-def edit_issue_type(request, id):
+def checkpoint_list(request):
+    checkpoints = Checkpoint.objects.all()
+
+    page = get_page(request, model=checkpoints)
+
+    context = {
+        "page": page,
+    }
+    return render(request, "fire_prevention/checkpoint/list.html", context)
+
+
+def create_checkpoint(request):
+    if request.method == "POST":
+        form = CreateCheckpointForm(request.POST)
+        if form.is_valid():
+            checkpoint = form.save(commit=False)
+            checkpoint.created_by = request.user
+            checkpoint.save()
+            return redirect("she:checkpoint_list")
+    else:
+        form = CreateCheckpointForm()
+    context = {"form": form}
+    return render(request, "fire_prevention/checkpoint/create.html", context)
+
+
+def fire_prevention_list(request):
+    fire_preventions = FirePrevention.objects.all()
+
+    page = get_page(request, model=fire_preventions)
+
+    context = {
+        "page": page,
+    }
+    return render(request, "fire_prevention/list.html", context)
+
+
+def create_fire_prevention(request):
+    if request.method == "POST":
+        form = CreateFirePreventionForm(request.POST)
+        if form.is_valid():
+            fire_prevention = form.save(commit=False)
+            fire_prevention.created_by = request.user
+            fire_prevention.save()
+            checkpoints = Checkpoint.objects.filter(active=True)
+            for c in checkpoints:
+                FPChecklist.objects.create(
+                    fire_prevention=fire_prevention,
+                    checkpoint=c,
+                )
+            return redirect("she:fire_prevention_list")
+    else:
+        form = CreateFirePreventionForm()
+
+    context = {
+        "form": form,
+    }
+    return render(request, "fire_prevention/create.html", context)
+
+
+def fire_prevention_detail(request, id):
     pass

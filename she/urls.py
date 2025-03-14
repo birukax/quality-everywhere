@@ -28,4 +28,19 @@ urlpatterns = [
     path(
         "incident/type/create", views.create_incident_type, name="create_incident_type"
     ),
+    path(
+        "fire-prevention/list", views.fire_prevention_list, name="fire_prevention_list"
+    ),
+    path(
+        "fire-prevention/create",
+        views.create_fire_prevention,
+        name="create_fire_prevention",
+    ),
+    path(
+        "fire-prevention/detail/<int:id>",
+        views.fire_prevention_detail,
+        name="fire_prevention_detail",
+    ),
+    path("checkpoint/list", views.checkpoint_list, name="checkpoint_list"),
+    path("checkpoint/create", views.create_checkpoint, name="create_checkpoint"),
 ]

@@ -1,4 +1,4 @@
-{% extends 'form.html' %}
+{% extends "form.html" %}
 {% block title %}Create First-Off{% endblock %}
 {% block form %}
     <div class=" bg-gray-50 max-w-lg mx-auto">
@@ -6,7 +6,9 @@
               method="post"
               action="{% url 'assessment:create_first_off' job_test.id %}">
             {% csrf_token %}
-            <p class="py-2  text-base  text-gray-700 tracking-wider uppercase">{{ job_test }} - {{job_test.current_machine.name}}</p>
+            <p class="py-2  text-base  text-gray-700 tracking-wider uppercase">
+                {{ job_test }} - {{ job_test.current_machine.name }}
+            </p>
             <div class="flex-col gap-2 mb-4 mx-auto">
                 <p class="text-red-700 text-sm">
                     {% if form.non_field_errors %}{{ form.non_field_errors|join:", " }}{% endif %}

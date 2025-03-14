@@ -9,6 +9,9 @@ from .models import (
     IncidentType,
     Incident,
     Employee,
+    FirePrevention,
+    Checkpoint,
+    FPChecklist,
 )
 
 
@@ -217,5 +220,30 @@ class CreateRemarkForm(forms.ModelForm):
                     "class": "w-full",
                     "rows": "2",
                 }
+            ),
+        }
+
+
+class CreateCheckpointForm(forms.ModelForm):
+    class Meta:
+        model = Checkpoint
+        fields = ("name",)
+        widgets = {
+            "name": forms.Textarea(
+                attrs={
+                    "class": "w-full",
+                    "rows": "3",
+                }
+            ),
+        }
+
+
+class CreateFirePreventionForm(forms.ModelForm):
+    class Meta:
+        model = FirePrevention
+        fields = ("shift",)
+        widgets = {
+            "shift": forms.Select(
+                attrs={"class": "w-full items-center text-center h-auto"}
             ),
         }
