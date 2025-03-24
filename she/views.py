@@ -185,7 +185,7 @@ def create_incident(request):
 
 
 @login_required
-@role_check(["ADMIN", "MANAGER", "SAFETY"])
+@role_check(["ADMIN", "SAFETY", "MANAGER", "SUPERVISOR"])
 def department_list(request):
     departments = Department.objects.all()
     department_filter = DepartmentFilter(
@@ -203,14 +203,14 @@ def department_list(request):
 
 
 @login_required
-@role_check(["ADMIN", "MANAGER", "SAFETY"])
+@role_check(["ADMIN", "SAFETY", "MANAGER", "SUPERVISOR"])
 def get_departments(request):
     departments_get()
     return redirect("she:department_list")
 
 
 @login_required
-@role_check(["ADMIN", "MANAGER", "SAFETY"])
+@role_check(["ADMIN", "SAFETY", "MANAGER", "SUPERVISOR"])
 def employee_list(request):
     employees = Employee.objects.all()
     employee_filter = EmployeeFilter(
@@ -228,14 +228,14 @@ def employee_list(request):
 
 
 @login_required
-@role_check(["ADMIN", "MANAGER", "SAFETY"])
+@role_check(["ADMIN", "SAFETY", "MANAGER", "SUPERVISOR"])
 def get_employees(request):
     employees_get()
     return redirect("she:employee_list")
 
 
 @login_required
-@role_check(["ADMIN", "MANAGER", "SAFETY"])
+@role_check(["ADMIN", "SAFETY", "MANAGER", "SUPERVISOR"])
 def location_list(request):
     locations = Location.objects.all()
     location_filter = LocationFilter(
@@ -254,7 +254,7 @@ def location_list(request):
 
 
 @login_required
-@role_check(["ADMIN", "MANAGER", "SAFETY"])
+@role_check(["ADMIN", "SAFETY", "MANAGER", "SUPERVISOR"])
 def create_location(request):
     if request.method == "POST":
         form = CreateLocationForm(request.POST)
@@ -271,13 +271,13 @@ def create_location(request):
 
 
 @login_required
-@role_check(["ADMIN", "MANAGER", "SAFETY"])
+@role_check(["ADMIN", "SAFETY", "MANAGER", "SUPERVISOR"])
 def edit_location(request, id):
     pass
 
 
 @login_required
-@role_check(["ADMIN", "MANAGER", "SAFETY"])
+@role_check(["ADMIN", "SAFETY", "MANAGER", "SUPERVISOR"])
 def issue_type_list(request):
     issue_types = IssueType.objects.all()
     issue_type_filter = IssueTypeFilter(
@@ -295,7 +295,7 @@ def issue_type_list(request):
 
 
 @login_required
-@role_check(["ADMIN", "MANAGER", "SAFETY"])
+@role_check(["ADMIN", "SAFETY", "MANAGER", "SUPERVISOR"])
 def create_issue_type(request):
     if request.method == "POST":
         form = CreateIssueTypeForm(request.POST)
@@ -308,13 +308,13 @@ def create_issue_type(request):
 
 
 @login_required
-@role_check(["ADMIN", "MANAGER", "SAFETY"])
+@role_check(["ADMIN", "SAFETY", "MANAGER", "SUPERVISOR"])
 def edit_issue_type(request, id):
     pass
 
 
 @login_required
-@role_check(["ADMIN", "MANAGER", "SAFETY"])
+@role_check(["ADMIN", "SAFETY", "MANAGER", "SUPERVISOR"])
 def create_incident_type(request):
     if request.method == "POST":
         form = CreateIncidentTypeForm(request.POST)
@@ -327,7 +327,7 @@ def create_incident_type(request):
 
 
 @login_required
-@role_check(["ADMIN", "MANAGER", "SAFETY"])
+@role_check(["ADMIN", "SAFETY", "MANAGER", "SUPERVISOR"])
 def incident_type_list(request):
     incident_types = IncidentType.objects.all()
     incident_type_filter = IncidentTypeFilter(
@@ -345,7 +345,7 @@ def incident_type_list(request):
 
 
 @login_required
-@role_check(["ADMIN", "MANAGER", "SAFETY"])
+@role_check(["ADMIN", "SAFETY", "MANAGER", "SUPERVISOR"])
 def checkpoint_list(request):
     checkpoints = Checkpoint.objects.all()
 
@@ -358,7 +358,7 @@ def checkpoint_list(request):
 
 
 @login_required
-@role_check(["ADMIN", "MANAGER", "SAFETY"])
+@role_check(["ADMIN", "SAFETY", "MANAGER", "SUPERVISOR"])
 def create_checkpoint(request):
     if request.method == "POST":
         form = CreateCheckpointForm(request.POST)
@@ -374,7 +374,7 @@ def create_checkpoint(request):
 
 
 @login_required
-@role_check(["ADMIN", "MANAGER", "SAFETY"])
+@role_check(["ADMIN", "SAFETY", "MANAGER", "SUPERVISOR"])
 def fire_prevention_list(request):
     fire_preventions = FirePrevention.objects.all()
 
@@ -387,7 +387,7 @@ def fire_prevention_list(request):
 
 
 @login_required
-@role_check(["ADMIN", "MANAGER", "SAFETY"])
+@role_check(["ADMIN", "SAFETY", "MANAGER", "SUPERVISOR"])
 def create_fire_prevention(request):
     if request.method == "POST":
         form = CreateFirePreventionForm(request.POST)
@@ -412,7 +412,7 @@ def create_fire_prevention(request):
 
 
 @login_required
-@role_check(["ADMIN", "MANAGER", "SAFETY"])
+@role_check(["ADMIN", "SAFETY", "MANAGER", "SUPERVISOR"])
 def fire_prevention_detail(request, id):
     fire_prevention = get_object_or_404(FirePrevention, id=id)
     can_submit = True
@@ -433,7 +433,7 @@ def fire_prevention_detail(request, id):
 
 
 @login_required
-@role_check(["ADMIN", "MANAGER", "SAFETY"])
+@role_check(["ADMIN", "SAFETY", "MANAGER", "SUPERVISOR"])
 def save_fp_checklist(request, id):
     fire_prevention = get_object_or_404(FirePrevention, id=id)
     checklist_formset = modelformset_factory(FPChecklist, form=FPChecklistForm, extra=0)

@@ -97,8 +97,11 @@ def reject_assessment(request, id):
 
 
 @login_required
+@role_check(["ADMIN", "SAFETY", "MANAGER", "SUPERVISOR"])
 def fire_prevention_list(request):
-    apps = FirePreventionApproval.objects.filter(status="PENDING")
+    apps = FirePreventionApproval.objects.filter(
+        status="PENDING", approver=request.user.profile.role
+    )
     page = get_page(request, model=apps)
     context = {
         "page": page,
@@ -125,6 +128,7 @@ def create_fire_prevention_approval(request, id):
 
 
 @login_required
+@role_check(["ADMIN", "SAFETY", "MANAGER"])
 def approve_fire_prevention(request, id):
     fire_prevention_approval = get_object_or_404(FirePreventionApproval, id=id)
     fire_prevention = FirePrevention.objects.get(
@@ -148,6 +152,7 @@ def approve_fire_prevention(request, id):
 
 
 @login_required
+@role_check(["ADMIN", "SAFETY", "MANAGER"])
 def reject_fire_prevention(request, id):
     fire_prevention_approval = get_object_or_404(FirePreventionApproval, id=id)
     fire_prevention = FirePrevention.objects.get(
