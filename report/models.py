@@ -4,6 +4,7 @@ from django.contrib.auth.models import User as auth_user
 REPORT_LIST = (
     ("FIRST-OFF", "FIRST-OFF"),
     ("ON-PROCESS", "ON-PROCESS"),
+    ("FIRE-PREVENTION", "FIRE-PREVENTION"),
 )
 
 

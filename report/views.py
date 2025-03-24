@@ -5,8 +5,10 @@ from main.tasks import get_page, role_check
 from django.http import FileResponse
 from job.models import JobTest
 from assessment.models import Assessment
-from report.reports.assessment import FirstOff, OnProcess
 from .models import ReportHeader
+from she.models import FirePrevention
+from report.reports.assessment import FirstOffReport, OnProcessReport
+from report.reports.fire_prevention import FirePreventionReport
 from .forms import CreateReportHeaderForm, EditReportHeaderForm
 
 
@@ -70,13 +72,19 @@ def get_assessment_report(request, id):
         if assessment.report_header == None:
             return redirect("job:test_detail", id=id)
         if assessment.type == "FIRST-OFF":
-            first_off = FirstOff(
-                buffer=buffer, elements=elements, assessment=assessment, id=id
+            first_off = FirstOffReport(
+                buffer=buffer,
+                elements=elements,
+                assessment=assessment,
+                id=id,
             )
             first_off.create()
         elif assessment.type == "ON-PROCESS":
-            on_process = OnProcess(
-                buffer=buffer, elements=elements, assessment=assessment, id=id
+            on_process = OnProcessReport(
+                buffer=buffer,
+                elements=elements,
+                assessment=assessment,
+                id=id,
             )
             on_process.create()
     first_off.save()
@@ -88,4 +96,30 @@ def get_assessment_report(request, id):
         filename=f"{job_test.job.no}-{job_test.no}-{job_test.job.product.name}.pdf",
     )
 
+    return response
+
+
+def get_fire_prevention_report(request, id):
+    buffer = BytesIO()
+    elements = []
+    fire_prevention = get_object_or_404(FirePrevention, id=id)
+    report_header = ReportHeader.objects.filter(report="FIRE-PREVENTION")
+    if report_header.exists():
+        fire_prevention_report = FirePreventionReport(
+            buffer=buffer,
+            elements=elements,
+            report_header=report_header,
+            id=id,
+        )
+        fire_prevention_report.create()
+        fire_prevention_report.save()
+    else:
+        return redirect("she:fire_prevention_detail", id=id)
+    buffer.seek(0)
+    response = FileResponse(
+        buffer,
+        content_type="application/pdf",
+        as_attachment=True,
+        filename=f"fire-prevention-{fire_prevention.shift.name}.pdf",
+    )
     return response

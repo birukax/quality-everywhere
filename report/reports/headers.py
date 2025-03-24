@@ -44,7 +44,13 @@ class Header(Flowable):
     def draw(self):
         doc_no = self.report_header.no
         # machine = "BOBST"
-        h_text = f"{self.assessment_type} INSPECTION FOR {self.machine.name.upper()}"
+        if self.report_header.report in ["FIRST-OFF", "ON-PROCESS"]:
+            h_text = (
+                f"{self.assessment_type} INSPECTION FOR {self.machine.name.upper()}"
+            )
+        elif self.report_header.report == "FIRE-PREVENTION":
+            h_text = "OPERATIONAL FIRE PREVENTION CHECKLIST"
+
         page_no = 1
         logo_path = os.path.join(settings.STATIC_ROOT, "logo_sm.png")
         img = utils.ImageReader(logo_path)

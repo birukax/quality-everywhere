@@ -19,136 +19,16 @@ from job.models import Job, JobTest
 from misc.models import Color
 from machine.models import Machine
 from report.models import ReportHeader
+from report.reports import BaseReport
 
 
-class BaseAssessmentReport:
+class BaseAssessmentReport(BaseReport):
     def __init__(self, buffer, elements, id):
-        self.doc = SimpleDocTemplate(
-            buffer,
-            pagesize=A4,
-            rightMargin=18,
-            leftMargin=18,
-            topMargin=18,
-            bottomMargin=18,
-        )
-        self.elements = elements
-        self.styles = getSampleStyleSheet()
-        self.colors = colors
-        self.width, self.height = A4
+        BaseReport.__init__(self, buffer, elements)
         self.job_test = JobTest.objects.get(id=id)
 
-    def save(self):
-        self.doc.build(self.elements)
 
-    def coord(self, x, y, unit=1):
-        x, y = x * unit, self.height - y * unit
-        return x, y
-
-    def ptext(self, name, value, align="left"):
-
-        fsize = 9
-        return Paragraph(
-            """<para align={align} size={fsize}>{name}:<font color=darkslategray> <b>  {value}  </b></font></para>""".format(
-                fsize=fsize, name=name, value=value, align=align
-            ),
-            self.styles["Normal"],
-        )
-
-    def fotext(self, name, value, remark):
-        fsize = 10
-        value_color = "black"
-        if remark == None:
-            remark = "No Remark"
-        if value:
-            value_color = "green"
-            value = "Passed"
-        elif not value:
-            value_color = "red"
-            value = "Failed"
-        else:
-            value_color = "gray"
-            value = "Not Tested"
-        return Paragraph(
-            f"""<font>{name}: ---------- <font color={value_color}>{value}</font><br/>
-            Remark: ---------- {remark}
-            </font>"""
-        )
-
-    def split_list_ranges(self, rows=0, list_count=0):
-
-        if rows <= 0 or list_count <= 0:
-            return []
-        column_size = list_count // rows
-        reminder = list_count % rows
-        ranges = []
-        start = 0
-
-        for i in range(rows):
-            end = start + column_size
-            if i < reminder:
-                end += 1
-            ranges.append((start, end))
-            start = end
-        return ranges
-
-    def split_list_numbers(self, rows=0, list_count=0):
-        if rows <= 0 or list_count <= 0:
-            return []
-
-        column_size = list_count // rows
-        reminder = list_count % rows
-        result = []
-        start = 0
-
-        for i in range(rows):
-            end = start + column_size
-            if i < reminder:
-                end += 1
-            result.append(list(range(start, end)))
-            start = end
-
-        return result
-
-    def create_text(self, text, size=8, underline=False, bold=False, header=True):
-        if not header:
-            return Paragraph(
-                """
-                             <font size={size}>{text}</font>
-                             """.format(
-                    size=size, text=text
-                ),
-                self.styles["Normal"],
-            )
-        else:
-            if bold:
-                return Paragraph(
-                    """
-                                <font size={size}><b>{text}</b></font>
-                                """.format(
-                        size=size, text=text.upper()
-                    ),
-                    self.styles["Normal"],
-                )
-            if underline:
-                return Paragraph(
-                    """
-                                <font  size={size}><u>{text}</u></font>
-                                """.format(
-                        size=size, text=text
-                    ),
-                    self.styles["Normal"],
-                )
-            return Paragraph(
-                """
-                            <font size={size}>{text}</font>
-                            """.format(
-                    size=size, text=text
-                ),
-                self.styles["Normal"],
-            )
-
-
-class FirstOff(BaseAssessmentReport):
+class FirstOffReport(BaseAssessmentReport):
     def __init__(self, buffer, elements, assessment, id):
         BaseAssessmentReport.__init__(self, buffer, elements, id)
         self.first_off = assessment
@@ -161,7 +41,7 @@ class FirstOff(BaseAssessmentReport):
             machine=self.machine, report="FIRST-OFF"
         ).first()
 
-    def create_header(self):
+    def header(self):
         header = Header(
             width=(self.width - self.doc.rightMargin - self.doc.leftMargin),
             report_header=self.report_header,
@@ -169,7 +49,7 @@ class FirstOff(BaseAssessmentReport):
         self.elements.append(header)
         self.elements.append(Spacer(1, 10))
 
-    def create_job_info(self):
+    def job_info(self):
 
         job_text = self.ptext("Job", self.job_test, align="right")
         date_text = self.ptext("Date", self.first_off.date, align="right")
@@ -226,7 +106,7 @@ class FirstOff(BaseAssessmentReport):
         self.elements.append(Indenter(left=-20))
         self.elements.append(Spacer(1, 10))
 
-    def create_color_info(self):
+    def color_info(self):
 
         self.elements.append(
             self.create_text(
@@ -265,7 +145,7 @@ class FirstOff(BaseAssessmentReport):
         self.elements.append(Indenter(left=-20))
         self.elements.append(Spacer(1, 10))
 
-    def create_lamination_info(self):
+    def lamination_info(self):
 
         self.elements.append(
             self.create_text(
@@ -405,18 +285,18 @@ class FirstOff(BaseAssessmentReport):
         self.elements.append(Spacer(1, 10))
 
     def create(self):
-        self.create_header()
-        self.create_job_info()
-        self.create_color_info()
+        self.header()
+        self.job_info()
+        self.color_info()
         if self.machine.type == "LAMINATION":
-            self.create_lamination_info()
+            self.lamination_info()
         self.first_off_info()
         self.inspection_info()
         self.elements.append(PageBreak())
         # self.save()
 
 
-class OnProcess(BaseAssessmentReport):
+class OnProcessReport(BaseAssessmentReport):
     def __init__(self, buffer, elements, assessment, id):
         BaseAssessmentReport.__init__(self, buffer, elements, id)
         self.on_process = assessment
@@ -424,7 +304,7 @@ class OnProcess(BaseAssessmentReport):
         self.machine = assessment.machine
         self.report_header = assessment.report_header
 
-    def create_header(self):
+    def header(self):
         header = Header(
             width=(self.width - self.doc.rightMargin - self.doc.leftMargin),
             report_header=self.report_header,
@@ -432,7 +312,7 @@ class OnProcess(BaseAssessmentReport):
         self.elements.append(header)
         self.elements.append(Spacer(1, 10))
 
-    def create_job_info(self):
+    def job_info(self):
         colWidths = [200, 200, 120]
 
         data = [
@@ -459,7 +339,7 @@ class OnProcess(BaseAssessmentReport):
         self.elements.append(Indenter(left=-20))
         self.elements.append(Spacer(1, 10))
 
-    def create_inspection_section(self):
+    def inspection_section(self):
         self.elements.append(self.create_text("Inspection Section", bold=True, size=10))
         self.elements.append(Spacer(1, 10))
         colWidths = [95, 65, 65, 65, 65, 190]
@@ -502,7 +382,7 @@ class OnProcess(BaseAssessmentReport):
         # self.elements.append(Indenter(left=-20))
         self.elements.append(Spacer(1, 10))
 
-    def create_viscosity_section(self):
+    def viscosity_section(self):
         self.elements.append(self.create_text("Viscosity Section", bold=True, size=10))
         self.elements.append(Spacer(1, 5))
 
@@ -557,10 +437,10 @@ class OnProcess(BaseAssessmentReport):
         self.elements.append(controlled_image)
 
     def create(self):
-        self.create_header()
-        self.create_job_info()
-        self.create_inspection_section()
+        self.header()
+        self.job_info()
+        self.inspection_section()
         if self.machine.viscosity_test:
-            self.create_viscosity_section()
+            self.viscosity_section()
         self.inspection_info()
         self.elements.append(PageBreak())

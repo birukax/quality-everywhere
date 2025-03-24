@@ -5,9 +5,14 @@ app_name = "report"
 
 urlpatterns = [
     path(
-        "assessment/get/<int:id>/",
+        "assessment/get/<int:id>",
         views.get_assessment_report,
         name="get_assessment_report",
+    ),
+    path(
+        "fire-prevention/get/<int:id>",
+        views.get_fire_prevention_report,
+        name="get_fire_prevention_report",
     ),
     path("header/list", views.header_list, name="header_list"),
     path("header/create", views.create_header, name="create_header"),

@@ -17,7 +17,9 @@
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12l4-4m-4 4 4 4" />
                     </svg>
                 </a>
-                <p class="text-base md:text-lg font-semibold uppercase text-gray-600 ">{{ fire_prevention.job_test.job }}</p>
+                <p class="text-base md:text-lg font-semibold uppercase text-gray-600 ">
+                    {{ fire_prevention.created_at.date }} - {{ fire_prevention.shift.name }}
+                </p>
             </div>
             <div class="flex place-content-end">
                 <div class="flex flex-wrap gap-4  ">
@@ -35,6 +37,14 @@
                     {% endif %}
                     {% if fire_prevention.status == 'COMPLETED' or fire_prevention.status == 'REJECTED' or fire_prevention.status == 'PENDING' %}
                         <div>{% include "fire_prevention/approval/list.html" %}</div>
+                    {% endif %}
+                    {% if fire_prevention.status == 'COMPLETED' %}
+                        <div>
+                            <a href="{% url 'report:get_fire_prevention_report' fire_prevention.id %}"
+                               class="text-white inline-flex items-center bg-gray-700 hover:bg-gray-800 focus:ring-2 focus:outline-none focus:ring-gray-300 font-medium rounded-lg uppercase text-xs tracking-widest  px-4 py-1.5 text-center">
+                                Get Report
+                            </a>
+                        </div>
                     {% endif %}
                 </div>
             </div>
