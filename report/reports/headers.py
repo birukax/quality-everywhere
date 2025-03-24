@@ -8,12 +8,14 @@ from reportlab.lib import colors, utils
 
 
 class Header(Flowable):
-    def __init__(self, assessment_type, machine, width=550, height=70):
+    def __init__(self, report_header, width=550, height=70):
         Flowable.__init__(self)
         self.width = width
         self.height = height
-        self.assessment_type = assessment_type
-        self.machine = machine
+        self.report_header = report_header
+        self.assessment_type = self.report_header.report
+        self.machine = self.report_header.machine
+
         self.styles = getSampleStyleSheet()
 
     def coord(self, x, y, unit=1):
@@ -40,7 +42,7 @@ class Header(Flowable):
         )
 
     def draw(self):
-        doc_no = "QL-P-FPR-001"
+        doc_no = self.report_header.no
         # machine = "BOBST"
         h_text = f"{self.assessment_type} INSPECTION FOR {self.machine.name.upper()}"
         page_no = 1

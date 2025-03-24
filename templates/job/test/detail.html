@@ -1,5 +1,7 @@
 {% extends "base.html" %}
-{% block title %}Job Test Detail{% endblock %}
+{% block title %}
+    Job Test Detail
+{% endblock title %}
 {% load humanize %}
 {% block content %}
     <div class="mx-auto ">
@@ -23,7 +25,7 @@
                     {% endif %}
                     {% if job_test.status == 'FINISHED' or job_test.status == 'COMPLETED' %}
                         <div>
-                            <a href="{% url 'report:get_report' job_test.id %}"
+                            <a href="{% url 'report:get_assessment_report' job_test.id %}"
                                class="text-white inline-flex items-center bg-gray-700 hover:bg-gray-800 focus:ring-2 focus:outline-none focus:ring-gray-300 font-medium rounded-lg uppercase text-xs tracking-widest  px-4 py-1.5 text-center">
                                 Get Report
                             </a>

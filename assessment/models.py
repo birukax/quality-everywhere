@@ -3,6 +3,7 @@ import datetime
 from django.contrib.auth.models import User
 from django.urls import reverse
 import django.utils.timezone
+from report.models import ReportHeader
 from main.validators import validate_ratio_format
 
 
@@ -59,6 +60,14 @@ class Assessment(models.Model):
 
     def __str__(self):
         return f"{self.job_test.job} - {self.machine}"
+
+    @property
+    def report_header(self):
+        header = ReportHeader.objects.filter(report=self.type, machine=self.machine)
+        if header.exists():
+            return header.first()
+        else:
+            return None
 
 
 class Test(models.Model):
