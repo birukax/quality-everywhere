@@ -19,12 +19,16 @@ from .models import (
 )
 from .forms import (
     CreateLocationForm,
+    EditLocationForm,
     CreateIssueTypeForm,
+    EditIssueTypeForm,
     CreateIssueForm,
     CreateRemarkForm,
     CreateIncidentForm,
     CreateIncidentTypeForm,
+    EditIncidentTypeForm,
     CreateCheckpointForm,
+    EditCheckpointForm,
     CreateFirePreventionForm,
     FPChecklistForm,
     SubmitFPChecklistForm,
@@ -273,7 +277,21 @@ def create_location(request):
 @login_required
 @role_check(["ADMIN", "SAFETY", "MANAGER", "SUPERVISOR"])
 def edit_location(request, id):
-    pass
+    location = get_object_or_404(Location, id=id)
+    if not location.have_issues:
+        if request.method == "POST":
+            form = EditLocationForm(request.POST, instance=location)
+            if form.is_valid():
+                form.save()
+                return redirect("she:location_list")
+        else:
+            form = EditLocationForm(instance=location)
+
+        context = {
+            "form": form,
+            "location": location,
+        }
+    return render(request, "issue/location/edit.html", context)
 
 
 @login_required
@@ -304,13 +322,26 @@ def create_issue_type(request):
             return redirect("she:issue_type_list")
     else:
         form = CreateIssueTypeForm()
-    return render(request, "issue/type/create.html", {"form": form})
+    context = {"form": form}
+    return render(request, "issue/type/create.html", context)
 
 
 @login_required
 @role_check(["ADMIN", "SAFETY", "MANAGER", "SUPERVISOR"])
 def edit_issue_type(request, id):
-    pass
+    issue_type = get_object_or_404(IssueType, id=id)
+    if request.method == "POST":
+        form = EditIssueTypeForm(request.POST, instance=issue_type)
+        if form.is_valid():
+            form.save()
+            return redirect("she:issue_type_list")
+    else:
+        form = EditIssueTypeForm(instance=issue_type)
+    context = {
+        "form": form,
+        "issue_type": issue_type,
+    }
+    return render(request, "issue/type/edit.html", context)
 
 
 @login_required
@@ -324,6 +355,24 @@ def create_incident_type(request):
     else:
         form = CreateIncidentTypeForm()
     return render(request, "incident/type/create.html", {"form": form})
+
+
+@login_required
+@role_check(["ADMIN", "SAFETY", "MANAGER", "SUPERVISOR"])
+def edit_incident_type(request, id):
+    incident_type = get_object_or_404(IncidentType, id=id)
+    if request.method == "POST":
+        form = EditIncidentTypeForm(request.POST, instance=incident_type)
+        if form.is_valid():
+            form.save()
+            return redirect("she:incident_type_list")
+    else:
+        form = EditIncidentTypeForm(instance=incident_type)
+    context = {
+        "form": form,
+        "incident_type": incident_type,
+    }
+    return render(request, "incident/type/edit.html", context)
 
 
 @login_required
@@ -371,6 +420,25 @@ def create_checkpoint(request):
         form = CreateCheckpointForm()
     context = {"form": form}
     return render(request, "fire_prevention/checkpoint/create.html", context)
+
+
+@login_required
+@role_check(["ADMIN", "SAFETY", "MANAGER", "SUPERVISOR"])
+def edit_checkpoint(request, id):
+    checkpoint = get_object_or_404(Checkpoint, id=id)
+    if request.method == "POST":
+        form = EditCheckpointForm(request.POST, instance=checkpoint)
+        if form.is_valid():
+            form.save()
+            return redirect("she:checkpoint_list")
+
+    else:
+        form = EditCheckpointForm(instance=checkpoint)
+    context = {
+        "form": form,
+        "checkpoint": checkpoint,
+    }
+    return render(request, "fire_prevention/checkpoint/edit.html", context)
 
 
 @login_required

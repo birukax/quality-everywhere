@@ -1,14 +1,19 @@
 {% extends "form.html" %}
+{% block title %}
+    Edit Checkpoint
+{% endblock title %}
 {% block form %}
     <div class=" bg-gray-50">
         <form class="p-4 md:p-5 "
               method="post"
-              action="{% url 'assessment:edit_test' test.id %}">
+              action="{% url 'she:edit_checkpoint' checkpoint.id %}">
             {% csrf_token %}
-            <div class="flex-col gap-2 mb-4 mx-auto">
+            <div class="grid sm:grid-cols-2 gap-2 mb-4 mx-auto">
                 {% for field in form %}
-                    {{ field.label_tag }}
-                    <div class="flex-col ">{{ field }}</div>
+                    <div class="{% if field.name == 'name' %}col-span-2 {% endif %} ">
+                        {{ field.label_tag }}
+                        <div class="flex-col ">{{ field }}</div>
+                    </div>
                 {% endfor %}
             </div>
             <div class="flex gap-4">
@@ -16,7 +21,7 @@
                         class="text-white inline-flex items-center bg-gray-700 hover:bg-gray-800 focus:ring-2 focus:outline-none focus:ring-gray-300 font-medium rounded-lg uppercase text-xs tracking-widest  px-4 py-1.5 text-center">
                     Save
                 </button>
-                <a href="{% url 'assessment:test_list' %}"
+                <a href="{% url 'she:checkpoint_list' %}"
                    class=" inline-flex items-center bg-gray-200 hover:bg-gray-300 focus:ring-2 focus:outline-none focus:ring-gray-400 font-medium rounded-lg uppercase text-xs tracking-widest  px-4 py-1.5 text-center">
                     Cancel
                 </a>

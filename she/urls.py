@@ -29,6 +29,11 @@ urlpatterns = [
         "incident/type/create", views.create_incident_type, name="create_incident_type"
     ),
     path(
+        "incident/type/edit/<int:id>",
+        views.edit_incident_type,
+        name="edit_incident_type",
+    ),
+    path(
         "fire-prevention/list", views.fire_prevention_list, name="fire_prevention_list"
     ),
     path(
@@ -53,5 +58,10 @@ urlpatterns = [
         "fire-prevention/checkpoint/create",
         views.create_checkpoint,
         name="create_checkpoint",
+    ),
+    path(
+        "fire-prevention/checkpoint/edit/<int:id>",
+        views.edit_checkpoint,
+        name="edit_checkpoint",
     ),
 ]

@@ -19,12 +19,44 @@ class CreateLocationForm(forms.ModelForm):
     class Meta:
         model = Location
         fields = ("name",)
+        widgets = {
+            "name": forms.TextInput(attrs={"class": "w-full text-center h-auto"}),
+        }
+
+
+class EditLocationForm(forms.ModelForm):
+    class Meta:
+        model = Location
+        fields = ("name", "active")
+        widgets = {
+            "name": forms.TextInput(attrs={"class": "w-full text-center h-auto"}),
+            "active": forms.Select(
+                attrs={"class": "w-full text-center h-auto"},
+                choices=(((False, "No"), (True, "Yes"))),
+            ),
+        }
 
 
 class CreateIssueTypeForm(forms.ModelForm):
     class Meta:
         model = IssueType
         fields = ("name",)
+        widgets = {
+            "name": forms.TextInput(attrs={"class": "w-full text-center h-auto"}),
+        }
+
+
+class EditIssueTypeForm(forms.ModelForm):
+    class Meta:
+        model = IssueType
+        fields = ("name", "active")
+        widgets = {
+            "name": forms.TextInput(attrs={"class": "w-full text-center h-auto"}),
+            "active": forms.Select(
+                attrs={"class": "w-full text-center h-auto"},
+                choices=(((False, "No"), (True, "Yes"))),
+            ),
+        }
 
 
 class CreateIssueForm(forms.ModelForm):
@@ -71,6 +103,22 @@ class CreateIncidentTypeForm(forms.ModelForm):
     class Meta:
         model = IncidentType
         fields = ("name",)
+        widgets = {
+            "name": forms.TextInput(attrs={"class": "w-full text-center h-auto"}),
+        }
+
+
+class EditIncidentTypeForm(forms.ModelForm):
+    class Meta:
+        model = IncidentType
+        fields = ("name", "active")
+        widgets = {
+            "name": forms.TextInput(attrs={"class": "w-full text-center h-auto"}),
+            "active": forms.Select(
+                attrs={"class": "w-full text-center h-auto"},
+                choices=(((False, "No"), (True, "Yes"))),
+            ),
+        }
 
 
 class CreateIncidentForm(forms.ModelForm):
@@ -178,10 +226,10 @@ class CreateIncidentForm(forms.ModelForm):
     )
 
     location = forms.ModelChoiceField(
-        queryset=Location.objects.all(),
+        queryset=Location.objects.filter(active=True),
         widget=s2forms.ModelSelect2Widget(
             model=Location,
-            queryset=Location.objects.all(),
+            queryset=Location.objects.filter(active=True),
             search_fields=["name__icontains"],
             max_results=5,
             attrs={"class": "w-full text-center h-auto"},
@@ -189,10 +237,10 @@ class CreateIncidentForm(forms.ModelForm):
     )
 
     type = forms.ModelChoiceField(
-        queryset=IncidentType.objects.all(),
+        queryset=IncidentType.objects.filter(active=True),
         widget=s2forms.ModelSelect2Widget(
             model=IncidentType,
-            queryset=IncidentType.objects.all(),
+            queryset=IncidentType.objects.filter(active=True),
             search_fields=["name__icontains"],
             max_results=5,
             attrs={"class": "w-full text-center h-auto"},
@@ -234,6 +282,28 @@ class CreateCheckpointForm(forms.ModelForm):
                     "class": "w-full",
                     "rows": "2",
                 }
+            ),
+            "active": forms.Select(
+                attrs={"class": "w-full text-center h-auto"},
+                choices=(((False, "No"), (True, "Yes"))),
+            ),
+        }
+
+
+class EditCheckpointForm(forms.ModelForm):
+    class Meta:
+        model = Checkpoint
+        fields = ("name", "active")
+        widgets = {
+            "name": forms.Textarea(
+                attrs={
+                    "class": "w-full",
+                    "rows": "2",
+                }
+            ),
+            "active": forms.Select(
+                attrs={"class": "w-full text-center h-auto"},
+                choices=(((False, "No"), (True, "Yes"))),
             ),
         }
 
