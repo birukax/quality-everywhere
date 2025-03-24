@@ -68,7 +68,7 @@ class RawMaterial(models.Model):
         if self.thickness == None:
             return self.name
         else:
-            return self.name + "-" + self.thickness
+            return f"{self.name} - {self.thickness}"
 
 
 class Shift(models.Model):
