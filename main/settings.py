@@ -45,7 +45,6 @@ INSTALLED_APPS = [
     "django.contrib.humanize",
     "session_security",
     "imagekit",
-    "compressor",
     "django_filters",
     "django_select2",
     "misc",
@@ -57,6 +56,7 @@ INSTALLED_APPS = [
     "approval",
     "she",
     "report",
+    "compressor",
     # "rest_framework",
 ]
 
@@ -144,6 +144,9 @@ USE_TZ = False
 WHITENOISE_MANIFEST_STRICT = False
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+if DEBUG:
+    WHITENOISE_AUTOREFRESH = True
+
 STATIC_URL = "/static/"
 # STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
 STATIC_ROOT = BASE_DIR / "static/"
@@ -161,7 +164,7 @@ COMPRESS_ROOT = STATIC_ROOT
 COMPRESS_ENABLED = True
 # COMPRESS_OFFLINE = True
 # STATICFILES_DIRS = [
-#     BASE_DIR / 'static',
+#     BASE_DIR / "static",
 # ]
 COMPRESS_URL = STATIC_URL
 STATICFILES_FINDERS = (

@@ -34,6 +34,9 @@ class CreateReportHeaderForm(forms.ModelForm):
                     "machine",
                     f"Machine can't be empty for {report} report",
                 )
+        else:
+            if ReportHeader.objects.filter(report=report).exists():
+                self.add_error("report", f"{report} report already exists")
         return cleaned_data
 
 

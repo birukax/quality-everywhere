@@ -50,7 +50,8 @@ class Header(Flowable):
             )
         elif self.report_header.report == "FIRE-PREVENTION":
             h_text = "OPERATIONAL FIRE PREVENTION CHECKLIST"
-
+        elif self.report_header.report == "INCIDENT":
+            h_text = "INCIDENT REPORT"
         page_no = 1
         logo_path = os.path.join(settings.STATIC_ROOT, "logo_sm.png")
         img = utils.ImageReader(logo_path)

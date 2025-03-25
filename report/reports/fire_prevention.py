@@ -1,22 +1,15 @@
 import os
 from django.conf import settings
-from reportlab.lib.pagesizes import A4
 from reportlab.platypus import (
-    SimpleDocTemplate,
-    Paragraph,
     Spacer,
     Indenter,
     Table,
     TableStyle,
     Image,
-    PageBreak,
 )
-from reportlab.lib.styles import getSampleStyleSheet
 from .headers import Header
 from reportlab.lib import colors, utils
 from she.models import Checkpoint, FirePrevention, FPChecklist
-from machine.models import Machine
-from report.models import ReportHeader
 from report.reports import BaseReport
 
 
@@ -51,7 +44,7 @@ class FirePreventionReport(BaseFPReport):
                 [
                     self.create_text(text=i + 1, size=9),
                     self.create_text(text=c.checkpoint.name, size=9),
-                    self.create_text(text=c.value, size=9),
+                    self.create_text(text=c.get_value_display(), size=9),
                     self.create_text(text=c.remark, size=9),
                 ]
                 for i, c in enumerate(self.checklists)
@@ -76,7 +69,9 @@ class FirePreventionReport(BaseFPReport):
         )
         self.elements.append(Spacer(1, 5))
         self.elements.append(Indenter(left=20))
-        self.elements.append(self.create_text(self.fire_prevention.comment, size=9))
+        self.elements.append(
+            self.create_text(f"- {self.fire_prevention.comment}", size=9)
+        )
         self.elements.append(Indenter(left=-20))
         self.elements.append(Spacer(1, 20))
 
@@ -89,23 +84,15 @@ class FirePreventionReport(BaseFPReport):
         controlled_image = Image(image_path, width=140, height=(140 * aspect))
         data = [
             [
-                "",
+                self.ptext("Shift", self.fire_prevention.shift.name),
                 self.create_text("Approved By", header=False, bold=True, size=9),
                 controlled_image,
             ],
             [
-                self.ptext("Shift", self.fire_prevention.shift.name),
+                self.ptext("Inspected by", self.fire_prevention.inspected_by.username),
                 self.ptext(
                     self.fire_prevention.approvals.all()[0].approver,
                     self.fire_prevention.approvals.all()[0].by.username,
-                ),
-                "",
-            ],
-            [
-                self.ptext("Inspected by:", self.fire_prevention.inspected_by.username),
-                self.ptext(
-                    self.fire_prevention.approvals.all()[1].approver,
-                    self.fire_prevention.approvals.all()[1].by.username,
                 ),
                 "",
             ],
@@ -114,6 +101,14 @@ class FirePreventionReport(BaseFPReport):
                     "Created At",
                     self.fire_prevention.created_at.strftime("%d-%m-%Y %I:%M %p"),
                 ),
+                self.ptext(
+                    self.fire_prevention.approvals.all()[1].approver,
+                    self.fire_prevention.approvals.all()[1].by.username,
+                ),
+                "",
+            ],
+            [
+                "",
                 "",
                 "",
             ],

@@ -41,9 +41,9 @@ class BaseReport:
         x, y = x * unit, self.height - y * unit
         return x, y
 
-    def ptext(self, name, value, align="left"):
+    def ptext(self, name, value, fsize=9, align="left"):
 
-        fsize = 9
+        fsize = fsize
         return Paragraph(
             """<para align={align} size={fsize}>{name}:<font color=darkslategray> <b>  {value}  </b></font></para>""".format(
                 fsize=fsize, name=name, value=value, align=align

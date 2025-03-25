@@ -6,9 +6,10 @@ from django.http import FileResponse
 from job.models import JobTest
 from assessment.models import Assessment
 from .models import ReportHeader
-from she.models import FirePrevention
+from she.models import FirePrevention, Incident
 from report.reports.assessment import FirstOffReport, OnProcessReport
 from report.reports.fire_prevention import FirePreventionReport
+from report.reports.incident import IncidentReport
 from .forms import CreateReportHeaderForm, EditReportHeaderForm
 
 
@@ -103,7 +104,9 @@ def get_fire_prevention_report(request, id):
     buffer = BytesIO()
     elements = []
     fire_prevention = get_object_or_404(FirePrevention, id=id)
-    report_header = ReportHeader.objects.filter(report="FIRE-PREVENTION")
+    report_header = ReportHeader.objects.filter(report="FIRE-PREVENTION").order_by(
+        "-created_at"
+    )
     if report_header.exists():
         fire_prevention_report = FirePreventionReport(
             buffer=buffer,
@@ -120,6 +123,34 @@ def get_fire_prevention_report(request, id):
         buffer,
         content_type="application/pdf",
         as_attachment=True,
-        filename=f"fire-prevention-{fire_prevention.shift.name}.pdf",
+        filename=f"fire-prevention-{fire_prevention.shift.name}-{fire_prevention.created_at.date().strftime("%d-%m-%Y")}.pdf",
+    )
+    return response
+
+
+def get_incident_report(reqeust, id):
+    buffer = BytesIO()
+    elements = []
+    incident = get_object_or_404(Incident, id=id)
+    report_header = ReportHeader.objects.filter(report="INCIDENT").order_by(
+        "-created_at"
+    )
+    if report_header.exists():
+        incident_report = IncidentReport(
+            buffer=buffer,
+            elements=elements,
+            report_header=report_header,
+            id=id,
+        )
+        incident_report.create()
+        incident_report.save()
+    else:
+        return redirect("she:incident_detail", id=id)
+    buffer.seek(0)
+    response = FileResponse(
+        buffer,
+        content_type="application/pdf",
+        as_attachment=True,
+        filename=f"incident-{incident.employee.name}-{incident.date.strftime("%d-%m-%Y")}.pdf",
     )
     return response
