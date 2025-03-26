@@ -53,6 +53,7 @@ class Header(Flowable):
         elif self.report_header.report == "INCIDENT":
             h_text = "INCIDENT REPORT"
         page_no = 1
+        issue_no = self.report_header.issue_no
         logo_path = os.path.join(settings.STATIC_ROOT, "logo_sm.png")
         img = utils.ImageReader(logo_path)
         img_width, img_height = img.getSize()
@@ -84,7 +85,7 @@ class Header(Flowable):
                     h_text,
                     bold=False,
                 ),
-                self.create_text("01", bold=False),
+                self.create_text(f"{issue_no}", bold=False),
                 self.create_text("Page {p}".format(p=page_no), bold=False),
             ],
         ]

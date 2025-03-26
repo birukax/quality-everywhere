@@ -105,7 +105,7 @@ def get_fire_prevention_report(request, id):
     elements = []
     fire_prevention = get_object_or_404(FirePrevention, id=id)
     report_header = ReportHeader.objects.filter(report="FIRE-PREVENTION").order_by(
-        "-created_at"
+        "-issue_no"
     )
     if report_header.exists():
         fire_prevention_report = FirePreventionReport(
@@ -132,9 +132,7 @@ def get_incident_report(reqeust, id):
     buffer = BytesIO()
     elements = []
     incident = get_object_or_404(Incident, id=id)
-    report_header = ReportHeader.objects.filter(report="INCIDENT").order_by(
-        "-created_at"
-    )
+    report_header = ReportHeader.objects.filter(report="INCIDENT").order_by("-issue_no")
     if report_header.exists():
         incident_report = IncidentReport(
             buffer=buffer,

@@ -1,3 +1,5 @@
+import datetime
+from django.utils import timezone
 from django.db import models
 from django.contrib.auth.models import User as auth_user
 
@@ -12,6 +14,8 @@ REPORT_LIST = (
 class ReportHeader(models.Model):
     report = models.CharField(max_length=20, choices=REPORT_LIST)
     no = models.CharField(max_length=30)
+    issue_no = models.IntegerField(default=1)
+    effective_date = models.DateField(default=timezone.now())
     machine = models.ForeignKey(
         "machine.Machine",
         on_delete=models.CASCADE,
@@ -31,4 +35,4 @@ class ReportHeader(models.Model):
 
     class Meta:
         ordering = ["no"]
-        unique_together = ("report", "machine")
+        unique_together = ("report", "machine", "issue_no")

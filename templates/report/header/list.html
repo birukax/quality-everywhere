@@ -15,6 +15,8 @@
             <th scope="col" class="px-3 sm:px-6 py-3">Name</th>
             <th scope="col" class="px-3 sm:px-6 py-3 ">Machine</th>
             <th scope="col" class="px-3 sm:px-6 py-3 hidden md:table-cell">Document No.</th>
+            <th scope="col" class="px-3 sm:px-6 py-3 hidden md:table-cell">Issue No.</th>
+            <th scope="col" class="px-3 sm:px-6 py-3 hidden md:table-cell">Effective Date</th>
             <th scope="col" class="px-3 sm:px-6 py-3 text-right">Action</th>
         </tr>
     </thead>
@@ -26,6 +28,8 @@
                 </th>
                 <td class="px-3 sm:px-6 py-3 capitalize ">{{ p.machine.name }}</td>
                 <td class="px-3 sm:px-6 py-3 capitalize hidden md:table-cell">{{ p.no }}</td>
+                <td class="px-3 sm:px-6 py-3 capitalize hidden md:table-cell">{{ p.issue_no }}</td>
+                <td class="px-3 sm:px-6 py-3 capitalize hidden md:table-cell">{{ p.effective_date }}</td>
                 <td class="px-3 sm:px-6 py-3 flex justify-end">{% include 'report/header/detail.html' %}</td>
             </tr>
         {% endfor %}

@@ -63,7 +63,9 @@ class Assessment(models.Model):
 
     @property
     def report_header(self):
-        header = ReportHeader.objects.filter(report=self.type, machine=self.machine)
+        header = ReportHeader.objects.filter(
+            report=self.type, machine=self.machine
+        ).order_by("-issue_no")
         if header.exists():
             return header.first()
         else:
