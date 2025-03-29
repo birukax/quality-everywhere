@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
+from job.models import  JobTest
 from .models import Color, ColorStandard, Customer, RawMaterial, Shift
 from main.tasks import get_page, role_check
 from .tasks import (
@@ -68,7 +69,7 @@ def raw_material_list(request):
 
 
 @login_required
-@role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
+@role_check(["ADMIN", "MANAGER", "SUPERVISOR"])
 def create_raw_material(request):
     if request.method == "GET":
         form = CreateRawMaterialForm()
@@ -80,7 +81,7 @@ def create_raw_material(request):
 
 
 @login_required
-@role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
+@role_check(["ADMIN", "MANAGER", "SUPERVISOR"])
 def edit_raw_material(request, id):
     if request.method == "GET":
         raw_material = get_object_or_404(RawMaterial, id=id)
@@ -107,7 +108,7 @@ def shift_list(request):
 
 
 @login_required
-@role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
+@role_check(["ADMIN", "MANAGER", "SUPERVISOR"])
 def create_shift(request):
     if request.method == "GET":
         form = CreateShiftForm()
@@ -119,7 +120,7 @@ def create_shift(request):
 
 
 @login_required
-@role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
+@role_check(["ADMIN", "MANAGER", "SUPERVISOR"])
 def edit_shift(request, id):
     if request.method == "GET":
         shift = get_object_or_404(Shift, id=id)
@@ -209,6 +210,9 @@ def create_color_standard(request):
 @role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
 def edit_color_standard(request, id):
     color_standard = get_object_or_404(ColorStandard, id=id)
+    open_job_tests = JobTest.objects.filter(color_standard=color_standard)
+    if open_job_tests.exists:
+        return redirect("misc:color_standard_list")
     if request.method == "POST":
         form = EditColorStandardForm(request.POST)
         if form.is_valid():

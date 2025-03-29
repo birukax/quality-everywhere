@@ -14,6 +14,7 @@ from .forms import CreateReportHeaderForm, EditReportHeaderForm
 
 
 @login_required
+@role_check(["ADMIN", "MANAGER", "SAFETY"])
 def header_list(request):
     headers = ReportHeader.objects.all()
 
@@ -24,8 +25,8 @@ def header_list(request):
     }
     return render(request, "report/header/list.html", context)
 
-
 @login_required
+@role_check(["ADMIN", "MANAGER", "SAFETY"])
 def create_header(request):
     if request.method == "POST":
         form = CreateReportHeaderForm(request.POST)
@@ -41,8 +42,8 @@ def create_header(request):
     }
     return render(request, "report/header/create.html", context)
 
-
 @login_required
+@role_check(["ADMIN", "MANAGER", "SAFETY"])
 def edit_header(request, id):
     header = get_object_or_404(ReportHeader, id=id)
     if request.method == "POST":
@@ -61,6 +62,7 @@ def edit_header(request, id):
     return render(request, "report/header/edit.html", context)
 
 
+@login_required
 def get_assessment_report(request, id):
 
     buffer = BytesIO()
@@ -100,6 +102,7 @@ def get_assessment_report(request, id):
     return response
 
 
+@login_required
 def get_fire_prevention_report(request, id):
     buffer = BytesIO()
     elements = []
@@ -128,6 +131,7 @@ def get_fire_prevention_report(request, id):
     return response
 
 
+@login_required
 def get_incident_report(reqeust, id):
     buffer = BytesIO()
     elements = []

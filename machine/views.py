@@ -33,7 +33,7 @@ def list(request):
 
 
 @login_required
-@role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
+@role_check(["ADMIN", "MANAGER", "SUPERVISOR"])
 def create(request):
     context = {}
     if request.method == "POST":
@@ -48,7 +48,7 @@ def create(request):
 
 
 @login_required
-@role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
+@role_check(["ADMIN", "MANAGER", "SUPERVISOR"])
 def edit(request, id):
     machine = get_object_or_404(Machine, id=id)
     if request.method == "POST":
@@ -88,7 +88,7 @@ def route_list(request):
 
 
 @login_required
-@role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
+@role_check(["ADMIN", "MANAGER", "SUPERVISOR"])
 def create_route(request):
     context = {}
     if request.method == "POST":
@@ -119,7 +119,7 @@ def edit_route(request):
 
 
 @login_required
-@role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
+@role_check(["ADMIN", "MANAGER", "SUPERVISOR"])
 def update_machine_route(request, id):
     context = {}
     route = get_object_or_404(Route, id=id)
@@ -145,7 +145,7 @@ def update_machine_route(request, id):
 
 
 @login_required
-@role_check(["ADMIN", "MANAGER", "INSPECTOR", "SUPERVISOR"])
+@role_check(["ADMIN", "MANAGER",  "SUPERVISOR"])
 def cancel_create_route(request, id):
     route = get_object_or_404(Route, id=id)
     route.delete()
