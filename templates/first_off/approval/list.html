@@ -34,12 +34,14 @@
                         <th class="py-1 px-2 font-normal">Approver</th>
                         <th class="py-1 px-2 font-normal">Status</th>
                         <th class="py-1 px-2 font-normal">User</th>
+                        <th class="py-1 px-2 font-normal">Reason</th>
                     </tr>
                     {% for app in approvals %}
                         <tr class="text-left text-sm">
                             <td class="px-2 py-1">{{ app.approver }}</td>
                             <td class="px-2 py-1">{{ app.status }}</td>
                             <td class="px-2 py-1">{{ app.by.username }}</td>
+                            <td class="px-2 py-1">{{ app.reason }}</td>
                         </tr>
                     {% endfor %}
                 </table>

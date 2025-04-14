@@ -11,13 +11,18 @@ urlpatterns = [
         name="create_assessment_approval",
     ),
     path(
-        "assessment/approve/<int:id>",
-        views.approve_assessment,
-        name="approve_assessment",
+        "assessment/update/<int:id>",
+        views.update_assessment_approval,
+        name="update_assessment_approval",
     ),
-    path(
-        "assessment/reject/<int:id>", views.reject_assessment, name="reject_assessment"
-    ),
+    # path(
+    #     "assessment/approve/<int:id>",
+    #     views.approve_assessment,
+    #     name="approve_assessment",
+    # ),
+    # path(
+    #     "assessment/reject/<int:id>", views.reject_assessment, name="reject_assessment"
+    # ),
     path("fire-preventions", views.fire_prevention_list, name="fire_prevention_list"),
     path(
         "fire-prevention/create/<int:id>",

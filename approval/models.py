@@ -24,16 +24,16 @@ class AssessmentApproval(models.Model):
     )
     status = models.CharField(default="PENDING", choices=STATUS, max_length=20)
     by = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
-    approver = models.CharField(default="SUPERVISOR", max_length=20)
+    approver = models.CharField(max_length=20, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    comment = models.TextField(null=True, blank=True)
+    reason = models.TextField(null=True, blank=True)
 
     class Meta:
         ordering = ["-created_at", "-updated_at"]
 
     def __str__(self):
-        return f"{self.assessment} - {self.approver} - {self.assessment.job_test.id}"
+        return f"{self.assessment} - {self.assessment.job_test.id}"
 
 
 class FirePreventionApproval(models.Model):

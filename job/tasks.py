@@ -13,19 +13,23 @@ def job_get():
     user = config("NAV_INSTANCE_USER")
     password = config("NAV_INSTANCE_PASSWORD")
     auth = HttpNtlmAuth(user, password)
-    # try:
-    response = requests.get(url, auth=auth)
-    if response.ok:
-        data = response.json()
-        for job in data["value"]:
-            product = Product.objects.filter(no=job["Source_No"])
-            if product.exists():
-                job, updated = Job.objects.filter(no=job["No"]).update_or_create(
-                        no=job["No"],
-                        product=product.first(),
-                )
-    # except Exception as e:
-    #     print(e)
+    try:
+        response = requests.get(url, auth=auth)
+        if response.ok:
+            data = response.json()
+            for job in data["value"]:
+                product = Product.objects.filter(no=job["Source_No"])
+                if product.exists():
+                    job, updated = (
+                        Job.objects.filter(no=job["No"])
+                        .filter()
+                        .update_or_create(
+                            no=job["No"],
+                            product=product.first(),
+                        )
+                    )
+    except Exception as e:
+        print(e)
 
 
 # def create_assessments(request, id):
