@@ -76,7 +76,44 @@ class CreateReportHeaderForm(forms.ModelForm):
 class EditReportHeaderForm(forms.ModelForm):
     class Meta:
         model = ReportHeader
-        fields = ("no",)
+        fields = ("issue_no", "effective_date", "no")
         widgets = {
             "no": forms.TextInput(attrs={"class": "w-full text-center h-auto"}),
         }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        report = cleaned_data.get("report")
+        issue_no = cleaned_data.get("issue_no")
+        effective_date = cleaned_data.get("effective_date")
+        last_effective_dates = ReportHeader.objects.filter(report=report).order_by(
+            "-issue_no"
+        )
+        machine = cleaned_data.get("machine")
+        if report in ["FIRST-OFF", "ON-PROCESS"]:
+            if machine is None:
+                self.add_error(
+                    "machine",
+                    f"Machine can't be empty for {report} report",
+                )
+        else:
+            if ReportHeader.objects.filter(report=report, issue_no=issue_no).exists():
+                self.add_error(
+                    "report", f"{report} with issue no {issue_no} already exists"
+                )
+        if ReportHeader.objects.filter(
+            report=report, effective_date=effective_date
+        ).exists():
+            self.add_error(
+                "effective_date",
+                f"{report} with effective date {effective_date} already exists",
+            )
+        if issue_no < 1:
+            self.add_error("issue_no", "Issue no can't be less than 1")
+        if last_effective_dates.exists():
+            if effective_date < last_effective_dates.first().effective_date:
+                self.add_error(
+                    "effective_date",
+                    f"Effective date can't be less than {last_effective_dates.first().effective_date}",
+                )
+        return cleaned_data

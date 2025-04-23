@@ -54,6 +54,22 @@
                             </div>
                         </div>
                     </li>
+                    <li class="py-3 sm:py-4">
+                        <div class="flex items-center justify-between">
+                            <div class="inline-flex  items-center  font-semibold text-gray-900 ">Effective Date</div>
+                            <div class="flex-row text-right">
+                                <p class=" font-medium text-gray-900 truncate ">{{ p.effective_date }}</p>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="py-3 sm:py-4">
+                        <div class="flex items-center justify-between">
+                            <div class="inline-flex  items-center  font-semibold text-gray-900 ">Issue No.</div>
+                            <div class="flex-row text-right">
+                                <p class=" font-medium text-gray-900 truncate ">{{ p.issue_no }}</p>
+                            </div>
+                        </div>
+                    </li>
                 </ul>
                 <div class="text-right">
                     <a href="{% url 'report:edit_header' p.id %}"
