@@ -42,10 +42,17 @@ class IncidentReport(BaseIncidentReport):
         self.elements.append(Spacer(1, 20))
 
     def employee_detail(self):
-        colWidths = [400]
+
+        image_path = os.path.join(settings.STATIC_ROOT, "controlled_30.png")
+        img = utils.ImageReader(image_path)
+        img_width, img_height = img.getSize()
+        aspect = img_height / float(img_width)
+        controlled_image = Image(image_path, width=150, height=(150 * aspect))
+        colWidths = [350, 170]
         data = [
             [
                 self.ptext("EMPLOYEE NAME", self.incident.employee.name, fsize=10),
+                controlled_image,
             ],
             [
                 self.ptext(
@@ -77,7 +84,13 @@ class IncidentReport(BaseIncidentReport):
         #             for w in self.witness_list[start:end]
         #         ]
         #     )
+        tblStyle = TableStyle(
+            [
+                ("SPAN", (-1, 0), (-1, -1)),
+            ]
+        )
         tbl = Table(data, colWidths=colWidths, hAlign="LEFT")
+        tbl.setStyle(tblStyle)
         self.elements.append(Indenter(left=20))
         self.elements.append(tbl)
         self.elements.append(Indenter(left=-20))
