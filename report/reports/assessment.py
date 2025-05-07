@@ -257,10 +257,11 @@ class FirstOffReport(BaseAssessmentReport):
             [
                 "",
                 self.ptext(
-                    "SHIFT SUPERVISOR",
-                    self.first_off.approvals.filter(approver="SUPERVISOR")
+                    "APPROVED BY",
+                    self.first_off.approvals.filter(status="APPROVED")
                     .first()
-                    .by.username,
+                    .by.username
+                    or None,
                 ),
                 "",
             ],

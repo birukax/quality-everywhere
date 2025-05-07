@@ -64,6 +64,43 @@ def edit_header(request, id):
 
 @login_required
 def get_assessment_report(request, id):
+    buffer = BytesIO()
+    elements = []
+    assessment = get_object_or_404(Assessment, id=id)
+    if assessment.type == "FIRST-OFF":
+        if assessment.report_header == None:
+            return redirect("assessment:first_off_detail", id=id)
+        first_off = FirstOffReport(
+            buffer=buffer,
+            elements=elements,
+            assessment=assessment,
+            id=assessment.job_test.id,
+        )
+        first_off.create()
+        first_off.save()
+    elif assessment.type == "ON-PROCESS":
+        if assessment.report_header == None:
+            return redirect("assessment:on_process_detail", id=id)
+        on_process = OnProcessReport(
+            buffer=buffer,
+            elements=elements,
+            assessment=assessment,
+            id=assessment.job_test.id,
+        )
+        on_process.create()
+        on_process.save()
+    buffer.seek(0)
+    response = FileResponse(
+        buffer,
+        content_type="application/pdf",
+        as_attachment=True,
+        filename=f"{assessment.job_test.job.no}-{assessment.job_test.job.product.name}-{assessment.job_test.no}-{assessment.type}.pdf",
+    )
+    return response
+
+
+@login_required
+def get_assessments_report(request, id):
 
     buffer = BytesIO()
     elements = []

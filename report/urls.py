@@ -10,6 +10,11 @@ urlpatterns = [
         name="get_assessment_report",
     ),
     path(
+        "assessments/get/<int:id>",
+        views.get_assessments_report,
+        name="get_assessments_report",
+    ),
+    path(
         "fire-prevention/get/<int:id>",
         views.get_fire_prevention_report,
         name="get_fire_prevention_report",
