@@ -72,9 +72,9 @@ class FirePreventionReport(BaseFPReport):
         self.elements.append(Spacer(1, 10))
 
     def checklist(self):
-        colWidths = [25, 225, 50, 200]
+        colWidths = [25, 225, 50, 220]
         data = [
-            ["SR.", "CHECKPOINT", "VALUE", "REMARK"],
+            ["NO.", "CHECKPOINT", "CHECKED", "REMARK"],
             *(
                 [
                     self.create_text(text=i + 1, size=9),
