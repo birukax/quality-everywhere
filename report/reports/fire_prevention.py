@@ -28,7 +28,7 @@ class FirePreventionReport(BaseFPReport):
             report_header=self.report_header,
         )
         self.elements.append(header)
-        self.elements.append(Spacer(1, 20))
+        self.elements.append(Spacer(1, 15))
 
     def prevention_info(self):
         colWidths = [200, 200]
@@ -69,12 +69,12 @@ class FirePreventionReport(BaseFPReport):
         self.elements.append(Indenter(left=20))
         self.elements.append(tbl)
         self.elements.append(Indenter(left=-20))
-        self.elements.append(Spacer(1, 10))
+        self.elements.append(Spacer(1, 5))
 
     def checklist(self):
         colWidths = [25, 225, 50, 220]
         data = [
-            ["NO.", "CHECKPOINT", "CHECKED", "REMARK"],
+            ["NO.", "CHECKPOINT", "VALUE", "REMARK"],
             *(
                 [
                     self.create_text(text=i + 1, size=9),
