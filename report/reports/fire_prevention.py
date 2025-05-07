@@ -50,7 +50,7 @@ class FirePreventionReport(BaseFPReport):
             [
                 self.ptext("Shift", self.fire_prevention.shift.name),
                 self.create_text(
-                    f"<font> > {self.fire_prevention.approvals.all()[1].by.username or None} <b> ({self.fire_prevention.approvals.all()[1].approver.lower() or None}) </b> </font>",
+                    f"<font> > {self.fire_prevention.approvals.all()[1].by.username or None} <b> ({self.fire_prevention.approvals.all()[1].by.profile.role.lower() or None}) </b> </font>",
                     size=9,
                 ),
             ],
