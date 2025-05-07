@@ -117,7 +117,20 @@ class BaseReport:
 
         return result
 
-    def create_text(self, text, size=8, underline=False, bold=False, header=True):
+    def create_text(
+        self, text, size=8, relaxed=False, underline=False, bold=False, header=True
+    ):
+        if relaxed:
+            paragraph = Paragraph(
+                """
+                             <font size={size}>{text}</font>
+                             """.format(
+                    size=size, text=text
+                )
+            )
+            paragraph.spaceAfter = 4
+            paragraph.spaceBefore = 4
+            return paragraph
         if not header:
             if bold:
                 return Paragraph(
