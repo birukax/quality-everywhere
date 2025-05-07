@@ -10,7 +10,9 @@ from reportlab.platypus import (
     TableStyle,
     Image,
     PageBreak,
+    # Flowable,
 )
+from reportlab.platypus.flowables import Flowable
 from reportlab.lib.styles import getSampleStyleSheet
 from .headers import Header
 from reportlab.lib import colors, utils
@@ -47,57 +49,63 @@ class FirstOffReport(BaseAssessmentReport):
             report_header=self.report_header,
         )
         self.elements.append(header)
-        self.elements.append(Spacer(1, 10))
+        self.elements.append(Spacer(1, 15))
 
     def job_info(self):
 
         job_text = self.ptext("Job", self.job_test, align="right")
-        date_text = self.ptext("Date", self.first_off.date, align="right")
+        # date_text = self.ptext("Date", self.first_off.date, align="right")
         self.elements.append(Indenter(left=410))
         self.elements.append(job_text)
         self.elements.append(Spacer(1, 5))
-        self.elements.append(date_text)
-        self.elements.append(Spacer(1, 10))
+        # self.elements.append(date_text)
+        # self.elements.append(Spacer(1, 5))
         self.elements.append(Indenter(left=-410))
 
-        self.elements.append(
-            self.create_text(
-                "Job Detail",
-                bold=True,
-                size=10,
-            )
-        )
-        self.elements.append(Spacer(1, 5))
+        # self.elements.append(
+        #     self.create_text(
+        #         "Job Detail",
+        #         bold=True,
+        #         size=10,
+        #     )
+        # )
+        # line = self.LineFlowable(50)
+        # self.elements.append(line)
+        # self.elements.append(Spacer(1, 5))
 
-        colWidths = [220, 220, 160]
+        colWidths = [200, 200]
         data = [
             [
                 self.ptext("Customer", self.job_test.job.customer),
                 self.ptext("Machine", self.first_off.machine.name),
-                self.ptext("Shift", self.first_off.shift.name),
             ],
             [
                 self.ptext(
                     "Product Name",
                     self.job_test.job.product.name,
                 ),
+                self.ptext("Shift", self.first_off.shift.name),
+            ],
+            [
+                self.ptext("Product No.", self.job_test.job.product.no),
+                self.ptext("Date", self.first_off.date),
+            ],
+            [
                 self.ptext(
                     "Raw Material",
                     self.job_test.raw_material.name,
                 ),
-                self.ptext("Date", self.first_off.date),
+                self.ptext("Time", self.first_off.time.strftime("%I:%M %p")),
             ],
             [
-                self.ptext("Product No.", self.job_test.job.product.no),
                 self.ptext("Batch No.", self.job_test.batch_no),
-                self.ptext("Time", self.first_off.time.strftime("%I:%M %p")),
             ],
         ]
         tbl1 = Table(data, colWidths=colWidths, hAlign="LEFT")
         tblStyle = TableStyle(
             [
-                ("INNERGRID", (0, 0), (-1, -1), 0.25, colors.black),
-                ("BOX", (0, 0), (-1, -1), 0.25, colors.black),
+                ("INNERGRID", (0, 0), (-1, -1), 0.1, colors.black),
+                ("BOX", (0, 0), (-1, -1), 0.1, colors.black),
             ]
         )
         # tbl1.setStyle(tblStyle)
@@ -108,34 +116,37 @@ class FirstOffReport(BaseAssessmentReport):
 
     def color_info(self):
 
-        self.elements.append(
-            self.create_text(
-                "Color Detail",
-                bold=True,
-                size=10,
-            )
-        )
+        # self.elements.append(
+        #     self.create_text(
+        #         "Color Detail",
+        #         bold=True,
+        #         size=10,
+        #     )
+        # )
+        line = self.LineFlowable(500)
+        self.elements.append(line)
         self.elements.append(Spacer(1, 5))
         color_s_text = self.ptext("Color Standard", self.job_test.color_standard)
-        self.elements.append(Indenter(left=20))
+        self.elements.append(Indenter(left=25))
         self.elements.append(color_s_text)
-        self.elements.append(Indenter(left=-20))
+        self.elements.append(Indenter(left=-25))
         self.elements.append(Spacer(1, 5))
         colWidths = [100, 100, 100]
-        rows = 3
+        rows = 4
         color_list = self.job_test.color_standard.colors.all()
         # colors = Color.objects.all()
         color_ranges = self.split_list_ranges(rows=rows, list_count=len(color_list))
         data = []
         for [start, end] in color_ranges:
             data.append(
-                [f"{c.name} | {c.viscosity}" for c in color_list[start:end]],
+                [f"{c.name} - {c.viscosity}" for c in color_list[start:end]],
             )
         # data = [[f"{c.name} - ({c.viscosity})" for c in colors]]
         tblStyle = TableStyle(
             [
-                ("INNERGRID", (0, 0), (-1, -1), 0.25, self.colors.black),
+                # ("INNERGRID", (0, 0), (-1, -1), 0.25, self.colors.black),
                 ("BOX", (0, 0), (-1, -1), 0.25, self.colors.black),
+                ("FONTSIZE", (0, 0), (-1, -1), 9),
             ]
         )
         tbl = Table(data, hAlign="LEFT")
@@ -147,13 +158,16 @@ class FirstOffReport(BaseAssessmentReport):
 
     def lamination_info(self):
 
-        self.elements.append(
-            self.create_text(
-                "Lamination Detail",
-                bold=True,
-                size=10,
-            )
-        )
+        # self.elements.append(
+        #     self.create_text(
+        #         "Lamination Detail",
+        #         bold=True,
+        #         size=10,
+        #     )
+        # )
+
+        line = self.LineFlowable(500)
+        self.elements.append(line)
         self.elements.append(Spacer(1, 5))
         colWidths = [200, 200]
         data = [
@@ -167,7 +181,7 @@ class FirstOffReport(BaseAssessmentReport):
             [
                 self.ptext("Supplier", self.lamination.supplier),
                 self.ptext(
-                    "Mixing Ratio(Adhesive:Hardner)",
+                    "Mixing Ratio (Ad:Hr)",
                     self.lamination.mixing_ratio,
                 ),
             ],
@@ -179,20 +193,15 @@ class FirstOffReport(BaseAssessmentReport):
                 self.ptext("Adhesive Batch No.", self.lamination.adhesive_batch_no),
                 self.ptext("Hardner Batch No.", self.lamination.hardner_batch_no),
             ],
-        ]
-        data.append(
             [
-                [
-                    self.ptext(f"Raw Material (S{s.no})", s.raw_material.name)
-                    for s in self.lamination.substrates.all()
-                ],
-                [
-                    self.ptext(f"Batch No. (S{s.no})", s.batch_no)
-                    for s in self.lamination.substrates.all()
-                ],
-            ]
-            # for s in Substrate.objects.all()
-        )
+                self.ptext(f"Raw Material (S{s.no})", s.raw_material.name)
+                for s in self.lamination.substrates.all()
+            ],
+            [
+                self.ptext(f"Batch No. (S{s.no})", s.batch_no)
+                for s in self.lamination.substrates.all()
+            ],
+        ]
         tbl = Table(data, hAlign="LEFT")
         self.elements.append(Indenter(left=20))
         self.elements.append(tbl)
@@ -200,13 +209,16 @@ class FirstOffReport(BaseAssessmentReport):
         self.elements.append(Spacer(1, 10))
 
     def first_off_info(self):
-        self.elements.append(
-            self.create_text(
-                "First Off Detail",
-                bold=True,
-                size=10,
-            )
-        )
+        # self.elements.append(
+        #     self.create_text(
+        #         "First Off Detail",
+        #         bold=True,
+        #         size=10,
+        #     )
+        # )
+
+        line = self.LineFlowable(500)
+        self.elements.append(line)
         self.elements.append(Spacer(1, 5))
         colWidths = [150, 150, 150, 150]
         rows = 8
@@ -230,13 +242,16 @@ class FirstOffReport(BaseAssessmentReport):
         self.elements.append(Spacer(1, 10))
 
     def inspection_info(self):
-        self.elements.append(
-            self.create_text(
-                "Inspection Detail",
-                bold=True,
-                size=10,
-            )
-        )
+        # self.elements.append(
+        #     self.create_text(
+        #         "Inspection Detail",
+        #         bold=True,
+        #         size=10,
+        #     )
+        # )
+
+        line = self.LineFlowable(500)
+        self.elements.append(line)
         self.elements.append(Spacer(1, 5))
 
         image_path = os.path.join(settings.STATIC_ROOT, "controlled_30.png")
@@ -245,23 +260,19 @@ class FirstOffReport(BaseAssessmentReport):
         aspect = img_height / float(img_width)
         controlled_image = Image(image_path, width=150, height=(150 * aspect))
         # self.elements.append(controlled_image)
-
+        colWidths = [100, 150, 150]
         data = [
             [
-                self.create_text(
-                    "INSPECTION COMPLETED BY:", size=10, bold=True, header=False
+                self.create_text("Inspected by:", size=10, bold=True, header=False),
+                Paragraph(
+                    f"<font>{self.first_off.inspected_by.username or None} <b>({self.first_off.inspected_by.profile.role.lower() or None}) </b> </font> "
                 ),
-                self.ptext("QA INSPECTOR", self.first_off.inspected_by.username),
                 controlled_image,
             ],
             [
-                "",
-                self.ptext(
-                    "APPROVED BY",
-                    self.first_off.approvals.filter(status="APPROVED")
-                    .first()
-                    .by.username
-                    or None,
+                self.create_text("Approved by:", size=10, bold=True, header=False),
+                Paragraph(
+                    f"<font>{self.first_off.approvals.filter(status="APPROVED").first().by.username or None} <b>({self.first_off.approvals.filter(status="APPROVED").first().by.profile.role.lower() or None}) </b></font>"
                 ),
                 "",
             ],
@@ -278,7 +289,7 @@ class FirstOffReport(BaseAssessmentReport):
                 )
             ]
         )
-        tbl = Table(data, hAlign="LEFT")
+        tbl = Table(data, hAlign="LEFT", colWidths=colWidths)
         tbl.setStyle(tblStyle)
         self.elements.append(Indenter(left=20))
         self.elements.append(tbl)
@@ -311,39 +322,52 @@ class OnProcessReport(BaseAssessmentReport):
             report_header=self.report_header,
         )
         self.elements.append(header)
-        self.elements.append(Spacer(1, 10))
+        self.elements.append(Spacer(1, 15))
 
     def job_info(self):
-        colWidths = [200, 200, 120]
+        job_text = self.ptext("Job", self.job_test, align="right")
+        self.elements.append(Indenter(left=410))
+        self.elements.append(job_text)
+        self.elements.append(Spacer(1, 5))
+        self.elements.append(Indenter(left=-410))
+
+        colWidths = [200, 200]
 
         data = [
             [
-                self.ptext("Job", self.job_test.job.no),
-                self.ptext("Date", self.on_process.date),
-            ],
-            [
-                self.ptext("Product Name", self.job_test.job.product.name),
+                self.ptext("Customer", self.job_test.job.customer),
                 self.ptext("Machine", self.on_process.machine.name),
             ],
             [
+                self.ptext(
+                    "Product Name",
+                    self.job_test.job.product.name,
+                ),
                 self.ptext("Product No.", self.job_test.job.product.no),
-                self.ptext("Raw Material", self.job_test.raw_material.name),
             ],
             [
-                self.ptext("Customer", self.job_test.job.customer),
+                self.ptext("Date", self.on_process.date),
+                self.ptext(
+                    "Raw Material",
+                    self.job_test.raw_material.name,
+                ),
+            ],
+            [
                 self.ptext("Batch No.", self.job_test.batch_no),
             ],
         ]
         tbl = Table(data, colWidths=colWidths, hAlign="LEFT")
-        self.elements.append(Indenter(left=20))
         self.elements.append(tbl)
-        self.elements.append(Indenter(left=-20))
+        # self.elements.append(Indenter(left=20))
+        # self.elements.append(Indenter(left=-20))
         self.elements.append(Spacer(1, 10))
 
     def inspection_section(self):
-        self.elements.append(self.create_text("Inspection Section", bold=True, size=10))
-        self.elements.append(Spacer(1, 10))
-        colWidths = [95, 65, 65, 65, 65, 190]
+        # self.elements.append(self.create_text("Inspection Section", bold=True, size=10))
+        # line = self.LineFlowable(500, 10)
+        # self.elements.append(line)
+        self.elements.append(Spacer(1, 5))
+        colWidths = [95, 60, 65, 65, 65, 195]
 
         def conf(c):
             if c.conformity is None:
@@ -352,7 +376,7 @@ class OnProcessReport(BaseAssessmentReport):
                 return f"{c.conformity.name}"
 
         data = [
-            ["NC", "SAMPLE NO.", "SHIFT", "CREATED AT", "CREATED BY", "ACTION TAKEN"],
+            ["NC", "Sample No.", "Shift", "Created at", "Created by", "Action Taken"],
             *(
                 [
                     self.create_text(text=conf(c), size=9),
@@ -372,7 +396,7 @@ class OnProcessReport(BaseAssessmentReport):
                 ("INNERGRID", (0, 0), (-1, -1), 0.25, colors.black),
                 ("BOX", (0, 0), (-1, -1), 0.25, colors.black),
                 ("VALIGN", (0, 1), (-1, -1), "TOP"),
-                ("FONT", (0, 0), (-1, 0), "Helvetica-Bold", 8),
+                ("FONT", (0, 0), (-1, 0), "Helvetica-Bold", 9),
             ]
         )
 
@@ -384,9 +408,10 @@ class OnProcessReport(BaseAssessmentReport):
         self.elements.append(Spacer(1, 10))
 
     def viscosity_section(self):
-        self.elements.append(self.create_text("Viscosity Section", bold=True, size=10))
+        # self.elements.append(self.create_text("Viscosity Section", bold=True, size=10))
+        line = self.LineFlowable(400, 10)
+        self.elements.append(line)
         self.elements.append(Spacer(1, 5))
-
         data = [
             [
                 self.create_text(text="Reel No.", size=8, bold=True),
@@ -398,28 +423,31 @@ class OnProcessReport(BaseAssessmentReport):
                 ),
             ]
         ]
-        reel_numbers = [value for value in self.viscosities.values_list("reel_no")[0]]
-        for s in reel_numbers:
-            data.append(
-                [
-                    s,
-                    *(
-                        [
-                            f"{v.value} "
-                            for v in Viscosity.objects.filter(
-                                reel_no=s, assessment=self.on_process
-                            )
-                        ]
-                    ),
-                ]
-            )
+        if self.viscosities.exists():
+            reel_numbers = [
+                value for value in self.viscosities.values_list("reel_no")[0] or ""
+            ]
+            for s in reel_numbers:
+                data.append(
+                    [
+                        s,
+                        *(
+                            [
+                                f"{v.value} "
+                                for v in Viscosity.objects.filter(
+                                    reel_no=s, assessment=self.on_process
+                                )
+                            ]
+                        ),
+                    ]
+                )
 
         tblStyle = TableStyle(
             [
                 ("INNERGRID", (0, 0), (-1, -1), 0.25, colors.black),
                 ("BOX", (0, 0), (-1, -1), 0.25, colors.black),
                 ("VALIGN", (0, 0), (-1, -1), "TOP"),
-                ("FONT", (0, 0), (-1, 0), "Helvetica-Bold", 8),
+                ("FONT", (0, 0), (-1, 0), "Helvetica-Bold", 9),
             ]
         )
         tbl = Table(data, hAlign="LEFT")

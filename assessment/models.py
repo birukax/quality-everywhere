@@ -195,6 +195,9 @@ class Viscosity(models.Model):
     class Meta:
         verbose_name_plural = "viscosities"
 
+    def __str__(self):
+        return f"{self.assessment.job_test.job.no} - {self.assessment.job_test.no} - {self.color.name}"
+
 
 class Lamination(models.Model):
     ply_structure = models.PositiveIntegerField(default=2)

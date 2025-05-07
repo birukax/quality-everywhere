@@ -10,6 +10,7 @@ from reportlab.platypus import (
     TableStyle,
     Image,
     PageBreak,
+    Flowable,
 )
 from reportlab.lib.styles import getSampleStyleSheet
 from .headers import Header
@@ -34,6 +35,16 @@ class BaseReport:
         self.colors = colors
         self.width, self.height = A4
 
+    class LineFlowable(Flowable):
+        def __init__(self, width, height=0):
+            Flowable.__init__(self)
+            self.width = width
+            self.height = height
+
+        def draw(self):
+
+            self.canv.line(0, self.height, self.width, self.height)
+
     def save(self):
         self.doc.build(self.elements)
 
@@ -45,7 +56,7 @@ class BaseReport:
 
         fsize = fsize
         return Paragraph(
-            """<para align={align} size={fsize}>{name}:<font color=darkslategray> <b>  {value}  </b></font></para>""".format(
+            """<para align={align} size={fsize}><b>{name}</b>:<font>   {value}  </font></para>""".format(
                 fsize=fsize, name=name, value=value, align=align
             ),
             self.styles["Normal"],
@@ -66,8 +77,8 @@ class BaseReport:
             value_color = "gray"
             value = "Not Tested"
         return Paragraph(
-            f"""<font>{name}: ---------- <font color={value_color}>{value}</font><br/>
-            Remark: ---------- {remark}
+            f"""<font >{name}: <font color={value_color}>{value}</font><br/>
+            Remark: <font name="courier" >{remark}</font>
             </font>"""
         )
 
