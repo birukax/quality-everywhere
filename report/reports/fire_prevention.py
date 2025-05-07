@@ -41,9 +41,9 @@ class FirePreventionReport(BaseFPReport):
                 self.create_text("APPROVED BY", bold=True, header=False, size=9),
             ],
             [
-                self.ptext("Completed by", self.fire_prevention.inspected_by.username),
+                self.ptext("Checked by", self.fire_prevention.inspected_by.username),
                 self.create_text(
-                    f"<font> > {self.fire_prevention.approvals.all()[0].by.username  or None} <b> ({self.fire_prevention.approvals.all()[0].approver.lower() or None}) </b> </font>",
+                    f"<font> > {self.fire_prevention.approvals.all()[0].by.username  or None} <b> ({self.fire_prevention.approvals.all()[0].by.profile.role.lower() or None}) </b> </font>",
                     size=9,
                 ),
             ],
