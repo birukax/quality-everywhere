@@ -1,12 +1,6 @@
 import os
 from django.conf import settings
-from reportlab.platypus import (
-    Spacer,
-    Indenter,
-    Table,
-    TableStyle,
-    Image,
-)
+from reportlab.platypus import Spacer, Indenter, Table, TableStyle, Image, Paragraph
 from .headers import Header
 from reportlab.lib import colors, utils
 from she.models import Checkpoint, FirePrevention, FPChecklist
@@ -35,6 +29,47 @@ class FirePreventionReport(BaseFPReport):
         )
         self.elements.append(header)
         self.elements.append(Spacer(1, 20))
+
+    def prevention_info(self):
+        colWidths = [200, 200]
+        data = [
+            [
+                self.ptext(
+                    "Created at",
+                    self.fire_prevention.created_at.strftime("%d-%m-%Y %I:%M %p"),
+                ),
+                self.create_text("APPROVED BY", bold=True, header=False, size=9),
+            ],
+            [
+                self.ptext("Completed by", self.fire_prevention.inspected_by.username),
+                self.create_text(
+                    f"<font> > {self.fire_prevention.approvals.all()[0].by.username  or None} <b> ({self.fire_prevention.approvals.all()[0].approver.lower() or None}) </b> </font>",
+                    size=9,
+                ),
+            ],
+            [
+                self.ptext("Shift", self.fire_prevention.shift.name),
+                self.create_text(
+                    f"<font> > {self.fire_prevention.approvals.all()[1].by.username or None} <b> ({self.fire_prevention.approvals.all()[1].approver.lower() or None}) </b> </font>",
+                    size=9,
+                ),
+            ],
+        ]
+        tblStyle = TableStyle(
+            [
+                (
+                    "SPAN",
+                    (-1, 0),
+                    (-1, -1),
+                )
+            ]
+        )
+        tbl = Table(data, colWidths=colWidths, hAlign="LEFT")
+        # tbl.setStyle(tblStyle)
+        self.elements.append(Indenter(left=20))
+        self.elements.append(tbl)
+        self.elements.append(Indenter(left=-20))
+        self.elements.append(Spacer(1, 10))
 
     def checklist(self):
         colWidths = [25, 225, 50, 200]
@@ -67,70 +102,26 @@ class FirePreventionReport(BaseFPReport):
         self.elements.append(
             self.create_text("Comment for Next Shift:", header=False, bold=True, size=9)
         )
-        self.elements.append(Spacer(1, 5))
-        self.elements.append(Indenter(left=20))
-        self.elements.append(
-            self.create_text(f"- {self.fire_prevention.comment}", size=9)
-        )
-        self.elements.append(Indenter(left=-20))
-        self.elements.append(Spacer(1, 20))
+        if self.fire_prevention.comment:
+            self.elements.append(Spacer(1, 5))
+            self.elements.append(Indenter(left=20))
+            self.elements.append(
+                self.create_text(f"- {self.fire_prevention.comment}", size=9)
+            )
+            self.elements.append(Indenter(left=-20))
+            self.elements.append(Spacer(1, 20))
 
-    def inspection_info(self):
-        colWidths = [150, 150, 150]
+    def controlled_detail(self):
         image_path = os.path.join(settings.STATIC_ROOT, "controlled_30.png")
         img = utils.ImageReader(image_path)
         img_width, img_height = img.getSize()
         aspect = img_height / float(img_width)
-        controlled_image = Image(image_path, width=140, height=(140 * aspect))
-        data = [
-            [
-                self.ptext("Shift", self.fire_prevention.shift.name),
-                self.create_text("Approved By", header=False, bold=True, size=9),
-                controlled_image,
-            ],
-            [
-                self.ptext("Inspected by", self.fire_prevention.inspected_by.username),
-                self.ptext(
-                    self.fire_prevention.approvals.all()[0].approver,
-                    self.fire_prevention.approvals.all()[0].by.username,
-                ),
-                "",
-            ],
-            [
-                self.ptext(
-                    "Created At",
-                    self.fire_prevention.created_at.strftime("%d-%m-%Y %I:%M %p"),
-                ),
-                self.ptext(
-                    self.fire_prevention.approvals.all()[1].approver,
-                    self.fire_prevention.approvals.all()[1].by.username,
-                ),
-                "",
-            ],
-            [
-                "",
-                "",
-                "",
-            ],
-        ]
-        tblStyle = TableStyle(
-            [
-                (
-                    "SPAN",
-                    (-1, 0),
-                    (-1, -1),
-                )
-            ]
-        )
-        tbl = Table(data, colWidths=colWidths, hAlign="LEFT")
-        tbl.setStyle(tblStyle)
-        self.elements.append(Indenter(left=20))
-        self.elements.append(tbl)
-        self.elements.append(Indenter(left=-20))
-        self.elements.append(Spacer(1, 10))
+        controlled_image = Image(image_path, width=150, height=(150 * aspect))
+        self.elements.append(controlled_image)
 
     def create(self):
         self.header()
+        self.prevention_info()
         self.checklist()
         self.comment()
-        self.inspection_info()
+        self.controlled_detail()
