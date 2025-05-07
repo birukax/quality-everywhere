@@ -448,6 +448,7 @@ class OnProcessReport(BaseAssessmentReport):
                 ("BOX", (0, 0), (-1, -1), 0.25, colors.black),
                 ("VALIGN", (0, 0), (-1, -1), "TOP"),
                 ("FONT", (0, 0), (-1, 0), "Helvetica-Bold", 9),
+                ("FONTSIZE", (0, 1), (-1, -1), 9),
             ]
         )
         tbl = Table(data, hAlign="LEFT")
